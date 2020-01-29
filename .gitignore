@@ -1,11 +1,31 @@
-# Compiled
-*.elc
+# -*- mode: gitignore; -*-
 
-# Packaging
-.cask
-
-# Backup files
+# Emacs
 *~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
 
-# Undo-tree save-files
-*.~undo-tree
+# Directory configuration
+.dir-locals.el
+.cache
+/elisp/
+/elpa/
+/eshell/history
+/eshell/lastdir
+
+# Files configuration
+.projectile
+projectile-bookmarks.eld
+helm-adaptive-history
+.org-id-locations
+*_archive
+*_flymake.*
+flycheck_*.el
+recentf
+my-init.el
+private.el
