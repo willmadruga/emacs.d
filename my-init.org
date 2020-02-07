@@ -185,6 +185,13 @@
 #+END_SRC
 
 
+** NS-Uploader
+#+BEGIN_SRC emacs-lisp
+    ;; git clone --depth=1 https://github.com/wmadruga/ns-uploader.git
+    (add-to-list 'load-path (expand-file-name "~/src/ns-uploader"))
+    (require 'ns-uploader)
+#+END_SRC
+
 ** Org Bullets
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
@@ -218,6 +225,7 @@
   (use-package restclient
     :ensure t)
 #+END_SRC
+
 
 ** Slime
 #+BEGIN_SRC emacs-lisp
@@ -325,14 +333,9 @@
   (add-hook
    'after-init-hook
    (lambda ()
-     (let (
-           (private-file (concat user-emacs-directory "elisp/private.el"))
-           (ns-uploader-file (concat user-emacs-directory "elisp/ns-uploader.el"))
-           )
+     (let ((private-file (concat user-emacs-directory "elisp/private.el")))
        (when (file-exists-p private-file)
-         (load-file private-file))
-       (when (file-exists-p ns-uploader-file)
-         (load-file ns-uploader-file)))))
+         (load-file private-file)))))
 
   (defun duplicate-line ()
     (interactive)
@@ -344,7 +347,6 @@
       (next-line 1)
       (yank)
       (move-to-column cursor-column)))
-
 #+END_SRC
 
 
@@ -361,6 +363,7 @@
    "C-c f" 'origami-forward-toggle-node
    "C-c (" 'origami-close-all-nodes
    "C-c )" 'origami-open-all-nodes
+   "C-c u" 'upload-to-netsuite
    )
 
 
