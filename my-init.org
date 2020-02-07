@@ -311,33 +311,39 @@
 
 * Utils
 #+BEGIN_SRC emacs-lisp
-;; Tell me how long is it taking to startup?
-(add-hook 'emacs-startup-hook
-          (lambda ()
-            (message "Emacs ready in %s with %d garbage collections."
-                     (format "%.2f seconds"
-                             (float-time
-                              (time-subtract after-init-time before-init-time)))
-                     gcs-done)))
+  ;; Tell me how long is it taking to startup?
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (message "Emacs ready in %s with %d garbage collections."
+                       (format "%.2f seconds"
+                               (float-time
+                                (time-subtract after-init-time before-init-time)))
+                       gcs-done)))
 
-;; Loading private functions:
-(add-hook
- 'after-init-hook
- (lambda ()
-   (let ((private-file (concat user-emacs-directory "elisp/private.el")))
-     (when (file-exists-p private-file)
-       (load-file private-file)))))
+  ;; Loading my own extensions, by filename:
+  ;; until I learn how to write a proper package and refactor...
+  (add-hook
+   'after-init-hook
+   (lambda ()
+     (let (
+           (private-file (concat user-emacs-directory "elisp/private.el"))
+           (ns-uploader-file (concat user-emacs-directory "elisp/ns-uploader.el"))
+           )
+       (when (file-exists-p private-file)
+         (load-file private-file))
+       (when (file-exists-p ns-uploader-file)
+         (load-file ns-uploader-file)))))
 
-(defun duplicate-line ()
-  (interactive)
-  (let* ((cursor-column (current-column)))
-    (move-beginning-of-line 1)
-    (kill-line)
-    (yank)
-    (open-line 1)
-    (next-line 1)
-    (yank)
-    (move-to-column cursor-column)))
+  (defun duplicate-line ()
+    (interactive)
+    (let* ((cursor-column (current-column)))
+      (move-beginning-of-line 1)
+      (kill-line)
+      (yank)
+      (open-line 1)
+      (next-line 1)
+      (yank)
+      (move-to-column cursor-column)))
 
 #+END_SRC
 

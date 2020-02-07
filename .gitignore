@@ -17,6 +17,7 @@ tramp
 /elpa/
 /eshell/history
 /eshell/lastdir
+/private/
 
 # Files configuration
 .projectile
@@ -28,4 +29,3 @@ helm-adaptive-history
 flycheck_*.el
 recentf
 my-init.el
-private.el
