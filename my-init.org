@@ -74,6 +74,27 @@
 #+END_SRC
 
 
+** Eshell
+#+BEGIN_SRC emacs-lisp
+  (use-package exec-path-from-shell
+    :ensure t
+    :config
+    (exec-path-from-shell-initialize))
+
+  (use-package fish-completion
+    :ensure t
+    :config
+    (global-fish-completion-mode))
+  
+  (use-package eshell-git-prompt
+    :ensure t
+    :config
+    (eshell-git-prompt-use-theme 'robbyrussell))
+
+  (setq scroll-step 1)
+#+END_SRC
+
+
 ** Flycheck
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
@@ -191,6 +212,7 @@
     (add-to-list 'load-path (expand-file-name "~/src/ns-uploader"))
     (require 'ns-uploader)
 #+END_SRC
+
 
 ** Org Bullets
 #+BEGIN_SRC emacs-lisp
@@ -337,6 +359,8 @@
        (when (file-exists-p private-file)
          (load-file private-file)))))
 
+
+  ;; Duplicate a line, like most IDEs does...
   (defun duplicate-line ()
     (interactive)
     (let* ((cursor-column (current-column)))
@@ -347,6 +371,32 @@
       (next-line 1)
       (yank)
       (move-to-column cursor-column)))
+
+  ;; ESHELL STUFF FROM Mike Zamansky
+  (require 'cl-lib)
+  (defun select-or-create (arg)
+    "Commentary ARG."
+    (if (string= arg "New eshell")
+        (eshell t)
+      (switch-to-buffer arg)))
+  (defun eshell-switcher (&optional arg)
+    "Commentary ARG."
+    (interactive)
+    (let* (
+           (buffers (cl-remove-if-not (lambda (n) (eq (buffer-local-value 'major-mode n) 'eshell-mode)) (buffer-list)) )
+           (names (mapcar (lambda (n) (buffer-name n)) buffers))
+           (num-buffers (length buffers) )
+           (in-eshellp (eq major-mode 'eshell-mode)))
+      (cond ((eq num-buffers 0) (eshell (or arg t)))
+            ((not in-eshellp) (switch-to-buffer (car buffers)))
+            (t (select-or-create (completing-read "Select Shell:" (cons "New eshell" names)))))))
+
+
+  (defun eshell/in-term (prog &rest args)
+    "Run shell command in term buffer."
+    (switch-to-buffer (apply #'make-term prog prog nil args))
+    (term-mode)
+    (term-char-mode))
 #+END_SRC
 
 
