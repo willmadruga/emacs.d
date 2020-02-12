@@ -21,6 +21,7 @@ tramp
 
 # Files configuration
 .projectile
+projectile.cache
 projectile-bookmarks.eld
 helm-adaptive-history
 .org-id-locations
@@ -29,3 +30,4 @@ helm-adaptive-history
 flycheck_*.el
 recentf
 my-init.el
+bookmarks

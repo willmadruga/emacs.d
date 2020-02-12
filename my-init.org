@@ -208,8 +208,7 @@
 
 ** NS-Uploader
 #+BEGIN_SRC emacs-lisp
-    ;; git clone --depth=1 https://github.com/wmadruga/ns-uploader.git
-    (add-to-list 'load-path (expand-file-name "~/src/ns-uploader"))
+    (add-to-list 'load-path (expand-file-name "~/src/ns-uploader/elisp"))
     (require 'ns-uploader)
 #+END_SRC
 
