@@ -217,13 +217,6 @@
 #+END_SRC
 
 
-** NS-Uploader
-#+BEGIN_SRC emacs-lisp
-    (add-to-list 'load-path (expand-file-name "~/src/ns-uploader/elisp"))
-    (require 'ns-uploader)
-#+END_SRC
-
-
 ** Org Bullets
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
@@ -402,12 +395,21 @@
             ((not in-eshellp) (switch-to-buffer (car buffers)))
             (t (select-or-create (completing-read "Select Shell:" (cons "New eshell" names)))))))
 
-
   (defun eshell/in-term (prog &rest args)
     "Run shell command in term buffer."
     (switch-to-buffer (apply #'make-term prog prog nil args))
     (term-mode)
     (term-char-mode))
+
+
+  (defun upload-to-netsuite ()
+    "Send buffer to Netsuite."
+    (interactive)
+    (let ((cmd (concat "ns-upload" " " (buffer-file-name))))
+      (message (shell-command-to-string cmd))
+      ))
+
+
 #+END_SRC
 
 
