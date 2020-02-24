@@ -189,6 +189,8 @@
   (setq helm-recentf-fuzzy-match t)
   (setq helm-split-window-inside-p t)
 
+  (add-to-list 'helm-boring-buffer-regexp-list "\*.+\*")
+
 #+END_SRC
 
 
@@ -344,8 +346,8 @@
 
 
 * Utils
+** How long it takes to startup?
 #+BEGIN_SRC emacs-lisp
-  ;; Tell me how long is it taking to startup?
   (add-hook 'emacs-startup-hook
             (lambda ()
               (message "Emacs ready in %s with %d garbage collections."
@@ -353,18 +355,18 @@
                                (float-time
                                 (time-subtract after-init-time before-init-time)))
                        gcs-done)))
-
-  ;; Loading my own extensions, by filename:
-  ;; until I learn how to write a proper package and refactor...
+#+END_SRC
+** Load private el
+#+BEGIN_SRC emacs-lisp
   (add-hook
    'after-init-hook
    (lambda ()
      (let ((private-file (concat user-emacs-directory "elisp/private.el")))
        (when (file-exists-p private-file)
          (load-file private-file)))))
-
-
-  ;; Duplicate a line, like most IDEs does...
+#+END_SRC
+** Duplicate line
+#+BEGIN_SRC emacs-lisp
   (defun duplicate-line ()
     (interactive)
     (let* ((cursor-column (current-column)))
@@ -375,8 +377,11 @@
       (next-line 1)
       (yank)
       (move-to-column cursor-column)))
-
-  ;; ESHELL STUFF FROM Mike Zamansky
+#+END_SRC
+** ESHELL STUFF FROM Mike Zamansky
+#+BEGIN_SRC emacs-lisp
+;; Not In Use!
+;; I need to go through all this and tweak to my liking
   (require 'cl-lib)
   (defun select-or-create (arg)
     "Commentary ARG."
@@ -400,24 +405,27 @@
     (switch-to-buffer (apply #'make-term prog prog nil args))
     (term-mode)
     (term-char-mode))
-
-
+#+END_SRC
+** Upload to Netsuite
+#+BEGIN_SRC emacs-lisp
+;; Run my shellscript to upload buffer to Netsuite.
+;; I also wrote this in elisp and clojure but I'm still not satisfied with the speed.
+;; it's currently faster to use my shellscript.
   (defun upload-to-netsuite ()
     "Send buffer to Netsuite."
     (interactive)
     (let ((cmd (concat "ns-upload" " " (buffer-file-name))))
       (message (shell-command-to-string cmd))
       ))
-
-  ;; define function to shutdown emacs server instance
+#+END_SRC
+** Emacs Server Shutdown
+#+BEGIN_SRC emacs-lisp
   (defun server-shutdown ()
     "Save buffers, Quit, and Shutdown (kill) server"
     (interactive)
     (save-some-buffers)
     (kill-emacs)
     )
-
-
 #+END_SRC
 
 
@@ -436,6 +444,7 @@
    "C-c )" 'origami-open-all-nodes
    "C-c u" 'upload-to-netsuite
    "C-c C-x j" 'cider-jack-in
+   "C-x b" 'helm-mini
    )
 
 
