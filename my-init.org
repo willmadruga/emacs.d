@@ -44,10 +44,6 @@
 #+BEGIN_SRC emacs-lisp
   (use-package cider
     :ensure t)
-
-;;  (use-package clojure-mode
-;;    :ensure t)
-
 #+END_SRC
 
 
@@ -62,7 +58,6 @@
 
 (define-key company-mode-map (kbd "C-:") 'helm-company)
 (define-key company-active-map (kbd "C-:") 'helm-company)
-
 #+END_SRC
 
 
@@ -138,7 +133,7 @@
     :init
     (global-flycheck-mode t))
 
-  ;; Javascript support settings
+  ;; Javascript support:
 
   ;; disable jshint
   (setq-default flycheck-disabled-checkers
@@ -219,7 +214,7 @@
 #+END_SRC
 
 
-** Javascript Development
+** Javascript Support
 #+BEGIN_SRC emacs-lisp
   (use-package js2-mode
     :ensure t
@@ -244,6 +239,14 @@
 #+END_SRC
 
 
+** Magit
+#+BEGIN_SRC emacs-lisp
+;; https://magit.vc/manual/magit.html
+  (use-package magit
+    :ensure t)
+#+END_SRC
+
+
 ** Modeline
 #+BEGIN_SRC emacs-lisp
   (use-package doom-modeline
@@ -255,9 +258,11 @@
 ** Org Bullets
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
-    :ensure t)
-  (setq org-bullets-bullet-list '("■" "◆" "▲" "▶"))
-  (org-bullets-mode)
+    :ensure t
+    :config
+    (setq org-bullets-bullet-list '("■" "◆" "▲" "▶")))
+
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 #+END_SRC
 
 
@@ -334,10 +339,11 @@
 
 ** Yasnippet
 #+BEGIN_SRC emacs-lisp
-  (use-package yasnippet
+    (use-package yasnippet
+      :ensure t)
+  (yas-global-mode)
+  (use-package yasnippet-snippets
     :ensure t)
-(yas-global-mode)
-(setq yas-snippets-dirs '("~/.emacs.d/snippets"))
 #+END_SRC
 
 
@@ -502,15 +508,3 @@
 
 
 #+END_SRC
-
-
-* TODOS
-** Consider installing
-*** magit
-*** format-all
-** Try:
-*** More Org-Mode
-*** Calendar (org-agenda)
-*** org-capture
-*** Email
-
