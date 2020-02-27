@@ -32,3 +32,4 @@ flycheck_*.el
 recentf
 my-init.el
 bookmarks
+.lsp-session*

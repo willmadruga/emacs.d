@@ -116,7 +116,7 @@
     :ensure t
     :config
     (global-fish-completion-mode))
-  
+
   (use-package eshell-git-prompt
     :ensure t
     :config
@@ -495,6 +495,50 @@
 #+END_SRC
 
 
+* Org-Mode
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'auto-mode-alist '("\\.\\(org\\|org_archive\\|txt\\)$" . org-mode))
+  (setq org-agenda-files (quote ("~/src/org-files")))
+
+  ;; states
+  (setq org-todo-keywords
+        (quote ((sequence "TODO(t)" "NEXT(n)" "|" "DONE(d)")
+                (sequence "WAITING(w@/!)" "HOLD(h@/!)" "|" "CANCELLED(c@/!)"))))
+
+  ;; display options for state change
+  (setq org-use-fast-todo-selection t)
+
+  ;; do not prompt for reason upon fast-change
+  (setq org-treat-S-cursor-todo-selection-as-state-change nil)
+
+  ;; Moving states applies/removes certain tags
+  (setq org-todo-state-tags-triggers
+        (quote (("CANCELLED" ("CANCELLED" . t))
+                ("WAITING" ("WAITING" . t))
+                ("HOLD" ("WAITING") ("HOLD" . t))
+                (done ("WAITING") ("HOLD"))
+                ("TODO" ("WAITING") ("CANCELLED") ("HOLD"))
+                ("NEXT" ("WAITING") ("CANCELLED") ("HOLD"))
+                ("DONE" ("WAITING") ("CANCELLED") ("HOLD")))))
+
+  ;; org-capture
+  (setq org-default-notes-file "~/src/org-files/refile.org")
+
+
+  ;; Capture templates for: TODO tasks, Notes, appointments, phone calls, meetings, and org-protocol
+  (setq org-capture-templates
+        (quote (("t" "todo" entry (file "~/src/org-files/refile.org")
+                 "* TODO %?\n%U\n%a\n" :clock-in t :clock-resume t)
+                ("j" "Journal" entry (file+datetree "~/src/org-files/refile.org")
+                 "* %?\n%U\n" :clock-in t :clock-resume t))))
+
+  ;; Refile targets: org-agenda files
+  (setq org-refile-targets
+        '((nil :maxlevel . 3)
+          (org-agenda-files :maxlevel . 3)))
+#+END_SRC
+
+
 * Keybindings & Hooks
 #+BEGIN_SRC emacs-lisp
 
@@ -513,7 +557,8 @@
    "C-x b" 'helm-mini
    "<f8>" 'treemacs
    "s-<f8>" 'treemacs-add-project-to-workspace
+   "<f12>" 'org-agenda
+   "C-c c" 'org-capture
    )
-
 
 #+END_SRC
