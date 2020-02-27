@@ -73,9 +73,7 @@
       (setq dashboard-set-file-icons t)
       (setq dashboard-items '((recents  . 5)
                               (bookmarks . 10)
-                              (projects . 10)
-                              (agenda . 10)
-                              (registers . 10)))))
+                              (projects . 10)))))
 #+END_SRC
 
 
