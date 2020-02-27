@@ -262,7 +262,7 @@
 #+END_SRC
 
 
-** Org Bullets
+** Org related
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
     :ensure t
@@ -270,6 +270,9 @@
     (setq org-bullets-bullet-list '("■" "◆" "▲" "▶")))
 
   (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
+  (use-package ox-jira
+    :ensure t)
 #+END_SRC
 
 
