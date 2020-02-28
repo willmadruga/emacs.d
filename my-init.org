@@ -259,6 +259,13 @@
   (use-package doom-modeline
     :ensure t
     :hook (after-init . doom-modeline-mode))
+
+  (setq doom-modeline-window-width-limit fill-column)
+  (setq doom-modeline-project-detection 'project)
+  (setq doom-modeline-buffer-file-name-style 'file-name)
+  (setq doom-modeline-icon (display-graphic-p))
+  (setq doom-modeline-minor-modes nil)
+  (setq doom-modeline-buffer-encoding nil)
 #+END_SRC
 
 
