@@ -71,8 +71,7 @@
       (dashboard-setup-startup-hook)
       (setq dashboard-set-heading-icons t)
       (setq dashboard-set-file-icons t)
-      (setq dashboard-items '((recents  . 5)
-                              (bookmarks . 10)
+      (setq dashboard-items '((recents  . 10)
                               (projects . 10)))))
 #+END_SRC
 
@@ -121,6 +120,14 @@
     (eshell-git-prompt-use-theme 'robbyrussell))
 
   (setq scroll-step 1)
+#+END_SRC
+
+
+** Fill Column Indicator
+#+BEGIN_SRC emacs-lisp
+  (use-package fill-column-indicator
+    :ensure t)
+  (add-hook 'prog-mode-hook 'fci-mode)
 #+END_SRC
 
 
