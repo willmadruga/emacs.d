@@ -230,6 +230,11 @@
   (use-package js2-mode
     :ensure t
     :config (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+
+  (use-package js2-refactor
+    :ensure t
+    :config (add-hook 'js2-mode-hook #'js2-refactor-mode))
+
   (setq js-indent-level 2)
 
 #+END_SRC
@@ -464,6 +469,16 @@
       (yank)
       (move-to-column cursor-column)))
 #+END_SRC
+** JIRA replace
+#+BEGIN_SRC emacs-lisp
+  (defun replace-jira ()
+    (interactive)
+    (move-beginning-of-line 1)
+    (replace-string "~" "" )
+    (move-beginning-of-line 1)
+    (replace-string "{anchor}" "_" ))
+#+END_SRC
+
 ** ESHELL STUFF FROM Mike Zamansky
 #+BEGIN_SRC emacs-lisp
 ;; Not In Use!
