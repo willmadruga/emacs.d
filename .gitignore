@@ -13,7 +13,6 @@ tramp
 # Directory configuration
 .dir-locals.el
 .cache
-/elisp/
 /quelpa/
 /elpa/
 /eshell/history
@@ -31,6 +30,12 @@ helm-adaptive-history
 *_flymake.*
 flycheck_*.el
 recentf
-my-init.el
 bookmarks
 .lsp-session*
+custom.el
+package-quickstart.el
+amx-items
+proxy.el
+
+# Temp
+/old/

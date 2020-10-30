@@ -1,0 +1,1014 @@
+#+TITLE: Emacs configuration
+#+AUTHOR: William Madruga
+#+PROPERTY: header-args:emacs-lisp :mkdirp yes :comments no
+#+STARTUP: overview
+
+* UI configuration
+General UI related configuration
+
+** GUI components
+Clean-up interface from menus and such, do not display splash and startup stuff.
+Display time and battery in modeline
+Plus minor tweaks added in.
+#+begin_src emacs-lisp
+  (use-package emacs
+    :init
+    (menu-bar-mode 1)
+    (tool-bar-mode -1)
+    (scroll-bar-mode -1)
+    (set-fringe-mode 10)
+    (display-time-mode 1)
+    (column-number-mode 1)
+    (show-paren-mode 1)
+
+    :config
+    (setq use-file-dialog nil)
+    (setq use-dialog-box t)               ;; only for mouse events
+    (setq visible-bell t)                 ;; set up the visible bell
+    (setq inhibit-splash-screen t)
+    (setq inibit-startup-message t)
+    (setq inhibit-scratch-message t)
+
+    (fset 'yes-or-no-p 'y-or-n-p)
+
+    (unless (equal "Batery status not available" (battery))
+      (display-battery-mode 1))
+
+    ;; Disable the pair of key bindings that involve z minimise the Emacs frame. 
+    ;; Disable the 'hello' file
+    :bind (("C-z" . nil)
+           ("C-x C-z" . nil)
+           ("C-h h" . nil)))
+#+end_src
+
+
+** Fullscreen
+Set fullscreen if started by emacs command
+#+begin_src emacs-lisp
+(if (eq initial-window-system 'x)
+    (toggle-frame-maximized)
+  (toggle-frame-fullscreen))
+#+end_src
+
+
+** Line numbers
+Enable line numbers globally then disable for a few specific modes.
+#+begin_src emacs-lisp
+  (column-number-mode)
+  (global-display-line-numbers-mode t)
+
+  ;; Disable for some modes
+  (dolist (mode '(org-mode-hook
+                  shell-mode-hook
+                  eshell-mode-hook
+                  term-mode-hook))
+    (add-hook mode (lambda () (display-line-numbers-mode 0))))
+#+end_src
+
+
+** Themes
+Using Protesilaos modus themes and all icons.
+Remember to M-x 'all-the-icons-iinstall-fonts' when configured for the first time.
+#+begin_src emacs-lisp
+  (use-package modus-vivendi-theme
+    :ensure t)
+
+  (use-package modus-operandi-theme
+    :ensure t)
+
+  (use-package all-the-icons
+    :ensure t)
+
+  (load-theme 'modus-vivendi t)
+
+  ;; (use-package doom-themes
+  ;;   :ensure t
+  ;;   :init (load-theme 'doom-dracula t))
+#+end_src
+
+* Functions
+
+** Upload to Netsuite
+   Runs a babashka script that uploads buffer to Netsuite.
+ #+begin_src emacs-lisp
+ (defun wmad/upload-to-netsuite ()
+   "Send buffer to Netsuite."
+   (interactive)
+   (let ((cmd (concat "ns-upload" " " (buffer-file-name))))
+     (message (shell-command-to-string cmd))))
+ #+end_src
+
+
+** Shutdown emacs server
+   Called from outside when when using daemon
+ #+begin_src emacs-lisp
+ (defun wmad/server-shutdown ()
+   "Save buffers, Quit, and Shutdown (kill) server"
+   (interactive)
+   (save-some-buffers)
+   (kill-emacs))
+ #+end_src
+
+ 
+** Duplicate line
+   Copy contents and paste below current line
+ #+begin_src emacs-lisp
+   (defun wmad/duplicate-line ()
+     (interactive)
+      (let* ((cursor-column (current-column)))
+       (move-beginning-of-line 1)
+       (kill-line)
+       (yank)
+       (newline)
+       (yank)
+       (move-to-column cursor-column)))
+ #+end_src
+
+** Duplicate region
+#+begin_src emacs-lisp
+  ;; TODO I can apply the same concept as duplicate line but instead of a line I should yank a marked region.
+  ;; think that should do...
+
+  (defun wmad/duplicate-region ()
+    (interactive)
+     (let* ((cursor-column (current-column)))
+       ;; kill region... get start and end of mark.
+       ;;(yank)
+       ;;(newline)
+       ;;(yank)
+       (move-to-column cursor-column)))
+#+end_src
+
+** Transpose Windows
+ Taken from https://www.emacswiki.org/emacs/TransposeWindows
+ #+begin_src emacs-lisp
+ (defun wmad/transpose-windows ()
+   "Transpose two windows.  If more or less than two windows are visible, error."
+   (interactive)
+   (unless (= 2 (count-windows))
+     (error "There are not 2 windows."))
+   (let* ((windows (window-list))
+          (w1 (car windows))
+          (w2 (nth 1 windows))
+          (w1b (window-buffer w1))
+          (w2b (window-buffer w2)))
+     (set-window-buffer w1 w2b)
+     (set-window-buffer w2 w1b)))
+ #+end_src
+
+
+** Copy Line or Region (To be Tested)
+ Copy line or region
+ Taken from https://protesilaos.com/dotemacs/
+ #+begin_src emacs-lisp
+ (defun prot/copy-line-or-region (&optional arg)
+     "Kill-save the current line or active region.
+ With \\[universal-argument] duplicate the target instead.  When
+ region is active, also apply context-aware indentation while
+ duplicating."
+     (interactive "P")
+     (let* ((rbeg (region-beginning))
+            (rend (region-end))
+            (pbol (point-at-bol))
+            (peol (point-at-eol))
+            (indent (if (eq (or rbeg rend) pbol) nil arg)))
+       (if arg
+           (progn
+             (if (use-region-p)
+                 (progn
+                   (copy-region-as-kill rbeg rend)
+                   (when (eq (point) rbeg)
+                     (exchange-point-and-mark))
+                   (prot/new-line-below indent))
+               (copy-region-as-kill pbol peol)
+               (prot/new-line-below))
+             (yank))
+         (copy-region-as-kill pbol peol)
+         (message "Current line copied"))))
+ #+end_src
+
+* Misc emacs configuration
+
+** AutoSave
+#+begin_src emacs-lisp
+  (setq auto-save-file-name-transforms
+    `((".*" "~/.emacs_saves/" t)))
+#+end_src
+
+** Reduce GC frequency
+Makes the startup faster - Is this still a thing on Emacs 27+ ???
+#+begin_src emacs-lisp
+(setq gc-cons-threshold (* 50 1000 1000))
+#+end_src
+
+** Rebuild Init and Refresh Package
+Always rebuild init and refresh package cache upon process termination;
+Taken from https://protesilaos.com/dotemacs/
+#+begin_src emacs-lisp
+  (use-package emacs
+    :config
+    (defun prot/rebuild-emacs-init ()
+      "Produce Elisp init from my Org dotemacs.
+    Add this to `kill-emacs-hook', to use the newest file in the next
+    session. The idea is to reduce startup time, though just by
+    rolling it over to the end of a session rather than the beginning
+    of it."
+      (let ((init-el "~/.emacs.d/emacs-init.el")
+            (init-org "~/.emacs.d/emacs-init.org"))
+        (when (file-exists-p init-el)
+          (delete-file init-el))
+        (org-babel-tangle-file init-org init-el)))
+    :hook ((kill-emacs-hook . prot/rebuild-emacs-init)
+           (kill-emacs-hook . package-quickstart-refresh)))
+#+end_src
+
+** Separate custom.el
+Redirects all customization insertion into separate file.
+#+begin_src 
+;; Emacs Custom location
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+#+end_src
+
+** Small tweaks
+Replace selection when inserting text
+#+begin_src emacs-lisp
+  (delete-selection-mode 1)
+  (add-to-list 'exec-path "~/bin")
+  (setenv "BROWSER" "firefox")
+#+end_src
+
+** Housekeeping
+Undo limit to 80MB;
+Do not create backup or lock files
+#+begin_src emacs-lisp
+  (setq undo-limit 80000000)
+  (setq auto-save-default t)
+  (setq make-backup-files nil)             ; stop creating backup~ files
+  (setq create-lockfiles nil)              ; stop creating .# files
+#+end_src
+
+** Startup time
+How long it takes to startup emacs
+#+begin_src emacs-lisp
+  (add-hook
+   'emacs-startup-hook
+   (lambda ()
+     (message "Emacs ready in %s with %d garbage collections."
+              (format "%.2f seconds"
+                      (float-time
+                       (time-subtract after-init-time before-init-time))) gcs-done)))
+#+end_src
+
+* External  packages
+** Emacs
+*** General
+#+begin_src emacs-lisp
+(use-package general
+  :ensure t
+  :config
+  (general-create-definer wmad/leader-keys
+    :prefix "C-SPC"
+    :global-prefix "C-SPC"))
+#+end_src
+
+*** Ivy, Rich, Prescient, Xref
+#+begin_src emacs-lisp
+  (use-package ivy
+    :ensure t
+    :diminish
+    :bind (("C-s" . swiper)
+           :map ivy-minibuffer-map
+           ("TAB" . ivy-alt-done))
+    :config
+    (ivy-mode 1))
+
+  (use-package ivy-rich
+    :ensure t
+    :init
+    (ivy-rich-mode 1))
+
+  (use-package prescient
+    :ensure t)
+
+  (use-package ivy-prescient
+    :ensure t
+    :init (ivy-prescient-mode))
+
+  (use-package ivy-xref
+    :ensure t
+    :init
+    (setq xref-show-definitions-function #'ivy-xref-show-defs)
+    (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
+#+end_src
+
+*** Counsel
+#+begin_src emacs-lisp
+(use-package counsel
+  :ensure t
+  :bind (("M-x" . counsel-M-x)
+         ("C-x b" . counsel-ibuffer)
+         ("C-x C-f" . counsel-find-file)
+         :map minibuffer-local-map
+         ("C-r" . 'counsel-minibuffer-history)))
+#+end_src
+
+*** Amx
+#+begin_src emacs-lisp
+    (use-package amx
+      :ensure t
+      :config (amx-mode))
+#+end_src
+
+*** Undo-fu
+#+begin_src emacs-lisp
+  (use-package undo-fu
+    :ensure t
+    ;;    :config (global-undo-tree-mode -1)
+    )
+#+end_src
+
+*** Term
+#+begin_src emacs-lisp
+  (use-package vterm
+    :ensure t
+    :commands vterm
+    :config
+    (setq vterm-shell "zsh")
+    (setq vterm-max-scrollback 10000))
+#+end_src
+
+*** Which key
+#+begin_src emacs-lisp
+(use-package which-key
+  :ensure t
+  :init (which-key-mode)
+  :diminish which-key-mode
+  :config
+  (setq which-key-idle-delay 0.3))
+#+end_src
+
+*** Modeline
+#+begin_src emacs-lisp
+(use-package doom-modeline
+  :ensure t
+  :init (doom-modeline-mode 1)
+  :custom ((doom-modeline-height 15)))
+#+end_src
+
+*** Diminish
+#+begin_src emacs-lisp
+  (use-package diminish
+    :ensure t
+    :after use-package)
+#+end_src
+
+*** Try
+#+begin_src emacs-lisp
+(use-package try
+  :ensure t)
+#+end_src
+
+*** Restart Emacs
+#+begin_src emacs-lisp
+  (use-package restart-emacs
+    :ensure t )
+#+end_src
+
+*** Helpful
+#+begin_src emacs-lisp
+  (use-package helpful
+    :ensure t)
+#+end_src
+
+*** Switch Window
+#+begin_src emacs-lisp
+(use-package switch-window
+  :ensure t)
+#+end_src
+
+** Coding
+*** Company
+#+begin_src emacs-lisp
+  (use-package company
+    :ensure t
+    :after lsp-mode
+    :bind (:map company-active-map
+                ("<tab>" . company-indent-or-complete-common))
+    :custom
+    (company-minimum-prefix-length 1)
+    (company-idle-delay 0.0))
+
+  (add-hook 'after-init-hook 'global-company-mode)
+
+  (use-package company-box
+    :ensure t
+    :hook (company-mode . company-box-mode))
+#+end_src
+
+*** Projectile
+#+begin_src emacs-lisp
+(use-package projectile
+  :ensure t
+  :diminish projectile-mode
+  :config (projectile-mode)
+  :custom ((projectile-completion-system 'ivy))
+  :bind-keymap
+  ("C-c p" . projectile-command-map)
+  :init
+  ;; NOTE: Set this to the folder where you keep your Git repos!
+  (when (or (file-directory-p "~/src") (file-directory-p "~/git"))
+    (setq projectile-project-search-path '("~/src" "~/git")))
+  (setq projectile-switch-project-action #'projectile-dired))
+
+(use-package counsel-projectile
+  :ensure t
+  :config (counsel-projectile-mode))
+#+end_src
+
+*** Magit
+#+begin_src emacs-lisp
+(use-package magit
+  :ensure t
+  :custom
+  (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
+#+end_src
+
+*** Rainbow delimiters
+#+begin_src emacs-lisp
+(use-package rainbow-delimiters
+  :ensure t
+  :diminish
+  :hook (prog-mode-hook . rainbow-delimiters-mode))
+#+end_src
+
+*** Yasnippet
+#+begin_src emacs-lisp
+  (use-package yasnippet
+    :ensure t
+    :config (yas-global-mode 1))
+
+  (use-package yasnippet-snippets
+    :ensure t)
+#+end_src
+
+*** Flycheck
+   #+begin_src emacs-lisp
+     (use-package flycheck
+       :ensure t
+       :init
+       (global-flycheck-mode t))
+   #+end_src
+
+*** Smart Parens
+   #+begin_src emacs-lisp
+     (use-package smartparens
+       :ensure t)
+   #+end_src
+
+*** Origami
+   #+begin_src emacs-lisp
+     (use-package origami
+       :ensure t)
+     (global-origami-mode)
+   #+end_src
+
+*** Indent Guide
+#+begin_src emacs-lisp
+  (use-package indent-guide
+    :ensure t
+    :hook (prog-mode-hook . indent-guide-mode))
+#+end_src
+
+* Programming Languages
+Couple of specific settings for programming languages
+** General
+*** Language Server Protocol
+#+begin_src emacs-lisp
+  (setq-default indent-tabs-mode nil
+                fill-column 140
+                tab-width 2)
+
+  (defun wmad/lsp-mode-setup ()
+    (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+    (lsp-headerline-breadcrumb-mode))
+
+  (use-package lsp-mode
+    :ensure t
+    :commands (lsp lsp-deferred)
+    :hook (lsp-mode . efs/lsp-mode-setup)
+    :init
+    (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+    :config
+    (lsp-enable-which-key-integration t))
+
+  (use-package lsp-ivy
+    :ensure t)
+
+  (use-package company-lsp
+    :ensure t)
+
+  (use-package lsp-ui
+    :ensure t
+    :hook (lsp-mode-hook . lsp-ui-mode)
+    :custom
+    (lsp-ui-doc-position 'bottom))
+
+  (add-hook 'prog-mode-hook 'flyspell-prog-mode) ;; spell Check
+#+end_src
+*** REST Client
+#+begin_src emacs-lisp
+  (use-package restclient
+    :ensure t)
+#+end_src
+*** Code navigation and documentation lookup tools
+#+begin_src emacs-lisp
+  (use-package dumb-jump
+    :ensure t)
+  (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
+#+end_src
+
+** Javascript
+eglot needs https://github.com/sourcegraph/javascript-typescript-langserver, which is deprecated. 
+Need to find an alternative configuration using https://github.com/theia-ide/typescript-language-server
+ 
+#+begin_src emacs-lisp
+  (use-package js2-mode
+    :ensure t
+    :config (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+
+  (use-package js2-refactor
+    :ensure t
+    :config (add-hook 'js2-mode-hook #'js2-refactor-mode))
+
+  (use-package eglot
+    :ensure t)
+
+  (setq js-indent-level 2)
+
+  (add-hook 'js-mode-hook #'smartparens-mode)
+  (add-hook 'js2-mode-hook 'lsp-deferred)
+  (add-hook 'lsp-mode-hook 'lsp-enable-which-key-integration)
+  (add-hook 'js-mode-hook 'eglot-ensure)
+  (add-hook 'js2-mode-hook 'eglot-ensure)
+
+  ;; Flycheck configs
+
+  ;; disable jshint
+  (setq-default flycheck-disabled-checkers
+                (append flycheck-disabled-checkers
+                        '(javascript-jshint)))
+
+  ;; enable eslint
+  (flycheck-add-mode 'javascript-eslint 'js2-mode)
+
+  (setq-default flycheck-temp-prefix ".flycheck")
+
+  ;; disable json-jsonlist checking for json files
+  (setq-default flycheck-disabled-checkers
+    (append flycheck-disabled-checkers
+      '(json-jsonlist)))
+#+end_src
+
+** Clojure / Clojurescript
+#+begin_src emacs-lisp
+  (use-package cider
+    :ensure t)
+
+  (use-package clojure-mode
+    :ensure t)
+
+  (use-package clojure-snippets
+    :ensure t)
+#+end_src
+
+** Emacs Lisp
+   #+begin_src emacs-lisp
+     (use-package suggest
+       :ensure t)
+     (add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
+   #+end_src
+
+* Org Mode
+** Helper functions
+*** General org-mode setup
+#+begin_src emacs-lisp
+  (defun wmad/org-mode-setup ()
+    (org-indent-mode)
+    (visual-line-mode 1))
+#+end_src
+
+*** Font setup
+#+begin_src emacs-lisp
+  (defun wmad/org-font-setup ()
+    (font-lock-add-keywords 'org-mode
+                            '(("^ *\\([-]\\) "
+                               (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+    (dolist (face '((org-level-1 . 1.7)
+                    (org-level-2 . 1.5)
+                    (org-level-3 . 1.3)
+                    (org-level-4 . 1.1)
+                    (org-level-5 . 1.0)
+                    (org-level-6 . 1.0)
+                    (org-level-7 . 1.0) 
+                    (org-level-8 . 1.0)))
+      (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face))))
+#+end_src
+
+*** Enhance org experience with visual-fill
+#+begin_src emacs-lisp
+  (defun wmad/org-mode-visual-fill ()
+    (setq visual-fill-column-width 200
+          visual-fill-column-center-text t))
+#+end_src
+
+
+** Org packages
+*** org
+#+begin_src emacs-lisp
+(use-package org
+  :hook (org-mode-hook . wmad/org-mode-setup)
+  :config
+  (setq org-ellipsis " ▾"
+	org-hide-emphasis-markers t)
+  (wmad/org-font-setup))
+#+end_src
+
+
+*** org-bullets
+#+begin_src emacs-lisp
+  (use-package org-bullets
+    :ensure t
+    :after org
+    :hook (org-mode-hook . org-bullets-mode)
+    :custom
+    (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
+#+end_src
+
+
+*** visual-fill-column
+#+begin_src emacs-lisp
+(use-package visual-fill-column
+  :hook (org-mode-hook . wmad/org-mode-visual-fill))
+#+end_src
+
+
+** Agenda
+#+begin_src emacs-lisp
+(setq org-agenda-start-with-log-mode t)
+(setq org-log-done 'time)
+(setq org-log-into-drawer t)
+(setq org-agenda-files "~/.emacs.d/elisp/agenda-files.el")
+#+end_src
+
+
+** Todo/Habits
+#+begin_src emacs-lisp
+(require 'org-habit)
+(add-to-list 'org-modules 'org-habit)
+(setq org-habit-graph-column 60)
+
+(setq org-todo-keywords
+    '((sequence "TODO(t)" "NEXT(n)" "STRT(s)"  "WAIT(w)"  "|" "DONE(d!)")))
+
+#+end_src
+
+
+** Capture
+#+begin_src emacs-lisp
+(defvar +org-capture-journal-file "/run/media/wmadruga/3A3D-979D/2nd_brain/journal.org")
+
+(setq org-capture-templates
+      '(("j" "Journal" entry
+	 (file+olp+datetree +org-capture-journal-file)
+	 "* %U %?\n%i\n%a" :prepend t)))
+#+end_src
+* Window
+Some window definitions
+Taken from https://protesilaos.com/dotemacs/
+#+begin_src emacs-lisp
+  ;; (use-package window
+  ;; :init
+  ;;   (setq display-buffer-alist
+  ;;         '(;; top side window
+  ;;           ("\\*\\(Flymake\\).*"
+  ;;            (display-buffer-in-side-window)
+  ;;            (window-height . 0.16)
+  ;;            (side . top)
+  ;;            (slot . 0)
+  ;;            (window-parameters . ((no-other-window . t))))
+  ;;           ("\\*Messages.*"
+  ;;            (display-buffer-in-side-window)
+  ;;            (window-height . 0.16)
+  ;;            (side . top)
+  ;;            (slot . 1)
+  ;;            (window-parameters . ((no-other-window . t))))
+  ;;           ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
+  ;;            (display-buffer-in-side-window)
+  ;;            (window-height . 0.16)
+  ;;            (side . top)
+  ;;            (slot . 2)
+  ;;            (window-parameters . ((no-other-window . t))))
+  ;;           ;; bottom side window
+  ;;           ("\\*\\(Output\\).*"
+  ;;            (display-buffer-in-side-window)
+  ;;            (window-width . 0.16)       ; See the :hook
+  ;;            (side . bottom)
+  ;;            (slot . -1)
+  ;;            (window-parameters . ((no-other-window . t))))
+  ;;           (".*\\*Completions.*"
+  ;;            (display-buffer-in-side-window)
+  ;;            (window-height . 0.16)
+  ;;            (side . bottom)
+  ;;            (slot . 0)
+  ;;            (window-parameters . ((no-other-window . t))))
+  ;;           ("^\\(\\*e?shell\\|vterm\\).*"
+  ;;            (display-buffer-in-side-window)
+  ;;            (window-height . 0.16)
+  ;;            (side . bottom)
+  ;;            (slot . 1))
+  ;;           ;; left side window
+  ;;           ("\\*Help.*"
+  ;;            (display-buffer-in-side-window)
+  ;;            (window-width . 0.20)       ; See the :hook
+  ;;            (side . left)
+  ;;            (slot . 0)
+  ;;            (window-parameters . ((no-other-window . t))))
+  ;;           ;; right side window
+  ;;           ("\\*Faces\\*"
+  ;;            (display-buffer-in-side-window)
+  ;;            (window-width . 0.25)
+  ;;            (side . right)
+  ;;            (slot . 0)
+  ;;            (window-parameters
+  ;;             . ((no-other-window . t)
+  ;;                (mode-line-format
+  ;;                 . (" "
+  ;;                    mode-line-buffer-identification)))))
+  ;;           ("\\*Custom.*"
+  ;;            (display-buffer-in-side-window)
+  ;;            (window-width . 0.25)
+  ;;            (side . right)
+  ;;            (slot . 1))
+  ;;           ;; bottom buffer (NOT side window)
+  ;;           ("\\*\\vc-\\(incoming\\|outgoing\\).*"
+  ;;            (display-buffer-at-bottom))))
+
+  ;;   (setq window-combination-resize t)
+  ;;   (setq even-window-sizes 'height-only)
+  ;;   (setq window-sides-vertical nil)
+  ;;   (setq switch-to-buffer-in-dedicated-window 'pop)
+
+  ;;   ;; Note that the the syntax for `use-package' hooks is controlled by
+  ;;   ;; the `use-package-hook-name-suffix' variable.  The "-hook" suffix is
+  ;;   ;; not an error of mine.
+  ;;   :hook ((help-mode-hook . visual-line-mode)
+  ;;          (custom-mode-hook . visual-line-mode)))
+
+  ;; ;; These are all experimental.  Just showcasing the power of passing
+  ;; ;; parameters to windows or frames.
+  ;; (use-package emacs
+  ;;   :commands (prot/window-dired-vc-root-left
+  ;;              prot/make-frame-floating-with-current-buffer
+  ;;              prot/display-buffer-at-bottom)
+  ;;   :config
+  ;;   (defun prot/window-dired-vc-root-left ()
+  ;;     "Open project or dir `dired' in a side window."
+  ;;     (interactive)
+  ;;     (let ((dir (if (eq (vc-root-dir) nil)
+  ;;                    (dired-noselect default-directory)
+  ;;                  (dired-noselect (vc-root-dir)))))
+  ;;       (display-buffer-in-side-window
+  ;;        dir `((side . left)
+  ;;              (slot . -1)
+  ;;              (window-width . 0.16)
+  ;;              (window-parameters
+  ;;               . ((no-other-window . t)
+  ;;                  (no-delete-other-windows . t)
+  ;;                  (mode-line-format
+  ;;                   . (" "
+  ;;                      mode-line-buffer-identification))))))
+  ;;       (with-current-buffer dir
+  ;;         (rename-buffer "*Dired-Side*")
+  ;;         (setq-local window-size-fixed 'width)))
+  ;;     (with-eval-after-load 'ace-window
+  ;;       (when (boundp 'aw-ignored-buffers)
+  ;;         (add-to-list 'aw-ignored-buffers "*Dired-Side*"))))
+
+  ;;   (defun prot/make-frame-floating-with-current-buffer ()
+  ;;     "Display the current buffer in a new floating frame.
+
+  ;; This passes certain parameters to the newly created frame:
+
+  ;; - use a different name than the default;
+  ;; - use a graphical frame;
+  ;; - do not display the minibuffer.
+
+  ;; The name is meant to be used by the external rules of my tiling
+  ;; window manager (BSPWM) to present the frame in a floating state.
+
+  ;; NOTE: For demo purposes."
+  ;;     (interactive)
+  ;;     (make-frame '((name . "my_float_window")
+  ;;                   (window-system . x)
+  ;;                   (minibuffer . nil))))
+
+  ;;   (defun prot/display-buffer-at-bottom ()
+  ;;     "Move the current buffer to the bottom of the frame.
+  ;; This is useful to take a buffer out of a side window.
+
+  ;; NOTE: For demo purposes."
+  ;;     (interactive)
+  ;;     (let ((buffer (current-buffer)))
+  ;;       (with-current-buffer buffer
+  ;;         (delete-window)
+  ;;         (display-buffer-at-bottom
+  ;;          buffer
+  ;;          `((window-parameters
+  ;;             . ((mode-line-format
+  ;;                 . (" "
+  ;;                    mode-line-buffer-identification))))))))))
+#+end_src
+* Dired
+#+begin_src emacs-lisp
+  (use-package dired
+    :commands (dired dired-jump)
+    :custom ((dired-listing-switches "-agho --group-directories-first")))
+
+  (use-package dired-single
+    :ensure t)
+
+  (use-package all-the-icons-dired
+    :ensure t
+    :hook (dired-mode . all-the-icons-dired-mode))
+
+  (use-package dired-open
+    :ensure t
+    :config
+    (setq dired-open-extensions '(("png" . "feh")
+                                  ("mkv" . "mpv")
+                                  ("mp3" . "mpv"))))
+
+  (use-package dired-hide-dotfiles
+    :ensure t
+    :hook (dired-mode . dired-hide-dotfiles-mode))
+
+  (use-package dired-sidebar
+    :ensure t
+    :commands (dired-sidebar-toggle-sidebar)
+    :config
+    (setq dired-sidebar-theme 'icons)
+    (setq dired-sidebar-refresh-on-projectile-switch t)
+    (setq dired-sidebar-should-follow-file t)
+    (setq dired-sidebar-one-instance-p t))
+
+  ;; https://github.com/crocket/dired-single/tree/98c2102429fcac6fbfdba9198c126eb1b3dcc4e5
+  (defun my-dired-init ()
+    "Bunch of stuff to run for dired, either immediately or when it's
+     loaded."
+    ;; <add other stuff here>
+    (define-key dired-mode-map [remap dired-find-file]
+      'dired-single-buffer)
+    (define-key dired-mode-map [remap dired-mouse-find-file-other-window]
+      'dired-single-buffer-mouse)
+    (define-key dired-mode-map [remap dired-up-directory]
+      'dired-single-up-directory))
+
+  ;; if dired's already loaded, then the keymap will be bound
+  (if (boundp 'dired-mode-map)
+      ;; we're good to go; just add our bindings
+      (my-dired-init)
+    ;; it's not loaded yet, so add our bindings to the load-hook
+    (add-hook 'dired-load-hook 'my-dired-init))
+#+end_src
+
+* TODO Email
+* Key-bindings
+** Unsetting
+#+begin_src emacs-lisp
+  (global-unset-key (kbd "C-SPC")) ;; region marker
+#+end_src
+** Emacs
+#+begin_src emacs-lisp
+
+  (global-set-key (kbd "C-z")   'undo-fu-only-undo)
+  (global-set-key (kbd "C-S-z") 'undo-fu-only-redo)
+
+  (global-set-key (kbd "C-x o") 'switch-window)
+
+  (global-set-key (kbd "C-h f") #'helpful-callable)
+  (global-set-key (kbd "C-h v") #'helpful-variable)
+  (global-set-key (kbd "C-h k") #'helpful-key)
+  (global-set-key (kbd "C-c C-d") #'helpful-at-point)
+  (global-set-key (kbd "C-h F") #'helpful-function)
+  (global-set-key (kbd "C-h C") #'helpful-command)
+
+  (wmad/leader-keys
+  ;; "e"   'find-file "~/.emacs.d/emacs-init.org" ;; how to pass args to fns here?
+    "k"   'kill-buffer
+    "SPC" 'counsel-projectile-find-file
+    "R"   'restart-emacs
+    "v"   'vterm)
+#+end_src
+** Dired (d)
+#+begin_src emacs-lisp
+  (wmad/leader-keys
+    "d"     '(:ignore t :which-key "Dired")
+    "dd"    'dired-hide-dotfiles-mode
+    "dj"    'dired-jump
+    "ds"    'dired-sidebar-show-sidebar
+    "dh"    'dired-sidebar-hide-sidebar
+    "dt"    'dired-sidebar-toggle-sidebar
+    "d RET" 'dired-single-buffer)
+#+end_src
+
+** Org Mode (o)
+#+begin_src emacs-lisp
+  (wmad/leader-keys
+    "o"  '(:ignore t :which-key "Org-Mode")
+    "oa" 'org-agenda
+    "oc" 'org-capture
+    "ol" 'org-insert-link
+    "oo" 'org-open-at-point)
+#+end_src
+** Projectile (p)
+#+begin_src emacs-lisp
+  (wmad/leader-keys
+    "p"  '(:ignore t :which-key "Project")
+    "pc" 'projectile-command-map
+    "pf" 'counsel-projectile-find-file
+    "pp" 'projectile-switch-project
+    "pk" 'projectile-kill-buffers
+    "ps" 'counsel-projectile-rg
+    "pd" 'prot/window-dired-vc-root-left)
+#+end_src
+** Magit (G)
+#+begin_src emacs-lisp
+(wmad/leader-keys
+  "G"  '(:ignore t :which-key "Magit")
+  "Gs" 'magit-status)
+#+end_src
+
+** Toggle (t)
+#+begin_src emacs-lisp
+  (wmad/leader-keys
+    "t"  '(:ignore t :which-key "Toggle")
+    "td" 'dired-sidebar-toggle-sidebar
+    "th" '(counsel-load-theme :which-key "choose theme")
+    "tm" 'menu-bar-mode
+    "to" 'global-origami-mode
+    "tt" 'tab-bar-mode)
+#+end_src
+
+** Netsuite (n)
+#+begin_src emacs-lisp
+(wmad/leader-keys
+  "n"  '(:ignore t :which-key "Netsuite")
+  "nu" 'wmad/upload-to-netsuite)
+#+end_src
+
+** Window (w)
+#+begin_src emacs-lisp
+  (wmad/leader-keys
+    "w"  '(:ignore t :which-key "Window")
+    "wt" 'wmad/transpose-windows
+    "wo" 'switch-window
+    "w-" 'split-window-below
+    "w=" 'split-window-right
+    "w0" 'delete-window
+    "w1" 'delete-other-windows
+    "w5" 'delete-frame
+    "w_" 'balance-windows
+    "wq" 'window-toggle-side-windows)
+#+end_src
+
+** Buffer (b)
+#+begin_src emacs-lisp
+  (general-define-key
+   "C-c <down>" 'wmad/duplicate-line)
+
+  (wmad/leader-keys
+    "b"         '(:ignore t :which-key "Buffer")
+    "bb"        'ibuffer'
+    "b <right>" 'next-buffer
+    "b <left>"  'previous-buffer)
+#+end_src
+
+** Origami fold (z)
+#+begin_src emacs-lisp
+  (wmad/leader-keys
+    "z"  '(:ignore t :which-key "Origami")
+    "za" 'origami-toggle-node
+    "zo" 'origami-open-node
+    "zc" 'origami-close-node)
+#+end_src
+
+** Go to... (g)
+#+begin_src emacs-lisp
+  (wmad/leader-keys
+    "g"  '(:ignore t :which-key "Go to...")
+    "gd" 'dumb-jump-go
+    "gb" 'xref-pop-marker-stack)
+
+#+end_src
+
