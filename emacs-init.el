@@ -462,147 +462,48 @@ duplicating."
 	 (file+olp+datetree +org-capture-journal-file)
 	 "* %U %?\n%i\n%a" :prepend t)))
 
-;; (use-package window
-;; :init
-;;   (setq display-buffer-alist
-;;         '(;; top side window
-;;           ("\\*\\(Flymake\\).*"
-;;            (display-buffer-in-side-window)
-;;            (window-height . 0.16)
-;;            (side . top)
-;;            (slot . 0)
-;;            (window-parameters . ((no-other-window . t))))
-;;           ("\\*Messages.*"
-;;            (display-buffer-in-side-window)
-;;            (window-height . 0.16)
-;;            (side . top)
-;;            (slot . 1)
-;;            (window-parameters . ((no-other-window . t))))
-;;           ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\)\\*"
-;;            (display-buffer-in-side-window)
-;;            (window-height . 0.16)
-;;            (side . top)
-;;            (slot . 2)
-;;            (window-parameters . ((no-other-window . t))))
-;;           ;; bottom side window
-;;           ("\\*\\(Output\\).*"
-;;            (display-buffer-in-side-window)
-;;            (window-width . 0.16)       ; See the :hook
-;;            (side . bottom)
-;;            (slot . -1)
-;;            (window-parameters . ((no-other-window . t))))
-;;           (".*\\*Completions.*"
-;;            (display-buffer-in-side-window)
-;;            (window-height . 0.16)
-;;            (side . bottom)
-;;            (slot . 0)
-;;            (window-parameters . ((no-other-window . t))))
-;;           ("^\\(\\*e?shell\\|vterm\\).*"
-;;            (display-buffer-in-side-window)
-;;            (window-height . 0.16)
-;;            (side . bottom)
-;;            (slot . 1))
-;;           ;; left side window
-;;           ("\\*Help.*"
-;;            (display-buffer-in-side-window)
-;;            (window-width . 0.20)       ; See the :hook
-;;            (side . left)
-;;            (slot . 0)
-;;            (window-parameters . ((no-other-window . t))))
-;;           ;; right side window
-;;           ("\\*Faces\\*"
-;;            (display-buffer-in-side-window)
-;;            (window-width . 0.25)
-;;            (side . right)
-;;            (slot . 0)
-;;            (window-parameters
-;;             . ((no-other-window . t)
-;;                (mode-line-format
-;;                 . (" "
-;;                    mode-line-buffer-identification)))))
-;;           ("\\*Custom.*"
-;;            (display-buffer-in-side-window)
-;;            (window-width . 0.25)
-;;            (side . right)
-;;            (slot . 1))
-;;           ;; bottom buffer (NOT side window)
-;;           ("\\*\\vc-\\(incoming\\|outgoing\\).*"
-;;            (display-buffer-at-bottom))))
+(use-package window
+:init
+  (setq display-buffer-alist
+        '(
+          ;; top side window
+          ;; not set
 
-;;   (setq window-combination-resize t)
-;;   (setq even-window-sizes 'height-only)
-;;   (setq window-sides-vertical nil)
-;;   (setq switch-to-buffer-in-dedicated-window 'pop)
+          ;; bottom side window
+          ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|*Messages.*\\|Flymake\\|Output\\|*Completions.*\\)\\*"
+           (display-buffer-in-side-window)
+           (window-height . 0.25)
+           (side . bottom)
+           (slot . 1)
+           (window-parameters . ((no-other-window . t))))
 
-;;   ;; Note that the the syntax for `use-package' hooks is controlled by
-;;   ;; the `use-package-hook-name-suffix' variable.  The "-hook" suffix is
-;;   ;; not an error of mine.
-;;   :hook ((help-mode-hook . visual-line-mode)
-;;          (custom-mode-hook . visual-line-mode)))
+          ("^\\(\\*e?shell\\|vterm\\).*"
+           (display-buffer-in-side-window)
+           (window-height . 0.50)
+           (side . bottom)
+           (slot . 1))
 
-;; ;; These are all experimental.  Just showcasing the power of passing
-;; ;; parameters to windows or frames.
-;; (use-package emacs
-;;   :commands (prot/window-dired-vc-root-left
-;;              prot/make-frame-floating-with-current-buffer
-;;              prot/display-buffer-at-bottom)
-;;   :config
-;;   (defun prot/window-dired-vc-root-left ()
-;;     "Open project or dir `dired' in a side window."
-;;     (interactive)
-;;     (let ((dir (if (eq (vc-root-dir) nil)
-;;                    (dired-noselect default-directory)
-;;                  (dired-noselect (vc-root-dir)))))
-;;       (display-buffer-in-side-window
-;;        dir `((side . left)
-;;              (slot . -1)
-;;              (window-width . 0.16)
-;;              (window-parameters
-;;               . ((no-other-window . t)
-;;                  (no-delete-other-windows . t)
-;;                  (mode-line-format
-;;                   . (" "
-;;                      mode-line-buffer-identification))))))
-;;       (with-current-buffer dir
-;;         (rename-buffer "*Dired-Side*")
-;;         (setq-local window-size-fixed 'width)))
-;;     (with-eval-after-load 'ace-window
-;;       (when (boundp 'aw-ignored-buffers)
-;;         (add-to-list 'aw-ignored-buffers "*Dired-Side*"))))
+          ;; left side window
+          ;; not set
 
-;;   (defun prot/make-frame-floating-with-current-buffer ()
-;;     "Display the current buffer in a new floating frame.
+          ;; right side window
+          ("\\*Help.*"
+           (display-buffer-in-side-window)
+           (window-width . 0.35)       ; See the :hook
+           (side . right)
+           (slot . 0)
+           (window-parameters . ((no-other-window . t))))))
 
-;; This passes certain parameters to the newly created frame:
+  (setq window-combination-resize t)
+  (setq even-window-sizes 'height-only)
+  (setq window-sides-vertical nil)
+  (setq switch-to-buffer-in-dedicated-window 'pop)
 
-;; - use a different name than the default;
-;; - use a graphical frame;
-;; - do not display the minibuffer.
-
-;; The name is meant to be used by the external rules of my tiling
-;; window manager (BSPWM) to present the frame in a floating state.
-
-;; NOTE: For demo purposes."
-;;     (interactive)
-;;     (make-frame '((name . "my_float_window")
-;;                   (window-system . x)
-;;                   (minibuffer . nil))))
-
-;;   (defun prot/display-buffer-at-bottom ()
-;;     "Move the current buffer to the bottom of the frame.
-;; This is useful to take a buffer out of a side window.
-
-;; NOTE: For demo purposes."
-;;     (interactive)
-;;     (let ((buffer (current-buffer)))
-;;       (with-current-buffer buffer
-;;         (delete-window)
-;;         (display-buffer-at-bottom
-;;          buffer
-;;          `((window-parameters
-;;             . ((mode-line-format
-;;                 . (" "
-;;                    mode-line-buffer-identification))))))))))
+  ;; Note that the the syntax for `use-package' hooks is controlled by
+  ;; the `use-package-hook-name-suffix' variable.  The "-hook" suffix is
+  ;; not an error of mine.
+  :hook ((help-mode-hook . visual-line-mode)
+         (custom-mode-hook . visual-line-mode)))
 
 (use-package dired
   :commands (dired dired-jump)
