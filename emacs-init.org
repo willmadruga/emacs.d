@@ -183,6 +183,14 @@ Remember to M-x 'all-the-icons-iinstall-fonts' when configured for the first tim
          (message "Current line copied"))))
  #+end_src
 
+** Open init file
+#+begin_src emacs-lisp
+  (defun wmad/open-init-file ()
+    "Open the ORG init file."
+    (interactive)
+    (find-file "~/.emacs.d/emacs-init.org"))
+#+end_src
+
 * Misc emacs configuration
 
 ** AutoSave
@@ -258,6 +266,29 @@ How long it takes to startup emacs
 
 * External  packages
 ** Emacs
+*** No Littering
+Keep directories clean.
+#+begin_src emacs-lisp
+  (use-package no-littering
+    :ensure t
+    :config
+    (require 'recentf)
+  
+    (defvar recentf-exclude)
+    (add-to-list 'recentf-exclude no-littering-var-directory)
+    (add-to-list 'recentf-exclude no-littering-etc-directory)
+    (setq auto-save-file-name-transforms
+          `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
+#+end_src
+*** Recentf
+Track recently-opened files.
+#+begin_src emacs-lisp
+  (use-package recentf
+    :config
+    (setq recentf-max-saved-items 5000)
+    (recentf-mode t))
+#+end_src
+
 *** General
 #+begin_src emacs-lisp
 (use-package general
@@ -618,7 +649,6 @@ Need to find an alternative configuration using https://github.com/theia-ide/typ
           visual-fill-column-center-text t))
 #+end_src
 
-
 ** Org packages
 *** org
 #+begin_src emacs-lisp
@@ -648,15 +678,51 @@ Need to find an alternative configuration using https://github.com/theia-ide/typ
   :hook (org-mode-hook . wmad/org-mode-visual-fill))
 #+end_src
 
-
 ** Agenda
 #+begin_src emacs-lisp
-(setq org-agenda-start-with-log-mode t)
-(setq org-log-done 'time)
 (setq org-log-into-drawer t)
 (setq org-agenda-files "~/.emacs.d/elisp/agenda-files.el")
 #+end_src
 
+** Org-Super-Agenda
+#+begin_src emacs-lisp
+  (use-package org-super-agenda
+    :ensure t
+    :after org-agenda
+    :config
+    (org-super-agenda-mode)
+    (setq
+     org-super-agenda-groups
+     '(
+       (:name "Urgent"
+              :category "urgent"
+              :tag "urgent"
+              :order 1
+              :face (:background "#195e83" :foreground "#edb879"))
+       (:name "Bills"
+              :category "bills"
+              :tag "bills"
+              :order 2
+              :face (:background "#1c100b" :foreground "#44bcd8"))
+       (:name "Work"
+              :category "work"
+              :tag "work"
+              :order 3
+              :face (:background "#1c100b" :foreground "#44bcd8"))     
+       (:name "Family"
+              :category "family"
+              :tag "family"
+              :order 4)
+       (:name "Projects"
+              :category "projects"
+              :tag "projects"
+              :order 5)
+       (:name "Others"
+              :order 10
+              :face (:background "#80391e" :foreground "#cce7e8"))
+       )))
+#+end_src
+Face attributes: https://www.gnu.org/software/emacs/manual/html_node/elisp/Face-Attributes.html#Face-Attributes
 
 ** Todo/Habits
 #+begin_src emacs-lisp
@@ -669,7 +735,6 @@ Need to find an alternative configuration using https://github.com/theia-ide/typ
 
 #+end_src
 
-
 ** Capture
 #+begin_src emacs-lisp
 (defvar +org-capture-journal-file "/run/media/wmadruga/3A3D-979D/2nd_brain/journal.org")
@@ -679,6 +744,7 @@ Need to find an alternative configuration using https://github.com/theia-ide/typ
 	 (file+olp+datetree +org-capture-journal-file)
 	 "* %U %?\n%i\n%a" :prepend t)))
 #+end_src
+
 * Window
 Some window definitions
 Taken from https://protesilaos.com/dotemacs/
@@ -744,7 +810,9 @@ Taken from https://protesilaos.com/dotemacs/
     :config
     (setq dired-open-extensions '(("png" . "feh")
                                   ("mkv" . "mpv")
-                                  ("mp3" . "mpv"))))
+                                  ("mp3" . "mpv")
+                                  ("pdf" . "acroread")
+                                  )))
 
   (use-package dired-hide-dotfiles
     :ensure t
@@ -800,7 +868,7 @@ Taken from https://protesilaos.com/dotemacs/
   (global-set-key (kbd "C-h C") #'helpful-command)
 
   (wmad/leader-keys
-  ;; "e"   'find-file "~/.emacs.d/emacs-init.org" ;; how to pass args to fns here?
+    "e"   'wmad/open-init-file
     "k"   'kill-buffer
     "SPC" 'counsel-projectile-find-file
     "R"   'restart-emacs
@@ -907,4 +975,3 @@ Taken from https://protesilaos.com/dotemacs/
     "gb" 'xref-pop-marker-stack)
 
 #+end_src
-

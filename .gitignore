@@ -19,6 +19,7 @@ tramp
 /eshell/lastdir
 /private/
 /transient/
+/var/
 
 # Files configuration
 .projectile

@@ -128,6 +128,11 @@ duplicating."
         (copy-region-as-kill pbol peol)
         (message "Current line copied"))))
 
+(defun wmad/open-init-file ()
+  "Open the ORG init file."
+  (interactive)
+  (find-file "~/.emacs.d/emacs-init.org"))
+
 (setq auto-save-file-name-transforms
   `((".*" "~/.emacs_saves/" t)))
 
@@ -165,6 +170,22 @@ duplicating."
             (format "%.2f seconds"
                     (float-time
                      (time-subtract after-init-time before-init-time))) gcs-done)))
+
+(use-package no-littering
+  :ensure t
+  :config
+  (require 'recentf)
+
+  (defvar recentf-exclude)
+  (add-to-list 'recentf-exclude no-littering-var-directory)
+  (add-to-list 'recentf-exclude no-littering-etc-directory)
+  (setq auto-save-file-name-transforms
+        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t))))
+
+(use-package recentf
+  :config
+  (setq recentf-max-saved-items 5000)
+  (recentf-mode t))
 
 (use-package general
   :ensure t
@@ -443,10 +464,44 @@ duplicating."
 (use-package visual-fill-column
   :hook (org-mode-hook . wmad/org-mode-visual-fill))
 
-(setq org-agenda-start-with-log-mode t)
-(setq org-log-done 'time)
 (setq org-log-into-drawer t)
 (setq org-agenda-files "~/.emacs.d/elisp/agenda-files.el")
+
+(use-package org-super-agenda
+  :ensure t
+  :after org-agenda
+  :config
+  (org-super-agenda-mode)
+  (setq
+   org-super-agenda-groups
+   '(
+     (:name "Urgent"
+            :category "urgent"
+            :tag "urgent"
+            :order 1
+            :face (:background "#195e83" :foreground "#edb879"))
+     (:name "Bills"
+            :category "bills"
+            :tag "bills"
+            :order 2
+            :face (:background "#1c100b" :foreground "#44bcd8"))
+     (:name "Work"
+            :category "work"
+            :tag "work"
+            :order 3
+            :face (:background "#1c100b" :foreground "#44bcd8"))     
+     (:name "Family"
+            :category "family"
+            :tag "family"
+            :order 4)
+     (:name "Projects"
+            :category "projects"
+            :tag "projects"
+            :order 5)
+     (:name "Others"
+            :order 10
+            :face (:background "#80391e" :foreground "#cce7e8"))
+     )))
 
 (require 'org-habit)
 (add-to-list 'org-modules 'org-habit)
@@ -521,7 +576,9 @@ duplicating."
   :config
   (setq dired-open-extensions '(("png" . "feh")
                                 ("mkv" . "mpv")
-                                ("mp3" . "mpv"))))
+                                ("mp3" . "mpv")
+                                ("pdf" . "acroread")
+                                )))
 
 (use-package dired-hide-dotfiles
   :ensure t
@@ -570,7 +627,7 @@ duplicating."
 (global-set-key (kbd "C-h C") #'helpful-command)
 
 (wmad/leader-keys
-;; "e"   'find-file "~/.emacs.d/emacs-init.org" ;; how to pass args to fns here?
+  "e"   'wmad/open-init-file
   "k"   'kill-buffer
   "SPC" 'counsel-projectile-find-file
   "R"   'restart-emacs
