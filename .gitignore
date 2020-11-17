@@ -36,7 +36,7 @@ bookmarks
 custom.el
 package-quickstart.el
 amx-items
-proxy.el
 
-# Temp
-/old/
+# Other
+proxy.el
+private.el

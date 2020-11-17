@@ -1,6 +1,6 @@
 (use-package emacs
   :init
-  (menu-bar-mode 1)
+  (menu-bar-mode -1)
   (tool-bar-mode -1)
   (scroll-bar-mode -1)
   (set-fringe-mode 10)
@@ -27,9 +27,10 @@
          ("C-x C-z" . nil)
          ("C-h h" . nil)))
 
-(if (eq initial-window-system 'x)
-    (toggle-frame-maximized)
-  (toggle-frame-fullscreen))
+;(if (eq initial-window-system 'x)
+; (toggle-frame-maximized)
+(toggle-frame-fullscreen)
+;)
 
 (column-number-mode)
 (global-display-line-numbers-mode t)
@@ -56,11 +57,58 @@
 ;;   :ensure t
 ;;   :init (load-theme 'doom-dracula t))
 
+(load "~/.emacs.d/elisp/private.el")
+
+(setq auto-save-file-name-transforms
+  `((".*" "~/.emacs_saves/" t)))
+
+(setq gc-cons-threshold (* 50 1000 1000))
+
+(use-package emacs
+  :config
+  (defun prot/rebuild-emacs-init ()
+    "Produce Elisp init from my Org dotemacs.
+  Add this to `kill-emacs-hook', to use the newest file in the next
+  session. The idea is to reduce startup time, though just by
+  rolling it over to the end of a session rather than the beginning
+  of it."
+    (let ((init-el "~/.emacs.d/emacs-init.el")
+          (init-org "~/.emacs.d/emacs-init.org"))
+      (when (file-exists-p init-el)
+        (delete-file init-el))
+      (org-babel-tangle-file init-org init-el)))
+  :hook ((kill-emacs-hook . prot/rebuild-emacs-init)
+         (kill-emacs-hook . package-quickstart-refresh)))
+
+(delete-selection-mode 1)
+(add-to-list 'exec-path "~/bin")
+(setenv "BROWSER" "firefox")
+
+(setq undo-limit 80000000)
+(setq auto-save-default t)
+(setq make-backup-files nil)             ; stop creating backup~ files
+(setq create-lockfiles nil)              ; stop creating .# files
+
+(add-hook
+ 'emacs-startup-hook
+ (lambda ()
+   (message "Emacs ready in %s with %d garbage collections."
+            (format "%.2f seconds"
+                    (float-time
+                     (time-subtract after-init-time before-init-time))) gcs-done)))
+
 (defun wmad/upload-to-netsuite ()
   "Send buffer to Netsuite."
   (interactive)
-  (let ((cmd (concat "ns-upload" " " (buffer-file-name))))
-    (message (shell-command-to-string cmd))))
+  (message (shell-command-to-string (concat "ns-upload" " " (buffer-file-name)))))
+  ;;(async-shell-command (concat "ns-upload" " " (buffer-file-name))))
+
+(defun wmad/sdfcli ()
+  "Execute async shell command: sdfcli"
+  (interactive)
+  (async-shell-command (concat "sdfcli deploy -sw -np -authid " wmad-netsuite-sdfcli-authid)))
+
+;; implement sdfcli project switching using buffer name to discover project root
 
 (defun wmad/server-shutdown ()
   "Save buffers, Quit, and Shutdown (kill) server"
@@ -133,44 +181,6 @@ duplicating."
   (interactive)
   (find-file "~/.emacs.d/emacs-init.org"))
 
-(setq auto-save-file-name-transforms
-  `((".*" "~/.emacs_saves/" t)))
-
-(setq gc-cons-threshold (* 50 1000 1000))
-
-(use-package emacs
-  :config
-  (defun prot/rebuild-emacs-init ()
-    "Produce Elisp init from my Org dotemacs.
-  Add this to `kill-emacs-hook', to use the newest file in the next
-  session. The idea is to reduce startup time, though just by
-  rolling it over to the end of a session rather than the beginning
-  of it."
-    (let ((init-el "~/.emacs.d/emacs-init.el")
-          (init-org "~/.emacs.d/emacs-init.org"))
-      (when (file-exists-p init-el)
-        (delete-file init-el))
-      (org-babel-tangle-file init-org init-el)))
-  :hook ((kill-emacs-hook . prot/rebuild-emacs-init)
-         (kill-emacs-hook . package-quickstart-refresh)))
-
-(delete-selection-mode 1)
-(add-to-list 'exec-path "~/bin")
-(setenv "BROWSER" "firefox")
-
-(setq undo-limit 80000000)
-(setq auto-save-default t)
-(setq make-backup-files nil)             ; stop creating backup~ files
-(setq create-lockfiles nil)              ; stop creating .# files
-
-(add-hook
- 'emacs-startup-hook
- (lambda ()
-   (message "Emacs ready in %s with %d garbage collections."
-            (format "%.2f seconds"
-                    (float-time
-                     (time-subtract after-init-time before-init-time))) gcs-done)))
-
 (use-package no-littering
   :ensure t
   :config
@@ -220,6 +230,10 @@ duplicating."
   :init
   (setq xref-show-definitions-function #'ivy-xref-show-defs)
   (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
+
+(use-package helm
+  :ensure t
+  :config (helm-mode t))
 
 (use-package counsel
   :ensure t
@@ -525,7 +539,7 @@ duplicating."
           ;; not set
 
           ;; bottom side window
-          ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|*Messages.*\\|Flymake\\|Output\\|*Completions.*\\)\\*"
+          ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|*Messages.*\\|Flymake\\|Output\\|*Completions.*\\|*HTTP.*\\|*Async.*\\)\\*"
            (display-buffer-in-side-window)
            (window-height . 0.25)
            (side . bottom)
@@ -614,6 +628,10 @@ duplicating."
 
 (global-unset-key (kbd "C-SPC")) ;; region marker
 
+(global-set-key (kbd "M-x")     #'helm-M-x)
+(global-set-key (kbd "C-x C-f") #'helm-find-files)
+(global-set-key (kbd "M-i")     #'helm-semantic-or-imenu)
+
 (global-set-key (kbd "C-z")   'undo-fu-only-undo)
 (global-set-key (kbd "C-S-z") 'undo-fu-only-redo)
 
@@ -672,7 +690,8 @@ duplicating."
 
 (wmad/leader-keys
   "n"  '(:ignore t :which-key "Netsuite")
-  "nu" 'wmad/upload-to-netsuite)
+  "nu" 'wmad/upload-to-netsuite
+  "ns" 'wmad/sdfcli)
 
 (wmad/leader-keys
   "w"  '(:ignore t :which-key "Window")

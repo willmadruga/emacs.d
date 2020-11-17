@@ -13,7 +13,7 @@ Plus minor tweaks added in.
 #+begin_src emacs-lisp
   (use-package emacs
     :init
-    (menu-bar-mode 1)
+    (menu-bar-mode -1)
     (tool-bar-mode -1)
     (scroll-bar-mode -1)
     (set-fringe-mode 10)
@@ -45,9 +45,10 @@ Plus minor tweaks added in.
 ** Fullscreen
 Set fullscreen if started by emacs command
 #+begin_src emacs-lisp
-(if (eq initial-window-system 'x)
-    (toggle-frame-maximized)
-  (toggle-frame-fullscreen))
+  ;(if (eq initial-window-system 'x)
+  ; (toggle-frame-maximized)
+  (toggle-frame-fullscreen)
+  ;)
 #+end_src
 
 
@@ -86,16 +87,106 @@ Remember to M-x 'all-the-icons-iinstall-fonts' when configured for the first tim
   ;;   :init (load-theme 'doom-dracula t))
 #+end_src
 
+* Misc emacs configuration
+** Load private
+#+begin_src emacs-lisp
+  (load "~/.emacs.d/elisp/private.el")
+#+end_src
+** AutoSave
+#+begin_src emacs-lisp
+  (setq auto-save-file-name-transforms
+    `((".*" "~/.emacs_saves/" t)))
+#+end_src
+
+** Reduce GC frequency
+Makes the startup faster - Is this still a thing on Emacs 27+ ???
+#+begin_src emacs-lisp
+(setq gc-cons-threshold (* 50 1000 1000))
+#+end_src
+
+** Rebuild Init and Refresh Package
+Always rebuild init and refresh package cache upon process termination;
+Taken from https://protesilaos.com/dotemacs/
+#+begin_src emacs-lisp
+  (use-package emacs
+    :config
+    (defun prot/rebuild-emacs-init ()
+      "Produce Elisp init from my Org dotemacs.
+    Add this to `kill-emacs-hook', to use the newest file in the next
+    session. The idea is to reduce startup time, though just by
+    rolling it over to the end of a session rather than the beginning
+    of it."
+      (let ((init-el "~/.emacs.d/emacs-init.el")
+            (init-org "~/.emacs.d/emacs-init.org"))
+        (when (file-exists-p init-el)
+          (delete-file init-el))
+        (org-babel-tangle-file init-org init-el)))
+    :hook ((kill-emacs-hook . prot/rebuild-emacs-init)
+           (kill-emacs-hook . package-quickstart-refresh)))
+#+end_src
+
+** Separate custom.el
+Redirects all customization insertion into separate file.
+#+begin_src 
+;; Emacs Custom location
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+#+end_src
+
+** Small tweaks
+Replace selection when inserting text
+#+begin_src emacs-lisp
+  (delete-selection-mode 1)
+  (add-to-list 'exec-path "~/bin")
+  (setenv "BROWSER" "firefox")
+#+end_src
+
+** Housekeeping
+Undo limit to 80MB;
+Do not create backup or lock files
+#+begin_src emacs-lisp
+  (setq undo-limit 80000000)
+  (setq auto-save-default t)
+  (setq make-backup-files nil)             ; stop creating backup~ files
+  (setq create-lockfiles nil)              ; stop creating .# files
+#+end_src
+
+** Startup time
+How long it takes to startup emacs
+#+begin_src emacs-lisp
+  (add-hook
+   'emacs-startup-hook
+   (lambda ()
+     (message "Emacs ready in %s with %d garbage collections."
+              (format "%.2f seconds"
+                      (float-time
+                       (time-subtract after-init-time before-init-time))) gcs-done)))
+#+end_src
+
 * Functions
 ** Upload to Netsuite
    Runs a babashka script that uploads buffer to Netsuite.
  #+begin_src emacs-lisp
- (defun wmad/upload-to-netsuite ()
-   "Send buffer to Netsuite."
-   (interactive)
-   (let ((cmd (concat "ns-upload" " " (buffer-file-name))))
-     (message (shell-command-to-string cmd))))
+   (defun wmad/upload-to-netsuite ()
+     "Send buffer to Netsuite."
+     (interactive)
+     (message (shell-command-to-string (concat "ns-upload" " " (buffer-file-name)))))
+     ;;(async-shell-command (concat "ns-upload" " " (buffer-file-name))))
  #+end_src
+
+** Netsuite sdfcli deploy
+variable is set in elisp/private.el
+#+begin_src emacs-lisp
+  (defun wmad/sdfcli ()
+    "Execute async shell command: sdfcli"
+    (interactive)
+    (async-shell-command (concat "sdfcli deploy -sw -np -authid " wmad-netsuite-sdfcli-authid)))
+#+end_src
+
+** TODO Netsuite sdfcli project
+#+begin_src emacs-lisp
+;; implement sdfcli project switching using buffer name to discover project root
+#+end_src
 
 ** Shutdown emacs server
    Called from outside when when using daemon
@@ -190,81 +281,7 @@ Remember to M-x 'all-the-icons-iinstall-fonts' when configured for the first tim
     (interactive)
     (find-file "~/.emacs.d/emacs-init.org"))
 #+end_src
-
-* Misc emacs configuration
-
-** AutoSave
-#+begin_src emacs-lisp
-  (setq auto-save-file-name-transforms
-    `((".*" "~/.emacs_saves/" t)))
-#+end_src
-
-** Reduce GC frequency
-Makes the startup faster - Is this still a thing on Emacs 27+ ???
-#+begin_src emacs-lisp
-(setq gc-cons-threshold (* 50 1000 1000))
-#+end_src
-
-** Rebuild Init and Refresh Package
-Always rebuild init and refresh package cache upon process termination;
-Taken from https://protesilaos.com/dotemacs/
-#+begin_src emacs-lisp
-  (use-package emacs
-    :config
-    (defun prot/rebuild-emacs-init ()
-      "Produce Elisp init from my Org dotemacs.
-    Add this to `kill-emacs-hook', to use the newest file in the next
-    session. The idea is to reduce startup time, though just by
-    rolling it over to the end of a session rather than the beginning
-    of it."
-      (let ((init-el "~/.emacs.d/emacs-init.el")
-            (init-org "~/.emacs.d/emacs-init.org"))
-        (when (file-exists-p init-el)
-          (delete-file init-el))
-        (org-babel-tangle-file init-org init-el)))
-    :hook ((kill-emacs-hook . prot/rebuild-emacs-init)
-           (kill-emacs-hook . package-quickstart-refresh)))
-#+end_src
-
-** Separate custom.el
-Redirects all customization insertion into separate file.
-#+begin_src 
-;; Emacs Custom location
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
-#+end_src
-
-** Small tweaks
-Replace selection when inserting text
-#+begin_src emacs-lisp
-  (delete-selection-mode 1)
-  (add-to-list 'exec-path "~/bin")
-  (setenv "BROWSER" "firefox")
-#+end_src
-
-** Housekeeping
-Undo limit to 80MB;
-Do not create backup or lock files
-#+begin_src emacs-lisp
-  (setq undo-limit 80000000)
-  (setq auto-save-default t)
-  (setq make-backup-files nil)             ; stop creating backup~ files
-  (setq create-lockfiles nil)              ; stop creating .# files
-#+end_src
-
-** Startup time
-How long it takes to startup emacs
-#+begin_src emacs-lisp
-  (add-hook
-   'emacs-startup-hook
-   (lambda ()
-     (message "Emacs ready in %s with %d garbage collections."
-              (format "%.2f seconds"
-                      (float-time
-                       (time-subtract after-init-time before-init-time))) gcs-done)))
-#+end_src
-
-* External  packages
+* Packages
 ** Emacs
 *** No Littering
 Keep directories clean.
@@ -327,6 +344,14 @@ Track recently-opened files.
     :init
     (setq xref-show-definitions-function #'ivy-xref-show-defs)
     (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
+#+end_src
+
+
+*** Helm
+#+begin_src emacs-lisp
+  (use-package helm
+    :ensure t
+    :config (helm-mode t))
 #+end_src
 
 *** Counsel
@@ -757,7 +782,7 @@ Taken from https://protesilaos.com/dotemacs/
             ;; not set
 
             ;; bottom side window
-            ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|*Messages.*\\|Flymake\\|Output\\|*Completions.*\\)\\*"
+            ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|*Messages.*\\|Flymake\\|Output\\|*Completions.*\\|*HTTP.*\\|*Async.*\\)\\*"
              (display-buffer-in-side-window)
              (window-height . 0.25)
              (side . bottom)
@@ -854,6 +879,9 @@ Taken from https://protesilaos.com/dotemacs/
 #+end_src
 ** Emacs
 #+begin_src emacs-lisp
+  (global-set-key (kbd "M-x")     #'helm-M-x)
+  (global-set-key (kbd "C-x C-f") #'helm-find-files)
+  (global-set-key (kbd "M-i")     #'helm-semantic-or-imenu)
 
   (global-set-key (kbd "C-z")   'undo-fu-only-undo)
   (global-set-key (kbd "C-S-z") 'undo-fu-only-redo)
@@ -926,9 +954,10 @@ Taken from https://protesilaos.com/dotemacs/
 
 ** Netsuite (n)
 #+begin_src emacs-lisp
-(wmad/leader-keys
-  "n"  '(:ignore t :which-key "Netsuite")
-  "nu" 'wmad/upload-to-netsuite)
+  (wmad/leader-keys
+    "n"  '(:ignore t :which-key "Netsuite")
+    "nu" 'wmad/upload-to-netsuite
+    "ns" 'wmad/sdfcli)
 #+end_src
 
 ** Window (w)
