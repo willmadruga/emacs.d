@@ -264,7 +264,9 @@ duplicating."
   :init (which-key-mode)
   :diminish which-key-mode
   :config
-  (setq which-key-idle-delay 0.3))
+  (setq which-key-show-early-on-C-h t)
+  (setq which-key-idle-delay 10000)
+  (setq which-key-idle-secondary-delay 0.05))
 
 (use-package doom-modeline
   :ensure t
@@ -535,14 +537,11 @@ duplicating."
 :init
   (setq display-buffer-alist
         '(
-          ;; top side window
-          ;; not set
 
-          ;; bottom side window
-          ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|*Messages.*\\|Flymake\\|Output\\|*Completions.*\\|*HTTP.*\\|*Async.*\\)\\*"
+          ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|*Messages.*\\|Flymake\\|Output\\|*Completions.*\\)\\*"
            (display-buffer-in-side-window)
-           (window-height . 0.25)
-           (side . bottom)
+           (window-width . 0.25)
+           (side . right)
            (slot . 1)
            (window-parameters . ((no-other-window . t))))
 
@@ -552,13 +551,9 @@ duplicating."
            (side . bottom)
            (slot . 1))
 
-          ;; left side window
-          ;; not set
-
-          ;; right side window
-          ("\\*Help.*"
+          ("\\*\\(*HTTP.*\\|*Async.*\\|\\*Help.*\\)\\*"
            (display-buffer-in-side-window)
-           (window-width . 0.35)       ; See the :hook
+           (window-width . 0.25)       ; See the :hook
            (side . right)
            (slot . 0)
            (window-parameters . ((no-other-window . t))))))
