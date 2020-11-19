@@ -274,12 +274,17 @@ variable is set in elisp/private.el
          (message "Current line copied"))))
  #+end_src
 
-** Open init file
+** Quickly open files
 #+begin_src emacs-lisp
   (defun wmad/open-init-file ()
     "Open the ORG init file."
     (interactive)
     (find-file "~/.emacs.d/emacs-init.org"))
+
+  (defun wmad/open-journal ()
+    "Open the journal file."
+    (interactive)
+    (find-file "/run/media/wmadruga/3A3D-979D/2nd_brain/journal.org"))
 #+end_src
 * Packages
 ** Emacs
@@ -312,8 +317,8 @@ Track recently-opened files.
   :ensure t
   :config
   (general-create-definer wmad/leader-keys
-    :prefix "C-SPC"
-    :global-prefix "C-SPC"))
+    :prefix "<insert>"
+    :global-prefix "<insert>"))
 #+end_src
 
 *** Ivy, Rich, Prescient, Xref
@@ -872,7 +877,7 @@ Taken from https://protesilaos.com/dotemacs/
 * Key-bindings
 ** Unsetting
 #+begin_src emacs-lisp
-  (global-unset-key (kbd "C-SPC")) ;; region marker
+  (global-unset-key (kbd "<insert>"))
 #+end_src
 ** Emacs
 #+begin_src emacs-lisp
@@ -894,6 +899,7 @@ Taken from https://protesilaos.com/dotemacs/
 
   (wmad/leader-keys
     "e"   'wmad/open-init-file
+    "j"   'wmad/open-journal
     "k"   'kill-buffer
     "SPC" 'counsel-projectile-find-file
     "R"   'restart-emacs

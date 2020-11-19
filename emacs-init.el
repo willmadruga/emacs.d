@@ -181,6 +181,11 @@ duplicating."
   (interactive)
   (find-file "~/.emacs.d/emacs-init.org"))
 
+(defun wmad/open-journal ()
+  "Open the journal file."
+  (interactive)
+  (find-file "/run/media/wmadruga/3A3D-979D/2nd_brain/journal.org"))
+
 (use-package no-littering
   :ensure t
   :config
@@ -201,8 +206,8 @@ duplicating."
   :ensure t
   :config
   (general-create-definer wmad/leader-keys
-    :prefix "C-SPC"
-    :global-prefix "C-SPC"))
+    :prefix "<insert>"
+    :global-prefix "<insert>"))
 
 (use-package ivy
   :ensure t
@@ -621,7 +626,7 @@ duplicating."
   ;; it's not loaded yet, so add our bindings to the load-hook
   (add-hook 'dired-load-hook 'my-dired-init))
 
-(global-unset-key (kbd "C-SPC")) ;; region marker
+(global-unset-key (kbd "<insert>"))
 
 (global-set-key (kbd "M-x")     #'helm-M-x)
 (global-set-key (kbd "C-x C-f") #'helm-find-files)
@@ -641,6 +646,7 @@ duplicating."
 
 (wmad/leader-keys
   "e"   'wmad/open-init-file
+  "j"   'wmad/open-journal
   "k"   'kill-buffer
   "SPC" 'counsel-projectile-find-file
   "R"   'restart-emacs
