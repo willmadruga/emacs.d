@@ -1,3 +1,44 @@
+(load "~/.emacs.d/elisp/private.el")
+(load "~/.emacs.d/elisp/proxy.el")
+
+(setq auto-save-file-name-transforms
+      `((".*" "~/.emacs.d/emacs_saves/" t)))
+
+(setq gc-cons-threshold (* 50 1000 1000))
+
+(use-package emacs
+  :config
+  (defun prot/rebuild-emacs-init ()
+    "Produce Elisp init from my Org dotemacs.
+  Add this to `kill-emacs-hook', to use the newest file in the next
+  session. The idea is to reduce startup time, though just by
+  rolling it over to the end of a session rather than the beginning
+  of it."
+    (let ((init-el "~/.emacs.d/emacs-init.el")
+          (init-org "~/.emacs.d/emacs-init.org"))
+      (when (file-exists-p init-el)
+        (delete-file init-el))
+      (org-babel-tangle-file init-org init-el)))
+  :hook ((kill-emacs-hook . prot/rebuild-emacs-init)
+         (kill-emacs-hook . package-quickstart-refresh)))
+
+(delete-selection-mode 1)
+(add-to-list 'exec-path "~/bin")
+(setenv "BROWSER" "firefox")
+
+(setq undo-limit 80000000)
+(setq auto-save-default t)
+(setq make-backup-files nil)             ; stop creating backup~ files
+(setq create-lockfiles nil)              ; stop creating .# files
+
+(add-hook
+ 'emacs-startup-hook
+ (lambda ()
+   (message "Emacs ready in %s with %d garbage collections."
+            (format "%.2f seconds"
+                    (float-time
+                     (time-subtract after-init-time before-init-time))) gcs-done)))
+
 (use-package emacs
   :init
   (menu-bar-mode -1)
@@ -57,45 +98,18 @@
 ;;   :ensure t
 ;;   :init (load-theme 'doom-dracula t))
 
-(load "~/.emacs.d/elisp/private.el")
+;; You will most likely need to adjust this font size for your system!
+(defvar wmad/default-font-size 100)
 
-(setq auto-save-file-name-transforms
-  `((".*" "~/.emacs_saves/" t)))
+;; Font Configuration ----------------------------------------------------------
 
-(setq gc-cons-threshold (* 50 1000 1000))
+(set-face-attribute 'default nil :font "Fira Code Retina" :height wmad/default-font-size)
 
-(use-package emacs
-  :config
-  (defun prot/rebuild-emacs-init ()
-    "Produce Elisp init from my Org dotemacs.
-  Add this to `kill-emacs-hook', to use the newest file in the next
-  session. The idea is to reduce startup time, though just by
-  rolling it over to the end of a session rather than the beginning
-  of it."
-    (let ((init-el "~/.emacs.d/emacs-init.el")
-          (init-org "~/.emacs.d/emacs-init.org"))
-      (when (file-exists-p init-el)
-        (delete-file init-el))
-      (org-babel-tangle-file init-org init-el)))
-  :hook ((kill-emacs-hook . prot/rebuild-emacs-init)
-         (kill-emacs-hook . package-quickstart-refresh)))
+;; Set the fixed pitch face
+(set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 120)
 
-(delete-selection-mode 1)
-(add-to-list 'exec-path "~/bin")
-(setenv "BROWSER" "firefox")
-
-(setq undo-limit 80000000)
-(setq auto-save-default t)
-(setq make-backup-files nil)             ; stop creating backup~ files
-(setq create-lockfiles nil)              ; stop creating .# files
-
-(add-hook
- 'emacs-startup-hook
- (lambda ()
-   (message "Emacs ready in %s with %d garbage collections."
-            (format "%.2f seconds"
-                    (float-time
-                     (time-subtract after-init-time before-init-time))) gcs-done)))
+;; Set the variable pitch face
+(set-face-attribute 'variable-pitch nil :font "Cantarell" :height 130 :weight 'regular)
 
 (defun wmad/upload-to-netsuite ()
   "Send buffer to Netsuite."
@@ -186,6 +200,15 @@ duplicating."
   (interactive)
   (find-file "/run/media/wmadruga/3A3D-979D/2nd_brain/journal.org"))
 
+(defun wmad/open-todo ()
+  "Open the TODO file."
+  (interactive)
+  (find-file "/run/media/wmadruga/3A3D-979D/2nd_brain/todo.org"))
+
+(use-package bufler
+  :ensure t
+  :bind (("C-x b" . bufler)))
+
 (use-package no-littering
   :ensure t
   :config
@@ -202,51 +225,14 @@ duplicating."
   (setq recentf-max-saved-items 5000)
   (recentf-mode t))
 
+(global-unset-key (kbd "C-SPC"))
+
 (use-package general
   :ensure t
   :config
   (general-create-definer wmad/leader-keys
-    :prefix "<insert>"
-    :global-prefix "<insert>"))
-
-(use-package ivy
-  :ensure t
-  :diminish
-  :bind (("C-s" . swiper)
-         :map ivy-minibuffer-map
-         ("TAB" . ivy-alt-done))
-  :config
-  (ivy-mode 1))
-
-(use-package ivy-rich
-  :ensure t
-  :init
-  (ivy-rich-mode 1))
-
-(use-package prescient
-  :ensure t)
-
-(use-package ivy-prescient
-  :ensure t
-  :init (ivy-prescient-mode))
-
-(use-package ivy-xref
-  :ensure t
-  :init
-  (setq xref-show-definitions-function #'ivy-xref-show-defs)
-  (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
-
-(use-package helm
-  :ensure t
-  :config (helm-mode t))
-
-(use-package counsel
-  :ensure t
-  :bind (("M-x" . counsel-M-x)
-         ("C-x b" . counsel-ibuffer)
-         ("C-x C-f" . counsel-find-file)
-         :map minibuffer-local-map
-         ("C-r" . 'counsel-minibuffer-history)))
+    :prefix "C-SPC"
+    :global-prefix "C-SPC"))
 
 (use-package amx
   :ensure t
@@ -313,7 +299,7 @@ duplicating."
   :ensure t
   :diminish projectile-mode
   :config (projectile-mode)
-  :custom ((projectile-completion-system 'ivy))
+  :custom ((projectile-completion-system 'ido))
   :bind-keymap
   ("C-c p" . projectile-command-map)
   :init
@@ -322,9 +308,11 @@ duplicating."
     (setq projectile-project-search-path '("~/src" "~/git")))
   (setq projectile-switch-project-action #'projectile-dired))
 
-(use-package counsel-projectile
-  :ensure t
-  :config (counsel-projectile-mode))
+(use-package ag
+  :ensure t)
+
+(use-package ripgrep
+  :ensure t)
 
 (use-package magit
   :ensure t
@@ -375,9 +363,6 @@ duplicating."
   (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
   :config
   (lsp-enable-which-key-integration t))
-
-(use-package lsp-ivy
-  :ensure t)
 
 (use-package company-lsp
   :ensure t)
@@ -446,6 +431,12 @@ duplicating."
   :ensure t)
 (add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
 
+(use-package s
+  :ensure t)
+
+(use-package dash
+  :ensure t)
+
 (defun wmad/org-mode-setup ()
   (org-indent-mode)
   (visual-line-mode 1))
@@ -493,36 +484,9 @@ duplicating."
   :after org-agenda
   :config
   (org-super-agenda-mode)
-  (setq
-   org-super-agenda-groups
-   '(
-     (:name "Urgent"
-            :category "urgent"
-            :tag "urgent"
-            :order 1
-            :face (:background "#195e83" :foreground "#edb879"))
-     (:name "Bills"
-            :category "bills"
-            :tag "bills"
-            :order 2
-            :face (:background "#1c100b" :foreground "#44bcd8"))
-     (:name "Work"
-            :category "work"
-            :tag "work"
-            :order 3
-            :face (:background "#1c100b" :foreground "#44bcd8"))     
-     (:name "Family"
-            :category "family"
-            :tag "family"
-            :order 4)
-     (:name "Projects"
-            :category "projects"
-            :tag "projects"
-            :order 5)
-     (:name "Others"
-            :order 10
-            :face (:background "#80391e" :foreground "#cce7e8"))
-     )))
+  (let ((org-super-agenda-groups
+         '((:auto-group t))))
+    (org-agenda-list)))
 
 (require 'org-habit)
 (add-to-list 'org-modules 'org-habit)
@@ -626,30 +590,35 @@ duplicating."
   ;; it's not loaded yet, so add our bindings to the load-hook
   (add-hook 'dired-load-hook 'my-dired-init))
 
-(global-unset-key (kbd "<insert>"))
 
-(global-set-key (kbd "M-x")     #'helm-M-x)
-(global-set-key (kbd "C-x C-f") #'helm-find-files)
-(global-set-key (kbd "M-i")     #'helm-semantic-or-imenu)
+
+;; (global-set-key (kbd "M-x")     #'helm-M-x)
+;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
+;; (global-set-key (kbd "M-i")     #'helm-semantic-or-imenu)
 
 (global-set-key (kbd "C-z")   'undo-fu-only-undo)
 (global-set-key (kbd "C-S-z") 'undo-fu-only-redo)
 
-(global-set-key (kbd "C-x o") 'switch-window)
+(global-set-key (kbd "C-x o")     'switch-window)
+(global-set-key (kbd "s-<left>")  'windmove-left)
+(global-set-key (kbd "s-<right>") 'windmove-right)
+(global-set-key (kbd "s-<up>")    'windmove-up)
+(global-set-key (kbd "s-<down>")  'windmove-down)
 
-(global-set-key (kbd "C-h f") #'helpful-callable)
-(global-set-key (kbd "C-h v") #'helpful-variable)
-(global-set-key (kbd "C-h k") #'helpful-key)
+(global-set-key (kbd "C-h f")   #'helpful-callable)
+(global-set-key (kbd "C-h v")   #'helpful-variable)
+(global-set-key (kbd "C-h k")   #'helpful-key)
 (global-set-key (kbd "C-c C-d") #'helpful-at-point)
-(global-set-key (kbd "C-h F") #'helpful-function)
-(global-set-key (kbd "C-h C") #'helpful-command)
+(global-set-key (kbd "C-h F")   #'helpful-function)
+(global-set-key (kbd "C-h C")   #'helpful-command)
 
 (wmad/leader-keys
   "e"   'wmad/open-init-file
   "j"   'wmad/open-journal
   "k"   'kill-buffer
-  "SPC" 'counsel-projectile-find-file
+  "SPC" 'projectile-find-file
   "R"   'restart-emacs
+  "T"   'wmad/open-todo
   "v"   'vterm)
 
 (wmad/leader-keys
@@ -670,58 +639,65 @@ duplicating."
 
 (wmad/leader-keys
   "p"  '(:ignore t :which-key "Project")
-  "pc" 'projectile-command-map
-  "pf" 'counsel-projectile-find-file
-  "pp" 'projectile-switch-project
-  "pk" 'projectile-kill-buffers
-  "ps" 'counsel-projectile-rg
-  "pd" 'prot/window-dired-vc-root-left)
+  "pc" '(projectile-command-map :which-key "All commands")
+  "pf" '(projectile-find-file :which-key "Find File")
+  "pp" '(projectile-switch-project :which-key "Switch Project")
+  "pk" '(projectile-kill-buffers :which-key "Kill Buffers")
+  "ps" '(projectile-ag :which-key "Silver Search")
+  "pS" '(projectile-ripgrep :which-key "Ripgrep Search"))
 
 (wmad/leader-keys
   "G"  '(:ignore t :which-key "Magit")
-  "Gs" 'magit-status)
+  "Gs" '(magit-status :which-key "Status")
+  "Gb" '(magit-blame :which-key "Blame")
+  "Gl" '(magit-log :which-key "Log")
+  "Gf" '(magit-fetch :which-key "Fetch")
+  "G <down>" '(magit-pull :which-key "Pull")
+  "G <up>" '(magit-push :which-key "Push"))
 
 (wmad/leader-keys
   "t"  '(:ignore t :which-key "Toggle")
-  "td" 'dired-sidebar-toggle-sidebar
-  "th" '(counsel-load-theme :which-key "choose theme")
-  "tm" 'menu-bar-mode
-  "to" 'global-origami-mode
-  "tt" 'tab-bar-mode)
+  "td" '(dired-sidebar-toggle-sidebar :which-key "dired sidebar")
+  "tf" '(toggle-frame-fullscreen :which-key "fullscreen")
+  "th" '(load-theme :which-key "choose theme")
+  "tm" '(menu-bar-mode :which-key "menu bar")
+  "to" '(global-origami-mode :which-key "origami")
+  "tt" '(tab-bar-mode :which-key "tab bar"))
 
 (wmad/leader-keys
   "n"  '(:ignore t :which-key "Netsuite")
-  "nu" 'wmad/upload-to-netsuite
-  "ns" 'wmad/sdfcli)
+  "nu" '(wmad/upload-to-netsuite :which-key "Upload buffer")
+  "ns" '(wmad/sdfcli :which-key "Deploy"))
 
 (wmad/leader-keys
   "w"  '(:ignore t :which-key "Window")
-  "wt" 'wmad/transpose-windows
-  "wo" 'switch-window
-  "w-" 'split-window-below
-  "w=" 'split-window-right
-  "w0" 'delete-window
-  "w1" 'delete-other-windows
-  "w5" 'delete-frame
-  "w_" 'balance-windows
-  "wq" 'window-toggle-side-windows)
+  "wt" '(wmad/transpose-windows :which-key "Transpose")
+  "wo" '(switch-window :which-key "Switch")
+  "w-" '(split-window-below :which-key "Split below")
+  "w=" '(split-window-right :which-key "Split right")
+  "w0" '(delete-window :which-key "Delete this")
+  "w1" '(delete-other-windows :which-key "Delete others")
+  "w5" '(delete-frame :which-key "Delete frame")
+  "w_" '(balance-windows :which-key "Balance")
+  "wq" '(window-toggle-side-windows :which-key "Toggle Side windows"))
 
 (general-define-key
  "C-c <down>" 'wmad/duplicate-line)
 
 (wmad/leader-keys
   "b"         '(:ignore t :which-key "Buffer")
-  "bb"        'ibuffer'
-  "b <right>" 'next-buffer
-  "b <left>"  'previous-buffer)
+  "bb"        '(bufler-switch-buffer :which-key "Switch Buffer")
+  "bw"        '(bufler :which-key "Buffer Window")
+  "b <right>" '(next-buffer :which-key "Next")
+  "b <left>"  '(previous-buffer :which-key "Previous"))
 
 (wmad/leader-keys
   "z"  '(:ignore t :which-key "Origami")
-  "za" 'origami-toggle-node
-  "zo" 'origami-open-node
-  "zc" 'origami-close-node)
+  "za" '(origami-toggle-node :which-key "Toggle node")
+  "zo" '(origami-open-node :which-key "Open")
+  "zc" '(origami-close-node :which-key "Close"))
 
 (wmad/leader-keys
   "g"  '(:ignore t :which-key "Go to...")
-  "gd" 'dumb-jump-go
-  "gb" 'xref-pop-marker-stack)
+  "gd" '(dumb-jump-go :which-key "go dumb")
+  "gb" '(xref-pop-marker-stack :which-key "go back"))

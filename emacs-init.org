@@ -3,6 +3,90 @@
 #+PROPERTY: header-args:emacs-lisp :mkdirp yes :comments no
 #+STARTUP: overview
 
+* Config notes:
+- Which-key gets activated by pressing C-h after keybindings.
+- I usually work behind a proxy. For now I have a few hacky ways to get the proxy available - need to follow-up later for better ways
+- Constantly checking out Spacemacs Layers to grab a few config that I used to like when using it.
+   https://github.com/syl20bnr/spacemacs/tree/master/layers
+
+* Emacs configuration
+** Loading private scripts
+#+begin_src emacs-lisp
+  (load "~/.emacs.d/elisp/private.el")
+  (load "~/.emacs.d/elisp/proxy.el")
+#+end_src
+** Auto-save
+#+begin_src emacs-lisp
+  (setq auto-save-file-name-transforms
+        `((".*" "~/.emacs.d/emacs_saves/" t)))
+#+end_src
+
+** Reduce GC frequency
+Makes the startup faster - Is this still a thing on Emacs 27+ ???
+#+begin_src emacs-lisp
+(setq gc-cons-threshold (* 50 1000 1000))
+#+end_src
+
+** Rebuild Init and Refresh Package
+Always rebuild init and refresh package cache upon process termination;
+Taken from https://protesilaos.com/dotemacs/
+#+begin_src emacs-lisp
+  (use-package emacs
+    :config
+    (defun prot/rebuild-emacs-init ()
+      "Produce Elisp init from my Org dotemacs.
+    Add this to `kill-emacs-hook', to use the newest file in the next
+    session. The idea is to reduce startup time, though just by
+    rolling it over to the end of a session rather than the beginning
+    of it."
+      (let ((init-el "~/.emacs.d/emacs-init.el")
+            (init-org "~/.emacs.d/emacs-init.org"))
+        (when (file-exists-p init-el)
+          (delete-file init-el))
+        (org-babel-tangle-file init-org init-el)))
+    :hook ((kill-emacs-hook . prot/rebuild-emacs-init)
+           (kill-emacs-hook . package-quickstart-refresh)))
+#+end_src
+
+** Separate custom.el
+All customization insertion into separate file.
+FIXME: this doesn't seem to be working. I often find init.el getting updated with customizations :/
+#+begin_src 
+;; Emacs Custom location
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
+#+end_src
+
+** Small tweaks
+Replace selection when inserting text
+#+begin_src emacs-lisp
+  (delete-selection-mode 1)
+  (add-to-list 'exec-path "~/bin")
+  (setenv "BROWSER" "firefox")
+#+end_src
+
+** Housekeeping
+Undo limit to 80MB;
+Do not create backup or lock files
+#+begin_src emacs-lisp
+  (setq undo-limit 80000000)
+  (setq auto-save-default t)
+  (setq make-backup-files nil)             ; stop creating backup~ files
+  (setq create-lockfiles nil)              ; stop creating .# files
+#+end_src
+
+** Startup time
+How long it takes to startup emacs
+#+begin_src emacs-lisp
+  (add-hook
+   'emacs-startup-hook
+   (lambda ()
+     (message "Emacs ready in %s with %d garbage collections."
+              (format "%.2f seconds"
+                      (float-time
+                       (time-subtract after-init-time before-init-time))) gcs-done)))
+#+end_src
+
 * UI configuration
 General UI related configuration
 
@@ -41,7 +125,6 @@ Plus minor tweaks added in.
            ("C-h h" . nil)))
 #+end_src
 
-
 ** Fullscreen
 Set fullscreen if started by emacs command
 #+begin_src emacs-lisp
@@ -50,7 +133,6 @@ Set fullscreen if started by emacs command
   (toggle-frame-fullscreen)
   ;)
 #+end_src
-
 
 ** Line numbers
 Enable line numbers globally then disable for a few specific modes.
@@ -65,7 +147,6 @@ Enable line numbers globally then disable for a few specific modes.
                   term-mode-hook))
     (add-hook mode (lambda () (display-line-numbers-mode 0))))
 #+end_src
-
 
 ** Themes
 Using Protesilaos modus themes and all icons.
@@ -87,80 +168,20 @@ Remember to M-x 'all-the-icons-iinstall-fonts' when configured for the first tim
   ;;   :init (load-theme 'doom-dracula t))
 #+end_src
 
-* Misc emacs configuration
-** Load private
+** Font configuration
 #+begin_src emacs-lisp
-  (load "~/.emacs.d/elisp/private.el")
-#+end_src
-** AutoSave
-#+begin_src emacs-lisp
-  (setq auto-save-file-name-transforms
-    `((".*" "~/.emacs_saves/" t)))
-#+end_src
+  ;; You will most likely need to adjust this font size for your system!
+  (defvar wmad/default-font-size 100)
 
-** Reduce GC frequency
-Makes the startup faster - Is this still a thing on Emacs 27+ ???
-#+begin_src emacs-lisp
-(setq gc-cons-threshold (* 50 1000 1000))
-#+end_src
+  ;; Font Configuration ----------------------------------------------------------
 
-** Rebuild Init and Refresh Package
-Always rebuild init and refresh package cache upon process termination;
-Taken from https://protesilaos.com/dotemacs/
-#+begin_src emacs-lisp
-  (use-package emacs
-    :config
-    (defun prot/rebuild-emacs-init ()
-      "Produce Elisp init from my Org dotemacs.
-    Add this to `kill-emacs-hook', to use the newest file in the next
-    session. The idea is to reduce startup time, though just by
-    rolling it over to the end of a session rather than the beginning
-    of it."
-      (let ((init-el "~/.emacs.d/emacs-init.el")
-            (init-org "~/.emacs.d/emacs-init.org"))
-        (when (file-exists-p init-el)
-          (delete-file init-el))
-        (org-babel-tangle-file init-org init-el)))
-    :hook ((kill-emacs-hook . prot/rebuild-emacs-init)
-           (kill-emacs-hook . package-quickstart-refresh)))
-#+end_src
+  (set-face-attribute 'default nil :font "Fira Code Retina" :height wmad/default-font-size)
 
-** Separate custom.el
-Redirects all customization insertion into separate file.
-#+begin_src 
-;; Emacs Custom location
-(setq custom-file "~/.emacs.d/custom.el")
-(load custom-file)
-#+end_src
+  ;; Set the fixed pitch face
+  (set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 120)
 
-** Small tweaks
-Replace selection when inserting text
-#+begin_src emacs-lisp
-  (delete-selection-mode 1)
-  (add-to-list 'exec-path "~/bin")
-  (setenv "BROWSER" "firefox")
-#+end_src
-
-** Housekeeping
-Undo limit to 80MB;
-Do not create backup or lock files
-#+begin_src emacs-lisp
-  (setq undo-limit 80000000)
-  (setq auto-save-default t)
-  (setq make-backup-files nil)             ; stop creating backup~ files
-  (setq create-lockfiles nil)              ; stop creating .# files
-#+end_src
-
-** Startup time
-How long it takes to startup emacs
-#+begin_src emacs-lisp
-  (add-hook
-   'emacs-startup-hook
-   (lambda ()
-     (message "Emacs ready in %s with %d garbage collections."
-              (format "%.2f seconds"
-                      (float-time
-                       (time-subtract after-init-time before-init-time))) gcs-done)))
+  ;; Set the variable pitch face
+  (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 130 :weight 'regular)
 #+end_src
 
 * Functions
@@ -285,9 +306,21 @@ variable is set in elisp/private.el
     "Open the journal file."
     (interactive)
     (find-file "/run/media/wmadruga/3A3D-979D/2nd_brain/journal.org"))
+
+  (defun wmad/open-todo ()
+    "Open the TODO file."
+    (interactive)
+    (find-file "/run/media/wmadruga/3A3D-979D/2nd_brain/todo.org"))
 #+end_src
 * Packages
 ** Emacs
+*** Bufler
+#+begin_src emacs-lisp
+  (use-package bufler
+    :ensure t
+    :bind (("C-x b" . bufler)))
+#+end_src
+
 *** No Littering
 Keep directories clean.
 #+begin_src emacs-lisp
@@ -312,62 +345,16 @@ Track recently-opened files.
 #+end_src
 
 *** General
+One other option I've been tinkering with is <insert>
 #+begin_src emacs-lisp
-(use-package general
-  :ensure t
-  :config
-  (general-create-definer wmad/leader-keys
-    :prefix "<insert>"
-    :global-prefix "<insert>"))
-#+end_src
+  (global-unset-key (kbd "C-SPC"))
 
-*** Ivy, Rich, Prescient, Xref
-#+begin_src emacs-lisp
-  (use-package ivy
+  (use-package general
     :ensure t
-    :diminish
-    :bind (("C-s" . swiper)
-           :map ivy-minibuffer-map
-           ("TAB" . ivy-alt-done))
     :config
-    (ivy-mode 1))
-
-  (use-package ivy-rich
-    :ensure t
-    :init
-    (ivy-rich-mode 1))
-
-  (use-package prescient
-    :ensure t)
-
-  (use-package ivy-prescient
-    :ensure t
-    :init (ivy-prescient-mode))
-
-  (use-package ivy-xref
-    :ensure t
-    :init
-    (setq xref-show-definitions-function #'ivy-xref-show-defs)
-    (setq xref-show-xrefs-function #'ivy-xref-show-xrefs))
-#+end_src
-
-
-*** Helm
-#+begin_src emacs-lisp
-  (use-package helm
-    :ensure t
-    :config (helm-mode t))
-#+end_src
-
-*** Counsel
-#+begin_src emacs-lisp
-(use-package counsel
-  :ensure t
-  :bind (("M-x" . counsel-M-x)
-         ("C-x b" . counsel-ibuffer)
-         ("C-x C-f" . counsel-find-file)
-         :map minibuffer-local-map
-         ("C-r" . 'counsel-minibuffer-history)))
+    (general-create-definer wmad/leader-keys
+      :prefix "C-SPC"
+      :global-prefix "C-SPC"))
 #+end_src
 
 *** Amx
@@ -385,7 +372,7 @@ Track recently-opened files.
     )
 #+end_src
 
-*** Term
+*** Terminal
 #+begin_src emacs-lisp
   (use-package vterm
     :ensure t
@@ -469,22 +456,24 @@ Thanks to @bartuka_
 
 *** Projectile
 #+begin_src emacs-lisp
-(use-package projectile
-  :ensure t
-  :diminish projectile-mode
-  :config (projectile-mode)
-  :custom ((projectile-completion-system 'ivy))
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
-  :init
-  ;; NOTE: Set this to the folder where you keep your Git repos!
-  (when (or (file-directory-p "~/src") (file-directory-p "~/git"))
-    (setq projectile-project-search-path '("~/src" "~/git")))
-  (setq projectile-switch-project-action #'projectile-dired))
+  (use-package projectile
+    :ensure t
+    :diminish projectile-mode
+    :config (projectile-mode)
+    :custom ((projectile-completion-system 'ido))
+    :bind-keymap
+    ("C-c p" . projectile-command-map)
+    :init
+    ;; NOTE: Set this to the folder where you keep your Git repos!
+    (when (or (file-directory-p "~/src") (file-directory-p "~/git"))
+      (setq projectile-project-search-path '("~/src" "~/git")))
+    (setq projectile-switch-project-action #'projectile-dired))
 
-(use-package counsel-projectile
-  :ensure t
-  :config (counsel-projectile-mode))
+  (use-package ag
+    :ensure t)
+
+  (use-package ripgrep
+    :ensure t)
 #+end_src
 
 *** Magit
@@ -562,9 +551,6 @@ Couple of specific settings for programming languages
     (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
     :config
     (lsp-enable-which-key-integration t))
-
-  (use-package lsp-ivy
-    :ensure t)
 
   (use-package company-lsp
     :ensure t)
@@ -648,6 +634,12 @@ Need to find an alternative configuration using https://github.com/theia-ide/typ
      (use-package suggest
        :ensure t)
      (add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
+
+     (use-package s
+       :ensure t)
+
+     (use-package dash
+       :ensure t)
    #+end_src
 
 * Org Mode
@@ -725,36 +717,9 @@ Need to find an alternative configuration using https://github.com/theia-ide/typ
     :after org-agenda
     :config
     (org-super-agenda-mode)
-    (setq
-     org-super-agenda-groups
-     '(
-       (:name "Urgent"
-              :category "urgent"
-              :tag "urgent"
-              :order 1
-              :face (:background "#195e83" :foreground "#edb879"))
-       (:name "Bills"
-              :category "bills"
-              :tag "bills"
-              :order 2
-              :face (:background "#1c100b" :foreground "#44bcd8"))
-       (:name "Work"
-              :category "work"
-              :tag "work"
-              :order 3
-              :face (:background "#1c100b" :foreground "#44bcd8"))     
-       (:name "Family"
-              :category "family"
-              :tag "family"
-              :order 4)
-       (:name "Projects"
-              :category "projects"
-              :tag "projects"
-              :order 5)
-       (:name "Others"
-              :order 10
-              :face (:background "#80391e" :foreground "#cce7e8"))
-       )))
+    (let ((org-super-agenda-groups
+           '((:auto-group t))))
+      (org-agenda-list)))
 #+end_src
 Face attributes: https://www.gnu.org/software/emacs/manual/html_node/elisp/Face-Attributes.html#Face-Attributes
 
@@ -877,32 +842,37 @@ Taken from https://protesilaos.com/dotemacs/
 * Key-bindings
 ** Unsetting
 #+begin_src emacs-lisp
-  (global-unset-key (kbd "<insert>"))
+
 #+end_src
 ** Emacs
 #+begin_src emacs-lisp
-  (global-set-key (kbd "M-x")     #'helm-M-x)
-  (global-set-key (kbd "C-x C-f") #'helm-find-files)
-  (global-set-key (kbd "M-i")     #'helm-semantic-or-imenu)
+  ;; (global-set-key (kbd "M-x")     #'helm-M-x)
+  ;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
+  ;; (global-set-key (kbd "M-i")     #'helm-semantic-or-imenu)
 
   (global-set-key (kbd "C-z")   'undo-fu-only-undo)
   (global-set-key (kbd "C-S-z") 'undo-fu-only-redo)
 
-  (global-set-key (kbd "C-x o") 'switch-window)
+  (global-set-key (kbd "C-x o")     'switch-window)
+  (global-set-key (kbd "s-<left>")  'windmove-left)
+  (global-set-key (kbd "s-<right>") 'windmove-right)
+  (global-set-key (kbd "s-<up>")    'windmove-up)
+  (global-set-key (kbd "s-<down>")  'windmove-down)
 
-  (global-set-key (kbd "C-h f") #'helpful-callable)
-  (global-set-key (kbd "C-h v") #'helpful-variable)
-  (global-set-key (kbd "C-h k") #'helpful-key)
+  (global-set-key (kbd "C-h f")   #'helpful-callable)
+  (global-set-key (kbd "C-h v")   #'helpful-variable)
+  (global-set-key (kbd "C-h k")   #'helpful-key)
   (global-set-key (kbd "C-c C-d") #'helpful-at-point)
-  (global-set-key (kbd "C-h F") #'helpful-function)
-  (global-set-key (kbd "C-h C") #'helpful-command)
+  (global-set-key (kbd "C-h F")   #'helpful-function)
+  (global-set-key (kbd "C-h C")   #'helpful-command)
 
   (wmad/leader-keys
     "e"   'wmad/open-init-file
     "j"   'wmad/open-journal
     "k"   'kill-buffer
-    "SPC" 'counsel-projectile-find-file
+    "SPC" 'projectile-find-file
     "R"   'restart-emacs
+    "T"   'wmad/open-todo
     "v"   'vterm)
 #+end_src
 ** Dired (d)
@@ -930,52 +900,60 @@ Taken from https://protesilaos.com/dotemacs/
 #+begin_src emacs-lisp
   (wmad/leader-keys
     "p"  '(:ignore t :which-key "Project")
-    "pc" 'projectile-command-map
-    "pf" 'counsel-projectile-find-file
-    "pp" 'projectile-switch-project
-    "pk" 'projectile-kill-buffers
-    "ps" 'counsel-projectile-rg
-    "pd" 'prot/window-dired-vc-root-left)
+    "pc" '(projectile-command-map :which-key "All commands")
+    "pf" '(projectile-find-file :which-key "Find File")
+    "pp" '(projectile-switch-project :which-key "Switch Project")
+    "pk" '(projectile-kill-buffers :which-key "Kill Buffers")
+    "ps" '(projectile-ag :which-key "Silver Search")
+    "pS" '(projectile-ripgrep :which-key "Ripgrep Search"))
+
+
 #+end_src
 ** Magit (G)
 #+begin_src emacs-lisp
 (wmad/leader-keys
   "G"  '(:ignore t :which-key "Magit")
-  "Gs" 'magit-status)
+  "Gs" '(magit-status :which-key "Status")
+  "Gb" '(magit-blame :which-key "Blame")
+  "Gl" '(magit-log :which-key "Log")
+  "Gf" '(magit-fetch :which-key "Fetch")
+  "G <down>" '(magit-pull :which-key "Pull")
+  "G <up>" '(magit-push :which-key "Push"))
 #+end_src
 
 ** Toggle (t)
 #+begin_src emacs-lisp
   (wmad/leader-keys
     "t"  '(:ignore t :which-key "Toggle")
-    "td" 'dired-sidebar-toggle-sidebar
-    "th" '(counsel-load-theme :which-key "choose theme")
-    "tm" 'menu-bar-mode
-    "to" 'global-origami-mode
-    "tt" 'tab-bar-mode)
+    "td" '(dired-sidebar-toggle-sidebar :which-key "dired sidebar")
+    "tf" '(toggle-frame-fullscreen :which-key "fullscreen")
+    "th" '(load-theme :which-key "choose theme")
+    "tm" '(menu-bar-mode :which-key "menu bar")
+    "to" '(global-origami-mode :which-key "origami")
+    "tt" '(tab-bar-mode :which-key "tab bar"))
 #+end_src
 
 ** Netsuite (n)
 #+begin_src emacs-lisp
   (wmad/leader-keys
     "n"  '(:ignore t :which-key "Netsuite")
-    "nu" 'wmad/upload-to-netsuite
-    "ns" 'wmad/sdfcli)
+    "nu" '(wmad/upload-to-netsuite :which-key "Upload buffer")
+    "ns" '(wmad/sdfcli :which-key "Deploy"))
 #+end_src
 
 ** Window (w)
 #+begin_src emacs-lisp
   (wmad/leader-keys
     "w"  '(:ignore t :which-key "Window")
-    "wt" 'wmad/transpose-windows
-    "wo" 'switch-window
-    "w-" 'split-window-below
-    "w=" 'split-window-right
-    "w0" 'delete-window
-    "w1" 'delete-other-windows
-    "w5" 'delete-frame
-    "w_" 'balance-windows
-    "wq" 'window-toggle-side-windows)
+    "wt" '(wmad/transpose-windows :which-key "Transpose")
+    "wo" '(switch-window :which-key "Switch")
+    "w-" '(split-window-below :which-key "Split below")
+    "w=" '(split-window-right :which-key "Split right")
+    "w0" '(delete-window :which-key "Delete this")
+    "w1" '(delete-other-windows :which-key "Delete others")
+    "w5" '(delete-frame :which-key "Delete frame")
+    "w_" '(balance-windows :which-key "Balance")
+    "wq" '(window-toggle-side-windows :which-key "Toggle Side windows"))
 #+end_src
 
 ** Buffer (b)
@@ -985,25 +963,26 @@ Taken from https://protesilaos.com/dotemacs/
 
   (wmad/leader-keys
     "b"         '(:ignore t :which-key "Buffer")
-    "bb"        'ibuffer'
-    "b <right>" 'next-buffer
-    "b <left>"  'previous-buffer)
+    "bb"        '(bufler-switch-buffer :which-key "Switch Buffer")
+    "bw"        '(bufler :which-key "Buffer Window")
+    "b <right>" '(next-buffer :which-key "Next")
+    "b <left>"  '(previous-buffer :which-key "Previous"))
 #+end_src
 
 ** Origami fold (z)
 #+begin_src emacs-lisp
   (wmad/leader-keys
     "z"  '(:ignore t :which-key "Origami")
-    "za" 'origami-toggle-node
-    "zo" 'origami-open-node
-    "zc" 'origami-close-node)
+    "za" '(origami-toggle-node :which-key "Toggle node")
+    "zo" '(origami-open-node :which-key "Open")
+    "zc" '(origami-close-node :which-key "Close"))
 #+end_src
 
 ** Go to... (g)
 #+begin_src emacs-lisp
   (wmad/leader-keys
     "g"  '(:ignore t :which-key "Go to...")
-    "gd" 'dumb-jump-go
-    "gb" 'xref-pop-marker-stack)
+    "gd" '(dumb-jump-go :which-key "go dumb")
+    "gb" '(xref-pop-marker-stack :which-key "go back"))
 
 #+end_src
