@@ -3,7 +3,7 @@
 #+PROPERTY: header-args:emacs-lisp :mkdirp yes :comments no
 #+STARTUP: overview
 
-* Config notes:
+* My config notes:
 - Which-key gets activated by pressing C-h after keybindings.
 - I usually work behind a proxy. For now I have a few hacky ways to get the proxy available - need to follow-up later for better ways
 - Constantly checking out Spacemacs Layers to grab a few config that I used to like when using it.
@@ -530,7 +530,7 @@ Thanks to @bartuka_
     :hook (prog-mode-hook . indent-guide-mode))
 #+end_src
 
-* Programming Languages
+* Coding
 Couple of specific settings for programming languages
 ** General
 *** Language Server Protocol
@@ -576,45 +576,42 @@ Couple of specific settings for programming languages
 #+end_src
 
 ** Javascript
-eglot needs https://github.com/sourcegraph/javascript-typescript-langserver, which is deprecated. 
-Need to find an alternative configuration using https://github.com/theia-ide/typescript-language-server
  
 #+begin_src emacs-lisp
-  (use-package js2-mode
-    :ensure t
-    :config (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+    (use-package js2-mode
+      :ensure t)
 
-  (use-package js2-refactor
-    :ensure t
-    :config (add-hook 'js2-mode-hook #'js2-refactor-mode))
+    (use-package js2-refactor
+      :ensure t
+      :config (add-hook 'js2-mode-hook #'js2-refactor-mode))
 
-  (use-package eglot
-    :ensure t)
+    (use-package eglot
+      :ensure t)
 
-  (setq js-indent-level 2)
+    (setq js-indent-level 2)
 
-  (add-hook 'js-mode-hook #'smartparens-mode)
-  (add-hook 'js2-mode-hook 'lsp-deferred)
-  (add-hook 'lsp-mode-hook 'lsp-enable-which-key-integration)
-  (add-hook 'js-mode-hook 'eglot-ensure)
-  (add-hook 'js2-mode-hook 'eglot-ensure)
+    (add-hook 'js-mode-hook #'smartparens-mode)
+    (add-hook 'js2-mode-hook 'lsp-deferred)
+    (add-hook 'lsp-mode-hook 'lsp-enable-which-key-integration)
+    (add-hook 'js-mode-hook 'eglot-ensure)
+    (add-hook 'js2-mode-hook 'eglot-ensure)
 
-  ;; Flycheck configs
+    ;; Flycheck configs
 
-  ;; disable jshint
-  (setq-default flycheck-disabled-checkers
-                (append flycheck-disabled-checkers
-                        '(javascript-jshint)))
+    ;; disable jshint
+    (setq-default flycheck-disabled-checkers
+                  (append flycheck-disabled-checkers
+                          '(javascript-jshint)))
 
-  ;; enable eslint
-  (flycheck-add-mode 'javascript-eslint 'js2-mode)
+    ;; enable eslint
+    (flycheck-add-mode 'javascript-eslint 'js2-mode)
 
-  (setq-default flycheck-temp-prefix ".flycheck")
+    (setq-default flycheck-temp-prefix ".flycheck")
 
-  ;; disable json-jsonlist checking for json files
-  (setq-default flycheck-disabled-checkers
-    (append flycheck-disabled-checkers
-      '(json-jsonlist)))
+    ;; disable json-jsonlist checking for json files
+    (setq-default flycheck-disabled-checkers
+      (append flycheck-disabled-checkers
+        '(json-jsonlist)))
 #+end_src
 
 ** Clojure / Clojurescript
@@ -641,6 +638,12 @@ Need to find an alternative configuration using https://github.com/theia-ide/typ
      (use-package dash
        :ensure t)
    #+end_src
+
+** Netsuite SDF
+#+begin_src emacs-lisp
+  (load-file "~/src/netsuite-mode.el/netsuite.el")
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . netsuite-mode))
+#+end_src
 
 * Org Mode
 ** Helper functions
@@ -841,14 +844,11 @@ Taken from https://protesilaos.com/dotemacs/
 
 * Key-bindings
 ** Unsetting
-#+begin_src emacs-lisp
+#+begin_src emacs-lisp :tangle no
 
 #+end_src
 ** Emacs
 #+begin_src emacs-lisp
-  ;; (global-set-key (kbd "M-x")     #'helm-M-x)
-  ;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
-  ;; (global-set-key (kbd "M-i")     #'helm-semantic-or-imenu)
 
   (global-set-key (kbd "C-z")   'undo-fu-only-undo)
   (global-set-key (kbd "C-S-z") 'undo-fu-only-redo)
@@ -867,34 +867,33 @@ Taken from https://protesilaos.com/dotemacs/
   (global-set-key (kbd "C-h C")   #'helpful-command)
 
   (wmad/leader-keys
-    "e"   'wmad/open-init-file
-    "j"   'wmad/open-journal
-    "k"   'kill-buffer
-    "SPC" 'projectile-find-file
-    "R"   'restart-emacs
-    "T"   'wmad/open-todo
-    "v"   'vterm)
+    "e"   '(wmad/open-init-file :which-key "Open init file")
+    "j"   '(wmad/open-journal :which-key "Open journal file")
+    "T"   '(wmad/open-todo :which-key "Open todo file")
+    "k"   '(kill-buffer :which-key "Kill buffer")
+    "SPC" '(projectile-find-file :which-key "Project Find File")
+    "R"   '(restart-emacs :which-key "Restart Emacs")
+    "v"   '(vterm :which-key "Terminal"))
 #+end_src
 ** Dired (d)
 #+begin_src emacs-lisp
   (wmad/leader-keys
     "d"     '(:ignore t :which-key "Dired")
-    "dd"    'dired-hide-dotfiles-mode
-    "dj"    'dired-jump
-    "ds"    'dired-sidebar-show-sidebar
-    "dh"    'dired-sidebar-hide-sidebar
-    "dt"    'dired-sidebar-toggle-sidebar
-    "d RET" 'dired-single-buffer)
+    "dd"    '(dired-hide-dotfiles-mode :which-key "Hide dotfiles")
+    "dj"    '(dired-jump :which-key "Jump")
+    "ds"    '(dired-sidebar-show-sidebar :which-key "Show sidebar")
+    "dh"    '(dired-sidebar-hide-sidebar :which-key "Hide sidebar")
+    "d RET" '(dired-single-buffer :which-key "Single buffer"))
 #+end_src
 
 ** Org Mode (o)
 #+begin_src emacs-lisp
   (wmad/leader-keys
     "o"  '(:ignore t :which-key "Org-Mode")
-    "oa" 'org-agenda
-    "oc" 'org-capture
-    "ol" 'org-insert-link
-    "oo" 'org-open-at-point)
+    "oa" '(org-agenda :which-key "Agenda")
+    "oc" '(org-capture :which-key "Capture")
+    "ol" '(org-insert-link :which-key "Insert Link")
+    "oo" '(org-open-at-point :which-key "Open Link"))
 #+end_src
 ** Projectile (p)
 #+begin_src emacs-lisp
@@ -937,8 +936,10 @@ Taken from https://protesilaos.com/dotemacs/
 #+begin_src emacs-lisp
   (wmad/leader-keys
     "n"  '(:ignore t :which-key "Netsuite")
-    "nu" '(wmad/upload-to-netsuite :which-key "Upload buffer")
-    "ns" '(wmad/sdfcli :which-key "Deploy"))
+    "na" '(netsuite/authenticate :which-key "Authenticate")
+    "nc" '(netsuite/create-project :which-key "Create Project")
+    "ns" '(netsuite/deploy :which-key "Deploy")
+    "nu" '(netsuite/upload-buffer :which-key "Upload buffer"))
 #+end_src
 
 ** Window (w)

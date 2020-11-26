@@ -383,8 +383,7 @@ duplicating."
 (add-hook 'xref-backend-functions #'dumb-jump-xref-activate)
 
 (use-package js2-mode
-  :ensure t
-  :config (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
+  :ensure t)
 
 (use-package js2-refactor
   :ensure t
@@ -436,6 +435,9 @@ duplicating."
 
 (use-package dash
   :ensure t)
+
+(load-file "~/src/netsuite-mode.el/netsuite.el")
+(add-to-list 'auto-mode-alist '("\\.js\\'" . netsuite-mode))
 
 (defun wmad/org-mode-setup ()
   (org-indent-mode)
@@ -590,12 +592,6 @@ duplicating."
   ;; it's not loaded yet, so add our bindings to the load-hook
   (add-hook 'dired-load-hook 'my-dired-init))
 
-
-
-;; (global-set-key (kbd "M-x")     #'helm-M-x)
-;; (global-set-key (kbd "C-x C-f") #'helm-find-files)
-;; (global-set-key (kbd "M-i")     #'helm-semantic-or-imenu)
-
 (global-set-key (kbd "C-z")   'undo-fu-only-undo)
 (global-set-key (kbd "C-S-z") 'undo-fu-only-redo)
 
@@ -613,29 +609,28 @@ duplicating."
 (global-set-key (kbd "C-h C")   #'helpful-command)
 
 (wmad/leader-keys
-  "e"   'wmad/open-init-file
-  "j"   'wmad/open-journal
-  "k"   'kill-buffer
-  "SPC" 'projectile-find-file
-  "R"   'restart-emacs
-  "T"   'wmad/open-todo
-  "v"   'vterm)
+  "e"   '(wmad/open-init-file :which-key "Open init file")
+  "j"   '(wmad/open-journal :which-key "Open journal file")
+  "T"   '(wmad/open-todo :which-key "Open todo file")
+  "k"   '(kill-buffer :which-key "Kill buffer")
+  "SPC" '(projectile-find-file :which-key "Project Find File")
+  "R"   '(restart-emacs :which-key "Restart Emacs")
+  "v"   '(vterm :which-key "Terminal"))
 
 (wmad/leader-keys
   "d"     '(:ignore t :which-key "Dired")
-  "dd"    'dired-hide-dotfiles-mode
-  "dj"    'dired-jump
-  "ds"    'dired-sidebar-show-sidebar
-  "dh"    'dired-sidebar-hide-sidebar
-  "dt"    'dired-sidebar-toggle-sidebar
-  "d RET" 'dired-single-buffer)
+  "dd"    '(dired-hide-dotfiles-mode :which-key "Hide dotfiles")
+  "dj"    '(dired-jump :which-key "Jump")
+  "ds"    '(dired-sidebar-show-sidebar :which-key "Show sidebar")
+  "dh"    '(dired-sidebar-hide-sidebar :which-key "Hide sidebar")
+  "d RET" '(dired-single-buffer :which-key "Single buffer"))
 
 (wmad/leader-keys
   "o"  '(:ignore t :which-key "Org-Mode")
-  "oa" 'org-agenda
-  "oc" 'org-capture
-  "ol" 'org-insert-link
-  "oo" 'org-open-at-point)
+  "oa" '(org-agenda :which-key "Agenda")
+  "oc" '(org-capture :which-key "Capture")
+  "ol" '(org-insert-link :which-key "Insert Link")
+  "oo" '(org-open-at-point :which-key "Open Link"))
 
 (wmad/leader-keys
   "p"  '(:ignore t :which-key "Project")
@@ -666,8 +661,11 @@ duplicating."
 
 (wmad/leader-keys
   "n"  '(:ignore t :which-key "Netsuite")
-  "nu" '(wmad/upload-to-netsuite :which-key "Upload buffer")
-  "ns" '(wmad/sdfcli :which-key "Deploy"))
+  "na" '(netsuite/authenticate :which-key "Authenticate")
+  "nc" '(netsuite/create-project :which-key "Create Project")
+  "nl" '(netsuite/list-authids :which-key "List authids")
+  "ns" '(netsuite/deploy :which-key "Deploy")
+  "nu" '(netsuite/upload-buffer :which-key "Upload buffer"))
 
 (wmad/leader-keys
   "w"  '(:ignore t :which-key "Window")
