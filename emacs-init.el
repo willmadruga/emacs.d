@@ -10,17 +10,19 @@
   :config
   (defun prot/rebuild-emacs-init ()
     "Produce Elisp init from my Org dotemacs.
-  Add this to `kill-emacs-hook', to use the newest file in the next
-  session. The idea is to reduce startup time, though just by
-  rolling it over to the end of a session rather than the beginning
-  of it."
+    Add this to `kill-emacs-hook', to use the newest file in the next
+    session. The idea is to reduce startup time, though just by
+    rolling it over to the end of a session rather than the beginning
+    of it."
     (let ((init-el "~/.emacs.d/emacs-init.el")
           (init-org "~/.emacs.d/emacs-init.org"))
       (when (file-exists-p init-el)
         (delete-file init-el))
       (org-babel-tangle-file init-org init-el)))
-  :hook ((kill-emacs-hook . prot/rebuild-emacs-init)
-         (kill-emacs-hook . package-quickstart-refresh)))
+  :hook ((kill-emacs-hook . prot/rebuild-emacs-init)))
+
+(setq custom-file "~/.emacs.d/custom.el")
+(load custom-file)
 
 (delete-selection-mode 1)
 (add-to-list 'exec-path "~/bin")
@@ -51,27 +53,25 @@
 
   :config
   (setq use-file-dialog nil)
-  (setq use-dialog-box t)               ;; only for mouse events
-  (setq visible-bell t)                 ;; set up the visible bell
-  (setq inhibit-splash-screen t)
-  (setq inibit-startup-message t)
-  (setq inhibit-scratch-message t)
+  (setq use-dialog-box t)
+  (setq visible-bell t)
+  ;; (setq inhibit-splash-screen t)
+  ;; (setq inibit-startup-message t)
+  ;; (setq inhibit-scratch-message t)
+  (setq initial-scratch-message "")
 
   (fset 'yes-or-no-p 'y-or-n-p)
 
   (unless (equal "Batery status not available" (battery))
     (display-battery-mode 1))
 
-  ;; Disable the pair of key bindings that involve z minimise the Emacs frame. 
+  ;; Disable the pair of key bindings that involve z minimise the Emacs frame.
   ;; Disable the 'hello' file
   :bind (("C-z" . nil)
          ("C-x C-z" . nil)
          ("C-h h" . nil)))
 
-;(if (eq initial-window-system 'x)
-; (toggle-frame-maximized)
 (toggle-frame-fullscreen)
-;)
 
 (column-number-mode)
 (global-display-line-numbers-mode t)
@@ -94,35 +94,24 @@
 
 (load-theme 'modus-vivendi t)
 
-;; (use-package doom-themes
-;;   :ensure t
-;;   :init (load-theme 'doom-dracula t))
-
-;; You will most likely need to adjust this font size for your system!
 (defvar wmad/default-font-size 100)
 
-;; Font Configuration ----------------------------------------------------------
-
-(set-face-attribute 'default nil :font "Fira Code Retina" :height wmad/default-font-size)
+(set-face-attribute 'default nil :font "Roboto Mono Light" :height wmad/default-font-size)
 
 ;; Set the fixed pitch face
-(set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height 120)
+;;(set-face-attribute 'fixed-pitch nil :font "Fira Code Retina" :height wmad/default-font-size)
+;;(set-face-attribute 'fixed-pitch nil :font "Roboto Mono Light" :height wmad/default-font-size)
+(set-face-attribute 'fixed-pitch nil :font "Source Code Pro" :height wmad/default-font-size)
+;;(set-face-attribute 'fixed-pitch nil :font "Noto Sans Italic" :height wmad/default-font-size)
 
 ;; Set the variable pitch face
-(set-face-attribute 'variable-pitch nil :font "Cantarell" :height 130 :weight 'regular)
+;; (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 130 :weight 'regular)
+(set-face-attribute 'variable-pitch nil :font "Source Code Pro" :height wmad/default-font-size :weight 'regular)
 
 (defun wmad/upload-to-netsuite ()
   "Send buffer to Netsuite."
   (interactive)
   (message (shell-command-to-string (concat "ns-upload" " " (buffer-file-name)))))
-  ;;(async-shell-command (concat "ns-upload" " " (buffer-file-name))))
-
-(defun wmad/sdfcli ()
-  "Execute async shell command: sdfcli"
-  (interactive)
-  (async-shell-command (concat "sdfcli deploy -sw -np -authid " wmad-netsuite-sdfcli-authid)))
-
-;; implement sdfcli project switching using buffer name to discover project root
 
 (defun wmad/server-shutdown ()
   "Save buffers, Quit, and Shutdown (kill) server"
@@ -140,18 +129,6 @@
     (yank)
     (move-to-column cursor-column)))
 
-;; TODO I can apply the same concept as duplicate line but instead of a line I should yank a marked region.
-;; think that should do...
-
-(defun wmad/duplicate-region ()
-  (interactive)
-   (let* ((cursor-column (current-column)))
-     ;; kill region... get start and end of mark.
-     ;;(yank)
-     ;;(newline)
-     ;;(yank)
-     (move-to-column cursor-column)))
-
 (defun wmad/transpose-windows ()
   "Transpose two windows.  If more or less than two windows are visible, error."
   (interactive)
@@ -164,31 +141,6 @@
          (w2b (window-buffer w2)))
     (set-window-buffer w1 w2b)
     (set-window-buffer w2 w1b)))
-
-(defun prot/copy-line-or-region (&optional arg)
-    "Kill-save the current line or active region.
-With \\[universal-argument] duplicate the target instead.  When
-region is active, also apply context-aware indentation while
-duplicating."
-    (interactive "P")
-    (let* ((rbeg (region-beginning))
-           (rend (region-end))
-           (pbol (point-at-bol))
-           (peol (point-at-eol))
-           (indent (if (eq (or rbeg rend) pbol) nil arg)))
-      (if arg
-          (progn
-            (if (use-region-p)
-                (progn
-                  (copy-region-as-kill rbeg rend)
-                  (when (eq (point) rbeg)
-                    (exchange-point-and-mark))
-                  (prot/new-line-below indent))
-              (copy-region-as-kill pbol peol)
-              (prot/new-line-below))
-            (yank))
-        (copy-region-as-kill pbol peol)
-        (message "Current line copied"))))
 
 (defun wmad/open-init-file ()
   "Open the ORG init file."
@@ -280,6 +232,21 @@ duplicating."
 (use-package switch-window
   :ensure t)
 
+(use-package dashboard
+  :ensure t
+  :config
+  (setq dashboard-items
+        '((recents . 5)
+          (projects . 5)
+          (bookmarks . 5)
+          (agenda . 20)))
+  (setq dashboard-set-init-info t)
+  (setq dashboard-set-heading-icons t)
+  (setq dashboard-set-file-icons t)
+  (dashboard-modify-heading-icons '((recents . "file-text")
+                                  (bookmarks . "book")))
+  (dashboard-setup-startup-hook))
+
 (use-package company
   :ensure t
   :after lsp-mode
@@ -300,10 +267,8 @@ duplicating."
   :diminish projectile-mode
   :config (projectile-mode)
   :custom ((projectile-completion-system 'ido))
-  :bind-keymap
-  ("C-c p" . projectile-command-map)
+  :bind-keymap ("C-c p" . projectile-command-map)
   :init
-  ;; NOTE: Set this to the folder where you keep your Git repos!
   (when (or (file-directory-p "~/src") (file-directory-p "~/git"))
     (setq projectile-project-search-path '("~/src" "~/git")))
   (setq projectile-switch-project-action #'projectile-dired))
@@ -441,7 +406,10 @@ duplicating."
 
 (defun wmad/org-mode-setup ()
   (org-indent-mode)
-  (visual-line-mode 1))
+  (visual-line-mode 1)
+  (variable-pitch-mode 1)
+  (auto-fill-mode 0)
+  (diminish org-indent-mode))
 
 (defun wmad/org-font-setup ()
   (font-lock-add-keywords 'org-mode
@@ -453,33 +421,45 @@ duplicating."
                   (org-level-4 . 1.1)
                   (org-level-5 . 1.0)
                   (org-level-6 . 1.0)
-                  (org-level-7 . 1.0) 
+                  (org-level-7 . 1.0)
                   (org-level-8 . 1.0)))
-    (set-face-attribute (car face) nil :font "Cantarell" :weight 'regular :height (cdr face))))
+    (set-face-attribute (car face) nil :font "Roboto Mono Light" :weight 'regular :height (cdr face)))
+
+  (require 'org-indent)
+
+  ;; Ensure that anything that should be fixed-pitch in Org files appears that way
+  (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
+  (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-indent nil :inherit '(org-hide fixed-pitch))
+  (set-face-attribute 'org-verbatim nil :inherit '(shadow fixed-pitch))
+  (set-face-attribute 'org-special-keyword nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
+  (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
 
 (defun wmad/org-mode-visual-fill ()
-  (setq visual-fill-column-width 200
-        visual-fill-column-center-text t))
+  ;; (setq visual-fill-column-width 200
+  ;; visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
 
 (use-package org
   :hook (org-mode-hook . wmad/org-mode-setup)
   :config
   (setq org-ellipsis " ▾"
-	org-hide-emphasis-markers t)
+        org-hide-emphasis-markers t
+        org-src-fontify-natively t
+        org-src-tab-acts-natively t
+        org-edit-src-content-indentation 0
+        org-hide-block-startup nil
+        org-src-preserve-indentation nil
+        org-startup-folded 'content
+        org-cycle-separator-lines 2)
   (wmad/org-font-setup))
 
-(use-package org-bullets
+(use-package org-superstar
   :ensure t
   :after org
-  :hook (org-mode-hook . org-bullets-mode)
-  :custom
-  (org-bullets-bullet-list '("◉" "○" "●" "○" "●" "○" "●")))
-
-(use-package visual-fill-column
-  :hook (org-mode-hook . wmad/org-mode-visual-fill))
-
-(setq org-log-into-drawer t)
-(setq org-agenda-files "~/.emacs.d/elisp/agenda-files.el")
+  :config
+  (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1))))
 
 (use-package org-super-agenda
   :ensure t
@@ -487,56 +467,62 @@ duplicating."
   :config
   (org-super-agenda-mode)
   (let ((org-super-agenda-groups
-         '((:auto-group t))))
-    (org-agenda-list)))
+         '((:auto-group t)))))
+  (setq org-agenda-window-setup 'current-window))
+
+(use-package visual-fill-column
+  :defer t
+  :hook (org-mode-hook . wmad/org-mode-visual-fill))
+
+(setq org-log-into-drawer t)
+(setq org-agenda-files "~/.emacs.d/elisp/agenda-files.el")
 
 (require 'org-habit)
+
 (add-to-list 'org-modules 'org-habit)
+
 (setq org-habit-graph-column 60)
 
 (setq org-todo-keywords
     '((sequence "TODO(t)" "NEXT(n)" "STRT(s)"  "WAIT(w)"  "|" "DONE(d!)")))
 
+(setq org-todo-keyword-faces
+  '(("TODO" . (:foreground "orange red" :weight bold))
+    ("NEXT" . (:foreground "yellow" :weight bold))
+    ("STRT" . (:foreground "green" :weight bold))
+    ("WAIT" . (:foreground "MediumPurple3" :weight bold))
+    ("DONE" . (:foreground "blue" :weight bold))))
+
 (defvar +org-capture-journal-file "/run/media/wmadruga/3A3D-979D/2nd_brain/journal.org")
 
 (setq org-capture-templates
       '(("j" "Journal" entry
-	 (file+olp+datetree +org-capture-journal-file)
-	 "* %U %?\n%i\n%a" :prepend t)))
+   (file+olp+datetree +org-capture-journal-file)
+   "* %U %?\n%i\n%a" :prepend t)))
+
+(require 'org-tempo)
+(add-to-list 'org-structure-template-alist '("elisp" . "src emacs-lisp"))
 
 (use-package window
-:init
+  :init
   (setq display-buffer-alist
         '(
-
-          ("\\*\\(Backtrace\\|Warnings\\|Compile-Log\\|*Messages.*\\|Flymake\\|Output\\|*Completions.*\\)\\*"
+          ("^\\(\\*Bufler.*\\|\\*Help.*\\).*"
            (display-buffer-in-side-window)
-           (window-width . 0.25)
+           (window-height . 0.35)
            (side . right)
-           (slot . 1)
-           (window-parameters . ((no-other-window . t))))
-
-          ("^\\(\\*e?shell\\|vterm\\).*"
-           (display-buffer-in-side-window)
-           (window-height . 0.50)
-           (side . bottom)
            (slot . 1))
 
-          ("\\*\\(*HTTP.*\\|*Async.*\\|\\*Help.*\\)\\*"
+          ("^\\(\\*e?shell\\|vterm\\|*HTTP.*\\|*Async.*\\).*"
            (display-buffer-in-side-window)
-           (window-width . 0.25)       ; See the :hook
-           (side . right)
-           (slot . 0)
-           (window-parameters . ((no-other-window . t))))))
+           (window-height . 0.15)
+           (side . bottom)
+           (slot . 0))))
 
   (setq window-combination-resize t)
   (setq even-window-sizes 'height-only)
   (setq window-sides-vertical nil)
   (setq switch-to-buffer-in-dedicated-window 'pop)
-
-  ;; Note that the the syntax for `use-package' hooks is controlled by
-  ;; the `use-package-hook-name-suffix' variable.  The "-hook" suffix is
-  ;; not an error of mine.
   :hook ((help-mode-hook . visual-line-mode)
          (custom-mode-hook . visual-line-mode)))
 
@@ -657,14 +643,12 @@ duplicating."
   "th" '(load-theme :which-key "choose theme")
   "tm" '(menu-bar-mode :which-key "menu bar")
   "to" '(global-origami-mode :which-key "origami")
-  "tt" '(tab-bar-mode :which-key "tab bar"))
+  "tt" '(bufler-tabs-mode :which-key "bufler tab bar"))
 
 (wmad/leader-keys
   "n"  '(:ignore t :which-key "Netsuite")
-  "na" '(netsuite/authenticate :which-key "Authenticate")
   "nc" '(netsuite/create-project :which-key "Create Project")
-  "nl" '(netsuite/list-authids :which-key "List authids")
-  "ns" '(netsuite/deploy :which-key "Deploy")
+  "nd" '(netsuite/deploy :which-key "Deploy Project")
   "nu" '(netsuite/upload-buffer :which-key "Upload buffer"))
 
 (wmad/leader-keys
@@ -680,12 +664,13 @@ duplicating."
   "wq" '(window-toggle-side-windows :which-key "Toggle Side windows"))
 
 (general-define-key
- "C-c <down>" 'wmad/duplicate-line)
+ "C-c <down>" 'wmad/duplicate-line
+ "C-c d" 'delete-trailing-whitespace)
 
 (wmad/leader-keys
   "b"         '(:ignore t :which-key "Buffer")
-  "bb"        '(bufler-switch-buffer :which-key "Switch Buffer")
-  "bw"        '(bufler :which-key "Buffer Window")
+  "bb"        '(bufler :which-key "Buffer Window")
+  "bs"        '(bufler-switch-buffer :which-key "Switch Buffer")
   "b <right>" '(next-buffer :which-key "Next")
   "b <left>"  '(previous-buffer :which-key "Previous"))
 
