@@ -391,6 +391,15 @@
 (use-package clojure-snippets
   :ensure t)
 
+(use-package clj-refactor
+  :ensure t)
+
+(defun my-clojure-mode-hook ()
+    (clj-refactor-mode 1)
+    (yas-minor-mode 1))
+
+(add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
+
 (use-package suggest
   :ensure t)
 (add-hook 'emacs-lisp-mode-hook #'smartparens-mode)
@@ -400,6 +409,16 @@
 
 (use-package dash
   :ensure t)
+
+(use-package slime
+  :ensure t
+    :config
+  (setq inferior-lisp-program "sbcl")
+  (setq scheme-program-name "scheme"))
+
+;; try out sly: https://github.com/joaotavora/sly 
+;; (use-package sly
+;;   :ensure t)
 
 (load-file "~/src/netsuite-mode.el/netsuite.el")
 (add-to-list 'auto-mode-alist '("\\.js\\'" . netsuite-mode))
@@ -436,10 +455,10 @@
   (set-face-attribute 'org-meta-line nil :inherit '(font-lock-comment-face fixed-pitch))
   (set-face-attribute 'org-checkbox nil :inherit 'fixed-pitch))
 
-(defun wmad/org-mode-visual-fill ()
+(defun wmad/org-mode-visual-fill ())
   ;; (setq visual-fill-column-width 200
   ;; visual-fill-column-center-text t)
-  (visual-fill-column-mode 1))
+  ;; (visual-fill-column-mode 1))
 
 (use-package org
   :hook (org-mode-hook . wmad/org-mode-setup)
@@ -513,7 +532,7 @@
            (side . right)
            (slot . 1))
 
-          ("^\\(\\*e?shell\\|vterm\\|*HTTP.*\\|*Async.*\\).*"
+          ("^\\(\\*e?shell\\|vterm\\|*HTTP.*\\|*Async.*\\|*ag.*\\).*"
            (display-buffer-in-side-window)
            (window-height . 0.15)
            (side . bottom)

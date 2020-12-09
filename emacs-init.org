@@ -568,16 +568,44 @@
        '(json-jsonlist)))
    #+end_src
 
-** Clojure / Clojurescript
+** Clojure
    #+begin_src emacs-lisp
    (use-package cider
+     :ensure t
+     :defer t
+     :init (progn
+             (setq cider-stacktrace-default-filters '(tooling dup)
+                   cider-repl-pop-to-buffer-on-connect nil
+                   cider-prompt-save-file-on-load nil
+                   cider-repl-use-clojure-font-lock t)
+             (add-hook 'clojure-mode-hook 'cider-mode))
+     :config (progn
+               (setq cider-prompt-for-symbol nil)
+               (clojure-mode 1)
+               (clojurec-mode 1)
+               (clojurescript-mode 1)
+               (cider-repl-mode 1)
+               (clj-refactor-mode 1)
+               (yas-minor-mode 1)
+               ))
+
+   (use-package cider-eval-sexp-fu
      :ensure t)
 
    (use-package clojure-mode
      :ensure t)
 
+   (use-package clj-refactor
+     :ensure t)
+
    (use-package clojure-snippets
      :ensure t)
+
+   ;; (defun my-clojure-mode-hook ()
+   ;;     (clj-refactor-mode 1)
+   ;;     (yas-minor-mode 1))
+
+   ;; (add-hook 'clojure-mode-hook #'my-clojure-mode-hook)
    #+end_src
 
 ** Emacs Lisp
@@ -593,7 +621,18 @@
        :ensure t)
    #+end_src
 
+** Common Lisp
+#+begin_src emacs-lisp
+(use-package slime
+  :ensure t
+    :config
+  (setq inferior-lisp-program "sbcl")
+  (setq scheme-program-name "scheme"))
 
+;; try out sly: https://github.com/joaotavora/sly 
+;; (use-package sly
+;;   :ensure t)
+#+end_src
 ** Netsuite SDF
    Creating my own package, still in progress.
    It makes use of SDFCLI to upload and deploy to Netsuite accounts.
@@ -644,10 +683,10 @@
 
 *** Enhance org experience with visual-fill
     #+begin_src emacs-lisp
-    (defun wmad/org-mode-visual-fill ()
+    (defun wmad/org-mode-visual-fill ())
       ;; (setq visual-fill-column-width 200
       ;; visual-fill-column-center-text t)
-      (visual-fill-column-mode 1))
+      ;; (visual-fill-column-mode 1))
     #+end_src
 
 ** Config
@@ -748,7 +787,7 @@
              (side . right)
              (slot . 1))
 
-            ("^\\(\\*e?shell\\|vterm\\|*HTTP.*\\|*Async.*\\).*"
+            ("^\\(\\*e?shell\\|vterm\\|*HTTP.*\\|*Async.*\\|*ag.*\\).*"
              (display-buffer-in-side-window)
              (window-height . 0.15)
              (side . bottom)

@@ -78,3 +78,4 @@
     (use-package org)
     (org-babel-load-file org)))
 ;;; init.el ends here
+(put 'narrow-to-region 'disabled nil)
