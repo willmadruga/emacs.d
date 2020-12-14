@@ -3,16 +3,18 @@
 It's a work in progress, as any other configuration - mind you! :D
 I'm also learning my way around elisp and creating packages.
 
+
 * Spacemacs inspired 
 
 Spacemacs is a great project, it's actually how I started using emacs, evil mode FTW.
 With time I learned more about the Emacs ecosystem, tried out a couple of configurations
 and figured I like things in certain ways rather the others.
 
+
 * TO DO
   There's a couple TODO items I need to address and I will keep track in here
 
-** Better modularization
-*** initialize layers based on a variable passed via command line
-** Understand and fix my font configuration
-** Have a better org-mode experience
+  + Better modularization
+    + initialize layers based on a variable passed via command line
+  + Understand and fix my font configuration
+  + Have a better org-mode experience
