@@ -156,7 +156,11 @@
       "ce" '(cider-eval-last-sexp :which-key "eval sexp")
       "cc" '(cider-eval-print-last-sexp :which-key "eval sexp print")
       "cq" '(cider-quit :which-key "quit cider"))
-    
+
+    ;; LSP ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    (wmad/leader-keys
+      "l"  '(:ignore t :which-key "LSP")
+      "ll" '(lsp :which-key "LSP Session Connect"))
     )
   )
 

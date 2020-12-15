@@ -28,7 +28,7 @@
     :ensure t
     :config
     (setq dashboard-items
-          '((recents . 5)
+          '((recents . 15)
             (projects . 5)
             (bookmarks . 5)
             (agenda . 20)))

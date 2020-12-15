@@ -29,9 +29,7 @@
 
     (add-hook 'js-mode-hook #'smartparens-mode)
     (add-hook 'js2-mode-hook 'lsp-deferred)
-    (add-hook 'lsp-mode-hook 'lsp-enable-which-key-integration)
-    (add-hook 'js-mode-hook 'eglot-ensure)
-    (add-hook 'js2-mode-hook 'eglot-ensure))
+    (add-hook 'lsp-mode-hook 'lsp-enable-which-key-integration))
 
   ;; js refactor ;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package js2-refactor
