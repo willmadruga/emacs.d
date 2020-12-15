@@ -4,15 +4,19 @@ It's a work in progress, as any other configuration - mind you! :D
 I'm also learning my way around elisp and creating packages.
 
 
-* Spacemacs inspired 
+* Inspired on the best out there :)
 
-Spacemacs is a great project, it's actually how I started using emacs, evil mode FTW.
-With time I learned more about the Emacs ecosystem, tried out a couple of configurations
-and figured I like things in certain ways rather the others.
+[[https://www.spacemacs.org/][Spacemacs]] is a great project, it's actually how I started using emacs, evil mode FTW.
 
+Likewise, [[https://github.com/hlissner/doom-emacs][Doom Emacs]] is awesome and of course I've used it for some time.
 
-* TO DO
-  There's a couple TODO items I need to address and I will keep track in here
+Then over time I learned more about the Emacs ecosystem, started learning lispy languages,
+tried out a couple of configurations and figured I like things in certain ways rather the others.
+
+More than anything this is a good excercise for me which I slowly reap the benefits.
+
+* Stuff TODO
+  Couple of items I want to address, mostly ideas that I may or may not implement...
 
   + Better modularization
     + initialize layers based on a variable passed via command line
