@@ -1,4 +1,5 @@
 ;; pkgsys.el --- Core configuration : Package System
+;; -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 

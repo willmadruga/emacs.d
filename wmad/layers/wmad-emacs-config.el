@@ -1,4 +1,5 @@
 ;; wmad-emacs-config.el --- Emacs Configuration Layer
+;; -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -73,11 +74,18 @@
         '(
           ("^\\(\\*Bufler.*\\|\\*Help.*\\).*"
            (display-buffer-in-side-window)
-           (window-height . 0.35)
+           (window-width . 0.40)
            (side . right)
            (slot . 1))
 
-          ("^\\(\\*e?shell\\|vterm\\|*HTTP.*\\|*Async.*\\|*ag.*\\|*cider-repl.*\\).*"
+          ("^\\(\\*ag.*\\|\\*cider-repl.*\\).*"
+           (display-buffer-in-side-window)
+           (window-height . 0.30)
+           (side . bottom)
+           (slot . 1))
+
+
+          ("^\\(\\*e?shell\\|vterm\\|*HTTP.*\\|*Async.*\\).*"
            (display-buffer-in-side-window)
            (window-height . 0.15)
            (side . bottom)

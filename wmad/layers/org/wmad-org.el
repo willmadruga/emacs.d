@@ -1,4 +1,5 @@
 ;; wmad-org.el --- Org-Mode Configuration Layer
+;; -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -60,6 +61,7 @@
 
   ;; org super-agenda ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package org-super-agenda
+    ;; :defer t
     :ensure t
     :after org-agenda
     :config

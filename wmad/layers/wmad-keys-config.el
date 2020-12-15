@@ -1,4 +1,5 @@
 ;; wmad-keys-config.el --- Keybindings Configuration Layer
+;; -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -36,6 +37,7 @@
 
   ;; General Setup ;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package general
+    :defer t
     :ensure t
     :config
     (general-create-definer wmad/leader-keys

@@ -1,4 +1,5 @@
 ;; wmad-devel-clj.el --- Development Configuration Layer : Clojure
+;; -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -8,8 +9,8 @@
 
   ;; cider
   (use-package cider
+    :defer t
     :ensure t)
-    ;; :defer t
     ;; :init 
     ;;         (setq cider-stacktrace-default-filters '(tooling dup)
     ;;               cider-repl-pop-to-buffer-on-connect nil
@@ -28,16 +29,24 @@
 
 
   ;; cider eval sexp fu ;;;;;;;;;;;;;;;;;;;;
-  (use-package cider-eval-sexp-fu :ensure t)
+  (use-package cider-eval-sexp-fu
+    :defer t
+    :ensure t)
 
   ;; clojure mode ;;;;;;;;;;;;;;;;;;;;
-  (use-package clojure-mode :ensure t)
+  (use-package clojure-mode
+    :defer t
+    :ensure t)
 
   ;; clj-refactor ;;;;;;;;;;;;;;;;;;;;
-  (use-package clj-refactor :ensure t)
+  (use-package clj-refactor
+    :defer t
+    :ensure t)
 
   ;; clojure snippets ;;;;;;;;;;;;;;;;;;;;
-  (use-package clojure-snippets :ensure t)
+  (use-package clojure-snippets
+    :defer t
+    :ensure t)
 
 ;; (defun my-clojure-mode-hook ()
 ;;     (clj-refactor-mode 1)

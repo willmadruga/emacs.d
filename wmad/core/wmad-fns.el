@@ -1,4 +1,5 @@
 ;; wmad-fns.el --- Core configuration: My functions
+;; -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 

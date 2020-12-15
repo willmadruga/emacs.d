@@ -1,4 +1,5 @@
 ;; wmad-devel-lisp.el --- Development Configuration Layer : Common Lisp, Scheme
+;; -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -8,6 +9,7 @@
 
   ;; slime ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package slime
+    :defer t
     :ensure t
     :config
     (setq inferior-lisp-program "sbcl")

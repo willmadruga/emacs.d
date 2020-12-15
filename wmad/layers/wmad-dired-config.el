@@ -1,4 +1,5 @@
 ;; wmad-dired-config.el --- Dired Configuration Layer
+;; -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -12,15 +13,19 @@
     :custom ((dired-listing-switches "-agho --group-directories-first")))
 
   ;; dired single window ;;;;;;;;;;;;;
-  (use-package dired-single :ensure t)
+  (use-package dired-single
+    :defer t
+    :ensure t)
 
   ;; All the icons for dired ;;;;;;;;;;;;;;;;;;;;;
   (use-package all-the-icons-dired
+    :defer t
     :ensure t
     :hook (dired-mode . all-the-icons-dired-mode))
 
   ;; dired open extensions-binary map ;;;;;;;;;;;;;;;;
   (use-package dired-open
+    :defer t
     :ensure t
     :config
     (setq dired-open-extensions '(("png" . "feh")
@@ -31,11 +36,13 @@
 
   ;; dired hide dotfiles ;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package dired-hide-dotfiles
+    :defer t
     :ensure t
     :hook (dired-mode . dired-hide-dotfiles-mode))
 
   ;; dired sidebar ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package dired-sidebar
+    :defer t
     :ensure t
     :commands (dired-sidebar-toggle-sidebar)
     :config

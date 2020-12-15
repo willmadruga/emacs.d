@@ -1,4 +1,5 @@
 ;; wmad-devel-lsp.el --- Development Configuration Layer : LSP
+;; -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -13,6 +14,7 @@
 
   ;; lsp mode ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package lsp-mode
+    :defer t
     :ensure t
     :commands (lsp lsp-deferred)
     :hook (lsp-mode . efs/lsp-mode-setup)
@@ -22,17 +24,22 @@
     (lsp-enable-which-key-integration t))
 
   ;; company lsp mode ;;;;;;;;;;;;;;;
-  (use-package company-lsp :ensure t)
+  (use-package company-lsp
+    :defer t
+    :ensure t)
 
   ;; lsp UI ;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package lsp-ui
+    :defer t
     :ensure t
     :hook (lsp-mode-hook . lsp-ui-mode)
     :custom
     (lsp-ui-doc-position 'bottom))
 
   ;; eglot - client for LSP servers
-  (use-package eglot :ensure t)
+  (use-package eglot
+    :defer t
+    :ensure t)
 
   )
 

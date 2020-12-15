@@ -1,4 +1,5 @@
 ;; wmad-devel-js.el --- Development Configuration Layer : Javascript
+;; -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -8,6 +9,7 @@
 
   ;; js mode ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package js2-mode
+    :defer t
     :ensure t
     :config
     (setq js-indent-level 2)
@@ -33,6 +35,7 @@
 
   ;; js refactor ;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package js2-refactor
+    :defer t
     :ensure t
     :config (add-hook 'js2-mode-hook
                       #'js2-refactor-mode))
@@ -42,7 +45,11 @@
   (use-package emacs
     :config
     (load-file "~/src/netsuite-mode.el/netsuite.el")
-    (add-to-list 'auto-mode-alist '("\\.js\\'" . netsuite-mode)))
+    (add-to-list 'auto-mode-alist
+                 '("\\.js\\'" . netsuite-mode)
+                 '("\\.js\\'" . display-fill-column-indicator-mode))
+    (setq fill-column 140))
+
   )
 
 (provide 'wmad-devel-js)

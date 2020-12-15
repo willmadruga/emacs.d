@@ -1,4 +1,5 @@
 ;; wmad-themes-config.el --- Themes Configuration Layer
+;; -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -6,15 +7,19 @@
 
 (defun wmad/theme-config ()
   (use-package modus-vivendi-theme
+    :defer t
     :ensure t)
 
   (use-package modus-operandi-theme
+    :defer t
     :ensure t)
 
   (use-package all-the-icons
+    :defer t    
     :ensure t)
 
   (use-package doom-modeline
+    :defer t    
     :ensure t
     :init (doom-modeline-mode 1)
     :custom ((doom-modeline-height 15)))
@@ -51,6 +56,7 @@
     ;; Set the variable pitch face
     ;; (set-face-attribute 'variable-pitch nil :font "Cantarell" :height 130 :weight 'regular)
     (set-face-attribute 'variable-pitch nil :font "Source Code Pro" :height wmad/default-font-size :weight 'regular))
+
   )
 
 (provide 'wmad-themes-config)
