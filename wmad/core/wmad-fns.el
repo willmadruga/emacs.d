@@ -7,10 +7,17 @@
 
 ;;; Code:
 
+(defun wmad/identify-dependencies (pkg)
+  "Identify files dependent of PKG."
+  (require 'loadhist)
+  (file-dependents (feature-file pkg)))
+
 (defun wmad/load-private-scripts ()
   "Load private scripts located in elisp folder."
   (load (concat user-emacs-directory "elisp/private.el"))
-  (load (concat user-emacs-directory "elisp/proxy.el")))
+  (load (concat user-emacs-directory "elisp/proxy.el"))
+  ;; (load (concat user-emacs-directory "elisp/custom.el"))
+  )
 
 (defun wmad/server-shutdown ()
   "Save buffers, Quit, and Shutdown (kill) server."

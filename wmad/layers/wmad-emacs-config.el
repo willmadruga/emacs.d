@@ -1,5 +1,4 @@
-;; wmad-emacs-config.el --- Emacs Configuration Layer
-;; -*- lexical-binding: t; -*-
+;; wmad-emacs-config.el --- Emacs Configuration Layer -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -31,7 +30,7 @@
     (toggle-frame-fullscreen)
     (column-number-mode)
 
-    (unless (equal "Batery status not available" (battery))
+    (unless (equal "Battery status not available" (battery))
       (display-battery-mode 1))
 
     ;; line numbers ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -42,30 +41,14 @@
                     term-mode-hook))
       (add-hook mode (lambda () (display-line-numbers-mode 0))))
 
-    ;; auto-save ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    (setq auto-save-default t)
-    (setq auto-save-file-name-transforms
-          `((".*" "~/.emacs.d/emacs_saves/" t)))
-
-    ;; reduce GC frequency ;;;;;;;;;;;;;;;;;;
-    (setq gc-cons-threshold (* 50 1000 1000))
-
-    ;; save customizations on a separate file :::::::::::::::::;
-    ;; keeps init.el clean
-    (setq custom-file (concat user-emacs-directory "custom.el"))
-    (load-file custom-file)
-
-    ;; Profile startup time ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    (add-hook
-     'emacs-startup-hook
-     (lambda ()
-       (message
-        "Emacs ready in %s with %d garbage collections."
-        (format "%.2f seconds" (float-time (time-subtract after-init-time before-init-time))) gcs-done))))
-
+    ;; Enable narrowing
+    (put 'narrow-to-region 'disabled nil)
+    
+    )
+  
   (use-package recentf
     :config
-    (setq recentf-max-saved-items 5000)
+    (setq recentf-max-saved-items 50)
     (recentf-mode t))
 
   (use-package window

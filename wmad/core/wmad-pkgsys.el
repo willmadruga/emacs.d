@@ -1,5 +1,4 @@
-;; pkgsys.el --- Core configuration : Package System
-;; -*- lexical-binding: t; -*-
+;; pkgsys.el --- Core configuration : Package System -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
@@ -8,6 +7,7 @@
 (require 'package)
 
 (defun wmad-pkgsys-init ()
+  "Initialize package system."
   (add-to-list 'package-archives
                '("melpa" . "https://melpa.org/packages/")
                '("org" . "https://orgmode.org/elpa/"))

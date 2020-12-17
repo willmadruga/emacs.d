@@ -1,11 +1,12 @@
-;; wmad-org.el --- Org-Mode Configuration Layer
-;; -*- lexical-binding: t; -*-
+;; wmad-org.el --- Org-Mode Configuration Layer -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
 ;;; Code:
 
 (defun wmad/org-config ()
+  "Org-Mode configuration."
+  
   (require 'org-indent)
   (require 'org-tempo)
 
@@ -28,21 +29,29 @@
 
     (add-to-list 'org-structure-template-alist '("elisp" . "src emacs-lisp"))
 
-    ;; font setup ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;; Org Customizations
+       
+    ;; ;; font setup ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
     (font-lock-add-keywords
      'org-mode
      '(("^ *\\([-]\\) " (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
 
-    (dolist (face '((org-level-1 . 1.7)
-                    (org-level-2 . 1.5)
-                    (org-level-3 . 1.3)
-                    (org-level-4 . 1.1)
-                    (org-level-5 . 1.0)
-                    (org-level-6 . 1.0)
-                    (org-level-7 . 1.0)
-                    (org-level-8 . 1.0)))
-      (set-face-attribute (car face) nil :font "Roboto Mono Light" :weight 'regular :height (cdr face)))
+    (dolist (face '((org-level-1 . (1.7 . "#e76f51"))
+                (org-level-2 . (1.5 . "#f4a261"))
+                (org-level-3 . (1.3 . "#e9c46a"))
+                (org-level-4 . (1.1 . "#2a9d8f"))
+                (org-level-5 . (1.0 . "#e76f51"))
+                (org-level-6 . (1.0 . "#f4a261"))
+                (org-level-7 . (1.0 . "#e9c46a"))
+                (org-level-8 . (1.0 . "#2a9d8f"))))
 
+      (set-face-attribute (car face) nil
+                          :font "Roboto Mono Light"
+                          :weight 'regular
+                          :height (cadr face)
+                          :foreground (cddr face)))
+    
     ;; Ensure that anything that should be fixed-pitch in Org files appears that way
     (set-face-attribute 'org-block nil :foreground nil :inherit 'fixed-pitch)
     (set-face-attribute 'org-code nil   :inherit '(shadow fixed-pitch))
@@ -113,4 +122,5 @@
 )
 
 (provide 'wmad-org)
+
 ;;; wmad-org.el ends here

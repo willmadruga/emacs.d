@@ -1,10 +1,10 @@
-;; wmad-core.el --- Core configuration : Entry-point
-;; -*- lexical-binding: t; -*-
+;; wmad-core.el --- Core configuration : Entry-point -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
 ;; GC Optimizations learned from Doom Emacs: https://github.com/hlissner/doom-emacs/issues/310
 ;; https://github.com/hlissner/doom-emacs/blob/develop/docs/faq.org#how-does-doom-start-up-so-quickly
+;; oh boy, and it's fast! :)
 
 ;;; Code:
 
@@ -35,34 +35,32 @@
 
   ;; temporarily unset file-name-handler-alist
   (defvar wmad--file-name-handler-alist file-name-handler-alist)
-  (setq file-name-handler-alist nil)
-  )
+  (setq file-name-handler-alist nil))
 
 (defun wmad/init ()
   "Emacs configuration initialization."
   (wmad/load-private-scripts)
-
-  (wmad/emacs-config)
   (wmad-pkgsys-init)
+ 
+  (wmad/emacs-config)
   (wmad/keys-config)
   (wmad/theme-config)
   (wmad/org-config)
   (wmad/dired-config)
-  
+
   (wmad/base-packages-init)
   (wmad/devel-packages-init)
   (wmad/devel-lsp-init)
   (wmad/devel-js-init)
   (wmad/devel-clj-init)
   (wmad/devel-elisp-init)
-  (wmad/devel-lisp-init)
-  )
+  (wmad/devel-lisp-init))
 
 (defun wmad/post-init ()
-  "Post-Initialization tasks"
+  "Post-Initialization tasks."
 
   ;; after startup, it is important you reset the GC back to some reasonable default.
-  ;; A large gc-cons-threshold will cause freezing and stuttering during long-term 
+  ;; A large gc-cons-threshold will cause freezing and stuttering during long-term
   ;; interactive use. I find these are nice defaults:
   (add-hook 'emacs-startup-hook
             (lambda ()
@@ -70,8 +68,16 @@
               (setq gc-cons-threshold 16777216 ; 16mb
                     gc-cons-percentage 0.1)
               ;; restore file-name-handler-alist
-              (setq file-name-handler-alist wmad--file-name-handler-alist)))
-  )
+              (setq file-name-handler-alist wmad--file-name-handler-alist)
+
+              ;; wmad: a workaround dashboard's workaround to prevent flooding the recent files list with org mode files
+              (recentf-load-list)
+
+              ;; Profile start-up
+              (message
+               "Emacs ready in %s with %d garbage collections."
+               (format "%.2f seconds" (float-time (time-subtract after-init-time before-init-time))) gcs-done)
+              )))
 
 (provide 'wmad-core)
 ;;; wmad-core.el ends here

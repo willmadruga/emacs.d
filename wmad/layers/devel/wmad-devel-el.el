@@ -1,12 +1,12 @@
-;; wmad-devel-el.el --- Development Configuration Layer : Emacs-Lisp
-;; -*- lexical-binding: t; -*-
+;; wmad-devel-el.el --- Development Configuration Layer : Emacs-Lisp -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
 ;;; Code:
 
 (defun wmad/devel-elisp-init ()
-
+  "Elisp configuration."
+  
   ;; suggest ;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package suggest
     :defer t

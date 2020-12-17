@@ -1,42 +1,15 @@
 # -*- mode: gitignore; -*-
 
 # Emacs
-*~
-\#*\#
-/.emacs.desktop
-/.emacs.desktop.lock
-*.elc
-auto-save-list
-tramp
-.\#*
+#*~
+# \#*\#
+# .\#*
 
-# Directory configuration
-.dir-locals.el
-.cache
+# # Directory configuration
 /quelpa/
 /elpa/
-/eshell/history
-/eshell/lastdir
-/private/
-/transient/
 /var/
+/etc/
 
-# Files configuration
-.projectile
-projectile.cache
-projectile-bookmarks.eld
-helm-adaptive-history
-.org-id-locations
-*_archive
-*_flymake.*
-flycheck_*.el
-recentf
-bookmarks
-.lsp-session*
-custom.el
-package-quickstart.el
-amx-items
-
-# Other
-proxy.el
-private.el
+# # Files configuration
+lsp-sessions

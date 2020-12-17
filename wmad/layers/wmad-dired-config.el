@@ -1,12 +1,12 @@
-;; wmad-dired-config.el --- Dired Configuration Layer
-;; -*- lexical-binding: t; -*-
+;; wmad-dired-config.el --- Dired Configuration Layer -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
 ;;; Code:
 
 (defun wmad/dired-config ()
-
+  "Dired configuration."
+  
   ;; Dired configuration ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package dired
     :commands (dired dired-jump)
@@ -75,4 +75,5 @@
   )
 
 (provide 'wmad-dired-config)
+
 ;;; wwmad-dired-config.el ends here

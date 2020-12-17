@@ -1,10 +1,11 @@
-;; early-init.el --- Early Init File
+;;; early-init.el --- Early Init File
+
+;;; Commentary:
+
+;;; Code:
 ;;
 ;; This file is not part of GNU Emacs.
 ;;
-
-
-;; (add-to-list 'load-path "~/.emacs.d/elisp/")
 
 ;; Proxy configuration
 ;; (load "~/.emacs.d/elisp/proxy.el")

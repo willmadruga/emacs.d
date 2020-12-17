@@ -1,45 +1,64 @@
-;; wmad-devel-lsp.el --- Development Configuration Layer : LSP
-;; -*- lexical-binding: t; -*-
+;; wmad-devel-lsp.el --- Development Configuration Layer : LSP -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
 ;;; Code:
 
-(defun wmad/lsp-mode-setup ()
-  (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
-  (lsp-headerline-breadcrumb-mode))
+;; (defun wmad/lsp-mode-setup ()
+;;   "LSP-mode setup."
 
+;;   (setq lsp-headerline-breadcrumb-segments '(path-up-to-project file symbols))
+;;   (lsp-headerline-breadcrumb-mode))
 
 (defun wmad/devel-lsp-init ()
+  "LSP-mode configurations."
 
-  ;; lsp mode ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package lsp-mode
-    :defer t
-    :ensure t
-    :commands (lsp lsp-deferred)
-    :hook (lsp-mode . efs/lsp-mode-setup)
-    :init
-    (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+    :commands lsp
+    :hook ((typescript-mode js2-mode) . lsp)
+    ;; :bind (:map lsp-mode-map
+    ;;             ("TAB" . completion-at-point))
     :config
-    (lsp-enable-which-key-integration t))
-
-  ;; company lsp mode ;;;;;;;;;;;;;;;
-  (use-package company-lsp
-    :defer t
-    :ensure t)
-
-  ;; lsp UI ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    (setq lsp-session-file (concat user-emacs-directory "lsp-sessions"))
+    (setq lsp-headerline-breadcrumb-enable t)
+    )
+  
   (use-package lsp-ui
-    :defer t
-    :ensure t
-    :hook (lsp-mode-hook . lsp-ui-mode)
-    :custom
-    (lsp-ui-doc-position 'bottom))
+    :hook (lsp-mode . lsp-ui-mode)
+    :config
+    (setq lsp-ui-sideline-enable t))
 
-  ;; eglot - client for LSP servers
-  (use-package eglot
-    :defer t
-    :ensure t)
+  
+  ;;   ;; lsp mode ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;;   (use-package lsp-mode
+  ;;     :ensure t
+  ;;     :commands (lsp lsp-deferred)
+  ;;     :hook (
+  ;;            (lsp-mode-hook . wmad/lsp-mode-setup)
+  ;;            (js2-mode-hook . lsp-deferred)
+  ;;            (lsp-mode-hook . lsp-enable-which-key-integration)
+  ;;            )
+  ;;     :init
+  ;;     (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
+  ;;     :config
+  ;;     (lsp-enable-which-key-integration t))
+
+  ;;   ;; company lsp mode ;;;;;;;;;;;;;;;
+  ;;   (use-package company-lsp
+  ;;     :defer t
+  ;;     :ensure t)
+
+  ;;   ;; lsp UI ;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;;   (use-package lsp-ui
+  ;;     :ensure t
+  ;;     :commands lsp-ui-mode
+  ;;     :hook (lsp-mode-hook . lsp-ui-mode)
+  ;;     :custom
+  ;;     (lsp-ui-doc-position 'bottom))
+
+  ;;   ;; eglot - client for LSP servers
+  ;;   ;; (use-package eglot
+  ;;   ;;   :ensure t)
 
   )
 

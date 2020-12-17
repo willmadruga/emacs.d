@@ -1,6 +1,12 @@
-;; load-paths.el --- Core configuration: load paths
+;; load-paths.el --- Core configuration: load paths -*- lexical-binding: t; -*-
 
-(defun add-to-load-path (dir) (add-to-list 'load-path dir))
+;;; Commentary:
+
+;;; Code:
+
+(defun add-to-load-path (dir)
+  "Add directory DIR to 'load-path'."
+  (add-to-list 'load-path dir))
 
 (defvar start-directory user-emacs-directory)
 
@@ -14,12 +20,13 @@
 
 (defconst elisp-directory (expand-file-name (concat start-directory "elisp/")))
 
+;; Dependent modules needs to be loaded first to suppress 'flycheck' errors.
 (mapc 'add-to-load-path
       `(
+	      ,devel-directory
+	      ,org-directory
+	      ,layers-directory
         ,core-directory
-	,layers-directory
-	,devel-directory
-	,org-directory
         ,elisp-directory
         ))
 

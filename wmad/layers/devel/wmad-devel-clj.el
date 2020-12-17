@@ -1,12 +1,12 @@
-;; wmad-devel-clj.el --- Development Configuration Layer : Clojure
-;; -*- lexical-binding: t; -*-
+;; wmad-devel-clj.el --- Development Configuration Layer : Clojure -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
 ;;; Code:
 
 (defun wmad/devel-clj-init ()
-
+  "Clojure configuration."
+  
   ;; cider
   (use-package cider
     :defer t

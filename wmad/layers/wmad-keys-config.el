@@ -1,14 +1,13 @@
-;; wmad-keys-config.el --- Keybindings Configuration Layer
-;; -*- lexical-binding: t; -*-
+;; wmad-keys-config.el --- Keybindings Configuration Layer -*- lexical-binding: t; -*-
 
 ;;; Commentary:
 
 ;;; Code:
 
 (defun wmad/keys-config ()
-
+  "Keybindings configuration."
   (use-package emacs
-    :config  
+    :config
     ;; Unsetting key bindings
     (global-unset-key (kbd "C-SPC"))
     (global-unset-key (kbd "C-z"))
@@ -20,7 +19,6 @@
     (global-set-key (kbd "C-S-z") 'undo-fu-only-redo)
 
     ;; Window Movements ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    (global-set-key (kbd "C-x o")     'switch-window)
     (global-set-key (kbd "s-<left>")  'windmove-left)
     (global-set-key (kbd "s-<right>") 'windmove-right)
     (global-set-key (kbd "s-<up>")    'windmove-up)
@@ -37,8 +35,8 @@
 
   ;; General Setup ;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package general
-    :defer t
     :ensure t
+    :defer t
     :config
     (general-create-definer wmad/leader-keys
       :prefix "C-SPC"
@@ -56,6 +54,7 @@
       "j"   '(wmad/open-journal :which-key "Open journal file")
       "T"   '(wmad/open-todo :which-key "Open todo file")
       "k"   '(kill-buffer :which-key "Kill buffer")
+      "f"   '(find-file :which-key "Find File")
       "SPC" '(projectile-find-file :which-key "Project Find File")
       "R"   '(restart-emacs :which-key "Restart Emacs")
       "v"   '(vterm :which-key "Terminal"))
@@ -90,10 +89,13 @@
     ;; Git ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (wmad/leader-keys
       "G"  '(:ignore t :which-key "Magit")
+      "Gg" '(magit-dispatch :which-key "Git Menu")
+      "Gf" '(magit-file-dispatch :which-key "Git File Menu")
       "Gs" '(magit-status :which-key "Status")
       "Gb" '(magit-blame :which-key "Blame")
-      "Gl" '(magit-log :which-key "Log")
-      "Gf" '(magit-fetch :which-key "Fetch")
+      "GL" '(magit-log :which-key "Repo Log")
+      "Gl" '(magit-log-buffer-file :which-key "Buffer file Log")
+      "GF" '(magit-fetch :which-key "Fetch")
       "G <down>" '(magit-pull :which-key "Pull")
       "G <up>" '(magit-push :which-key "Push"))
 
@@ -118,7 +120,6 @@
     (wmad/leader-keys
       "w"  '(:ignore t :which-key "Window")
       "wt" '(wmad/transpose-windows :which-key "Transpose")
-      "wo" '(switch-window :which-key "Switch")
       "w-" '(split-window-below :which-key "Split below")
       "w=" '(split-window-right :which-key "Split right")
       "w0" '(delete-window :which-key "Delete this")
@@ -145,8 +146,23 @@
     ;; Go to... ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (wmad/leader-keys
       "g"  '(:ignore t :which-key "Go to...")
-      "gd" '(dumb-jump-go :which-key "go dumb")
-      "gb" '(xref-pop-marker-stack :which-key "go back"))
+      "gd" '(dumb-jump-go :which-key "definition")
+      "gD" '(xref-find-definitions :which-key "definition")
+      "gb" '(xref-pop-marker-stack :which-key "back")
+      "gl" '(goto-line :which-key "line"))
+
+    (wmad/leader-keys
+     "l"  '(:ignore t :which-key "LSP")
+     "ll" '(lsp :which-key "lsp mode")
+     "lm" '(lsp-mode-map :which-keys "LSP mode map")
+     "ld" '(dumb-jump-go :which-key "Dumb go")
+     "lD" '(xref-find-definitions :which-key "Definitions")
+     "lr" '(xref-find-references :which-keys "References")
+     "ln" '(lsp-ui-find-next-reference :which-keys "Next")
+     "lp" '(lsp-ui-find-prev-reference :which-keys "Previous")
+     "le" '(lsp-ui-flycheck-list :which-keys "List")
+     "ls" '(lsp-ui-sideline-mode :which-keys "sideline mode")
+     "lx" '(lsp-execute-code-action :which-keys "Execute code action"))
 
     ;; Cider ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (wmad/leader-keys
@@ -157,12 +173,7 @@
       "cc" '(cider-eval-print-last-sexp :which-key "eval sexp print")
       "cq" '(cider-quit :which-key "quit cider"))
 
-    ;; LSP ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-    (wmad/leader-keys
-      "l"  '(:ignore t :which-key "LSP")
-      "ll" '(lsp :which-key "LSP Session Connect"))
-    )
-  )
+  ))
 
 (provide 'wmad-keys-config)
 ;;; wmad-keys-config.el ends here
