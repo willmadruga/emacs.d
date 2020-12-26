@@ -18,11 +18,12 @@
     (global-set-key (kbd "C-z")   'undo-fu-only-undo)
     (global-set-key (kbd "C-S-z") 'undo-fu-only-redo)
 
-    ;; Window Movements ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+    ;; Window ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (global-set-key (kbd "s-<left>")  'windmove-left)
     (global-set-key (kbd "s-<right>") 'windmove-right)
     (global-set-key (kbd "s-<up>")    'windmove-up)
     (global-set-key (kbd "s-<down>")  'windmove-down)
+    (global-set-key (kbd "s-`")  'toggle-doom-alike-terminal)
 
     ;; Helpful help ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (global-set-key (kbd "C-h f")   #'helpful-callable)

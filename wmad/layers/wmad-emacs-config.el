@@ -67,8 +67,13 @@
            (side . bottom)
            (slot . 1))
 
+          ("^\\(\\*e?shell\\|vterm\\).*"
+           (display-buffer-in-side-window)
+           (window-height . 0.50)
+           (side . top)
+           (slot . 0))
 
-          ("^\\(\\*e?shell\\|vterm\\|*HTTP.*\\|*Async.*\\).*"
+          ("^\\(\\*HTTP.*\\|*Async.*\\).*"
            (display-buffer-in-side-window)
            (window-height . 0.15)
            (side . bottom)

@@ -7,6 +7,14 @@
 
 ;;; Code:
 
+(defun toggle-doom-alike-terminal ()
+  "Drop down a terminal window like in good old Doom days.  vterm is configured to open on a side-window positioned at the top."
+  (interactive)
+  (if (eq nil (get-buffer "vterm"))
+      (vterm)
+    (window-toggle-side-windows))
+  )
+
 (defun wmad/identify-dependencies (pkg)
   "Identify files dependent of PKG."
   (require 'loadhist)
