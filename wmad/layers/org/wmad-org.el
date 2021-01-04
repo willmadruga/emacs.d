@@ -103,7 +103,7 @@
   ;; Org Capture configuration
   (use-package org-capture
     :config
-    (defvar +org-capture-journal-file "/run/media/wmadruga/3A3D-979D/2nd_brain/journal.org")
+    (defvar +org-capture-journal-file "~/src/2nd_brain/journal.org")
 
     (setq org-capture-templates
           '(("j" "Journal" entry
