@@ -8,25 +8,17 @@
   "Dired configuration."
   
   ;; Dired configuration ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  (use-package dired
-    :commands (dired dired-jump)
-    :custom ((dired-listing-switches "-agho --group-directories-first")))
+  ;; (dired-listing-switches "-agho --group-directories-first")
 
   ;; dired single window ;;;;;;;;;;;;;
-  (use-package dired-single
-    :defer t
-    :ensure t)
+  (use-package dired-single)
 
   ;; All the icons for dired ;;;;;;;;;;;;;;;;;;;;;
   (use-package all-the-icons-dired
-    :defer t
-    :ensure t
     :hook (dired-mode . all-the-icons-dired-mode))
 
   ;; dired open extensions-binary map ;;;;;;;;;;;;;;;;
   (use-package dired-open
-    :defer t
-    :ensure t
     :config
     (setq dired-open-extensions '(("png" . "feh")
                                   ("mkv" . "mpv")
@@ -36,14 +28,10 @@
 
   ;; dired hide dotfiles ;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package dired-hide-dotfiles
-    :defer t
-    :ensure t
     :hook (dired-mode . dired-hide-dotfiles-mode))
 
   ;; dired sidebar ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package dired-sidebar
-    :defer t
-    :ensure t
     :commands (dired-sidebar-toggle-sidebar)
     :config
     (setq dired-sidebar-theme 'icons)

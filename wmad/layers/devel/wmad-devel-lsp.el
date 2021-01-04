@@ -28,38 +28,6 @@
     :config
     (setq lsp-ui-sideline-enable t))
 
-  
-  ;;   ;; lsp mode ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;;   (use-package lsp-mode
-  ;;     :ensure t
-  ;;     :commands (lsp lsp-deferred)
-  ;;     :hook (
-  ;;            (lsp-mode-hook . wmad/lsp-mode-setup)
-  ;;            (js2-mode-hook . lsp-deferred)
-  ;;            (lsp-mode-hook . lsp-enable-which-key-integration)
-  ;;            )
-  ;;     :init
-  ;;     (setq lsp-keymap-prefix "C-c l")  ;; Or 'C-l', 's-l'
-  ;;     :config
-  ;;     (lsp-enable-which-key-integration t))
-
-  ;;   ;; company lsp mode ;;;;;;;;;;;;;;;
-  ;;   (use-package company-lsp
-  ;;     :defer t
-  ;;     :ensure t)
-
-  ;;   ;; lsp UI ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  ;;   (use-package lsp-ui
-  ;;     :ensure t
-  ;;     :commands lsp-ui-mode
-  ;;     :hook (lsp-mode-hook . lsp-ui-mode)
-  ;;     :custom
-  ;;     (lsp-ui-doc-position 'bottom))
-
-  ;;   ;; eglot - client for LSP servers
-  ;;   ;; (use-package eglot
-  ;;   ;;   :ensure t)
-
   )
 
 (provide 'wmad-devel-lsp)

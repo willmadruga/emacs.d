@@ -4,29 +4,32 @@
 
 ;;; Code:
 
-(require 'package)
-
 (defun wmad-pkgsys-init ()
-  "Initialize package system."
+  "Package System configuration initialization."
+  
+  (defvar bootstrap-version)
+
+  (let ((bootstrap-file
+	       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+	      (bootstrap-version 5))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/raxod502/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+	      (goto-char (point-max))
+	      (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+
+  (setq straight-use-package-by-default t)
+
+  (straight-use-package 'use-package)
+  (setq straight-use-package-by-default t)
+  
+  (require 'package)
   (add-to-list 'package-archives
-               '("melpa" . "https://melpa.org/packages/")
-               '("org" . "https://orgmode.org/elpa/"))
-
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
-
-  (eval-and-compile
-    (setq use-package-always-ensure nil)
-    (setq use-package-always-defer nil)
-    (setq use-package-always-demand nil)
-    (setq use-package-expand-minimally nil)
-    (setq use-package-enable-imenu-support t)
-    (setq use-package-compute-statistics nil)
-    (setq use-package-hook-name-suffix nil))
-
-  (eval-when-compile
-    (require 'use-package)))
+               '("melpa" . "https://melpa.org/packages/"))
+  )
 
 (provide 'wmad-pkgsys)
 

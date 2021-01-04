@@ -2,9 +2,6 @@
 
 ;;; Commentary:
 
-;; Packages with loading deferred after 1 second:
-;; yasnippet
-
 ;;; Code:
 
 (defun wmad/devel-packages-init ()
@@ -20,7 +17,6 @@
 
   ;; Projectile
   (use-package projectile
-    :ensure t
     :diminish projectile-mode
     :config (projectile-mode)
     :custom ((projectile-completion-system 'ido))
@@ -31,36 +27,24 @@
     (setq projectile-switch-project-action #'projectile-dired))
 
   ;; ag search ;;;;;;;;;;;;;
-  (use-package ag
-    :ensure t
-    :defer t)
+  (use-package ag)
 
   ;; ripgrep search ;;;;;;;;;;;;;
-  (use-package ripgrep
-    :ensure t
-    :defer t)
+  (use-package ripgrep)
   
   ;; rainbow delimiters ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package rainbow-delimiters
-    :ensure t
-    :defer t
     :diminish
     :hook (prog-mode-hook . rainbow-delimiters-mode))
 
   ;; YASnippet ;;;;;;;;;;;;;;;;;
   (use-package yasnippet
-    :ensure t
-    :defer 1
     :config (yas-global-mode 1))
   
   ;; YASnippet snippets ;;;;;;;;;;;;;;;;;;;;
-  (use-package yasnippet-snippets
-    :ensure t
-    :defer t)
-
+  (use-package yasnippet-snippets)
   ;; flycheck ;;;;;;;;;;;;;;;
   (use-package flycheck
-    :ensure t
     :hook (prog-mode-hook . global-flycheck-mode)
     :config
     (setq flycheck-emacs-lisp-load-path 'inherit)
@@ -76,48 +60,28 @@
 
   ;; smart parens ;;;;;;;;;;;;;;;;;;;
   (use-package smartparens    
-    :ensure t
-    :defer t
     :hook (prog-mode-hook . smartparens-mode))
 
   ;; Origami - folding mechanism
   (use-package origami
-    :ensure t
-    :defer t
     :hook (prog-mode-hook . global-origami-mode))
 
   ;; indent guide ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package indent-guide
-    :ensure t
-    :defer t
     :hook (prog-mode-hook . indent-guide-mode))
 
   ;; restclient ;;;;;;;;;;;;;;;;;;;;
-  (use-package restclient
-    :ensure t
-    :defer t)
-
-  ;; Manually loading 'with-editor' before magit to fix this dependency issue. Not sure yet why it doesn't autoload when magit gets loaded.
-  ;; Error (use-package): magit/:catch: Loading file /home/wmadruga/.emacs.d/elpa/with-editor-20201030.1232/with-editor.elc failed to provide feature ‘with-editor’
-  (use-package emacs
-    :config
-    (load (concat user-emacs-directory "elpa/with-editor-20201030.1232/with-editor.el")))
-
-  ;; magit ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;  
+  (use-package restclient)
+  
+  ;; magit ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package magit
-    :ensure t
-    :defer t
     :custom
     (magit-display-buffer-function #'magit-display-buffer-same-window-except-diff-v1))
 
   ;; display TODO and similars in repo ;;
-  (use-package magit-todos
-    :ensure t
-    :defer t)
+  (use-package magit-todos)
 
   (use-package dumb-jump
-    :ensure t
-    :defer t
     ;; :hook (xref-backend-functions . dumb-jump-xref-activate)
     :config
     (setq dumb-jump-disable-obsolete-warnings t)

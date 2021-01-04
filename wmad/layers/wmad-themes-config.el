@@ -9,22 +9,15 @@
 
   (use-package modus-vivendi-theme
     :disabled t
-    :ensure t
-    :defer t
     :config
     (load-theme 'modus-vivendi t))
 
   (use-package modus-operandi-theme
-    :disabled t
-    :ensure t
-    :defer t)
+    :disabled t)
 
-  (use-package all-the-icons
-    :ensure t
-    :defer t)
+  (use-package all-the-icons)
 
   (use-package doom-themes
-    :ensure t
     :config
 
     (load-theme 'doom-one t)
@@ -36,8 +29,6 @@
     (doom-themes-org-config))
 
   (use-package doom-modeline
-    :ensure t
-    :defer t
     :init (doom-modeline-mode 1)
     :custom-face
     (mode-line ((t (:height 1.0))))

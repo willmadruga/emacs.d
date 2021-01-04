@@ -43,49 +43,45 @@
 
     ;; Enable narrowing
     (put 'narrow-to-region 'disabled nil)
-    
-    )
-  
+
+    ;; Window configuration
+    (setq display-buffer-alist
+          '(
+            ("^\\(\\*Bufler.*\\|\\*Help.*\\).*"
+             (display-buffer-in-side-window)
+             (window-width . 0.40)
+             (side . right)
+             (slot . 1))
+
+            ("^\\(\\*ag.*\\|\\*cider-repl.*\\).*"
+             (display-buffer-in-side-window)
+             (window-height . 0.30)
+             (side . bottom)
+             (slot . 1))
+
+            ("^\\(\\*e?shell\\|vterm\\).*"
+             (display-buffer-in-side-window)
+             (window-height . 0.50)
+             (side . top)
+             (slot . 0))
+
+            ("^\\(\\*HTTP.*\\|*Async.*\\).*"
+             (display-buffer-in-side-window)
+             (window-height . 0.15)
+             (side . bottom)
+             (slot . 0))))
+
+    (setq window-combination-resize t)
+    (setq even-window-sizes 'height-only)
+    (setq window-sides-vertical nil)
+    (setq switch-to-buffer-in-dedicated-window 'pop)
+    :hook ((help-mode-hook . visual-line-mode)
+           (custom-mode-hook . visual-line-mode)))
+
   (use-package recentf
     :config
     (setq recentf-max-saved-items 50)
     (recentf-mode t))
-
-  (use-package window
-  :init
-  (setq display-buffer-alist
-        '(
-          ("^\\(\\*Bufler.*\\|\\*Help.*\\).*"
-           (display-buffer-in-side-window)
-           (window-width . 0.40)
-           (side . right)
-           (slot . 1))
-
-          ("^\\(\\*ag.*\\|\\*cider-repl.*\\).*"
-           (display-buffer-in-side-window)
-           (window-height . 0.30)
-           (side . bottom)
-           (slot . 1))
-
-          ("^\\(\\*e?shell\\|vterm\\).*"
-           (display-buffer-in-side-window)
-           (window-height . 0.50)
-           (side . top)
-           (slot . 0))
-
-          ("^\\(\\*HTTP.*\\|*Async.*\\).*"
-           (display-buffer-in-side-window)
-           (window-height . 0.15)
-           (side . bottom)
-           (slot . 0))))
-
-  (setq window-combination-resize t)
-  (setq even-window-sizes 'height-only)
-  (setq window-sides-vertical nil)
-  (setq switch-to-buffer-in-dedicated-window 'pop)
-  :hook ((help-mode-hook . visual-line-mode)
-         (custom-mode-hook . visual-line-mode)))
-
 
   ) ;; wmad/emacs-config
 

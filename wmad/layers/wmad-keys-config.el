@@ -36,8 +36,6 @@
 
   ;; General Setup ;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package general
-    :ensure t
-    :defer t
     :config
     (general-create-definer wmad/leader-keys
       :prefix "C-SPC"
