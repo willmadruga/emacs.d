@@ -13,3 +13,4 @@
 
 # # Files configuration
 lsp-sessions
+.flycheck*
