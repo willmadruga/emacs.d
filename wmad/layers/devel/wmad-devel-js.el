@@ -9,7 +9,6 @@
 
   ;; js mode ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package js2-mode
-    :ensure t
     :config
     (setq js-indent-level 2)
     
@@ -20,7 +19,6 @@
 
   ;; js refactor ;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package js2-refactor
-    :ensure t
     :hook (js2-mode-hook . js2-refactor-mode)
     ;; :config (add-hook 'js2-mode-hook
     ;;                   #'js2-refactor-mode))
@@ -28,6 +26,10 @@
 
   ;; "Netsuite-Mode" package: name is yet to be defined.
   ;; that's my package, basically a wrapper around SDFCLI
+  ;; (use-package netsuite-mode
+  ;;   :straight (netsuite-mode
+  ;;              :local-repo "~/src/netsuite-mode.el"
+  ;;              :type git)
   (use-package emacs
     :config
     (load-file "~/src/netsuite-mode.el/netsuite.el")

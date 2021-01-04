@@ -2,27 +2,20 @@
 
 ;;; Commentary:
 
-;; Packages with loading deferred after 1 second:
-;; selectrum, prescient, selectrum-prescient
-
 ;;; Code:
 
 (defun wmad/base-packages-init ()
   "Base packages configuration."
   ;; diminish ;;;;;;;;;
   (use-package diminish
-    :ensure t
-    :defer t
     :after use-package)
 
   ;; Bufler ;;;;;;;;;;;;;;;;;;;
   (use-package bufler
-    :ensure t
     :bind (("C-x b" . bufler)))
 
   ;; no-littering ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package no-littering
-    :ensure t
     :config
     (require 'recentf)
     (defvar recentf-exclude)
@@ -36,20 +29,13 @@
 
 
   ;; Prescient ;;;;;;;;;;
-  (use-package prescient
-    :ensure t
-    :defer 1)
-
+  (use-package prescient)
   ;; Selectrum, Selectrum-Prescient ;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package selectrum
-    :ensure t
-    :defer 1
     :config
     (selectrum-mode 1))
 
   (use-package selectrum-prescient
-    :ensure t
-    :defer 1
     :config
     ;; to make sorting and filtering more intelligent
     (selectrum-prescient-mode 1)
@@ -58,14 +44,10 @@
     (prescient-persist-mode 1))
 
   ;; undo-fu ;;;;;;;;;
-  (use-package undo-fu
-    :ensure t
-    :defer t)
-
+  (use-package undo-fu)
+  
   ;; which-key ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package which-key
-    :ensure t
-    :defer t
     :init (which-key-mode)
     :diminish which-key-mode
     :config
@@ -74,23 +56,15 @@
     (setq which-key-idle-secondary-delay 0.05))
 
   ;; try ;;;;;;;;;
-  (use-package try
-    :ensure t
-    :defer t)
-
+  (use-package try)
   ;; restart-emacs ;;;;;;;;;
-  (use-package restart-emacs
-    :ensure t
-    :defer t)
+  (use-package restart-emacs)
 
   ;; helpful ;;;;;;;;;
-  (use-package helpful
-    :ensure t
-    :defer t)
+  (use-package helpful)
 
   ;; Company ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package company
-    :ensure t
     :after lsp-mode
     :bind (:map company-active-map
                 ("<tab>" . company-indent-or-complete-common))
@@ -102,19 +76,14 @@
 
   ;; company-box ;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package company-box
-    :ensure t
-    :defer t
     :hook (company-mode . company-box-mode))
 
   (use-package company-prescient
-    :ensure t
     :after company
     :config (company-prescient-mode 1))
     
   ;; vterm ;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package vterm
-    :ensure t
-    :defer t
     :commands vterm
     :config
     (setq vterm-shell "zsh")
@@ -122,7 +91,6 @@
 
   ;; Dashboard ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package dashboard
-    :ensure t
     :config
     (setq dashboard-items
           '((recents . 15)
@@ -138,8 +106,6 @@
 
   ;; whitespace butler ;;;;;;;;;;;;;;;;;;;
   (use-package ws-butler
-    :ensure t
-    :defer t
     :hook ((text-mode . ws-butler-mode)
            (prog-mode . ws-butler-mode)))
   

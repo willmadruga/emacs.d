@@ -9,15 +9,13 @@
 
   ;; slime ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package slime
-    :defer t
-    :ensure t
     :config
     (setq inferior-lisp-program "sbcl")
     (setq scheme-program-name "scheme"))
 
 
   ;; TODO try out sly: https://github.com/joaotavora/sly
-  ;; (use-package sly :ensure t)
+  ;; (use-package sly)
 
   )
 

@@ -10,6 +10,7 @@
 /elpa/
 /var/
 /etc/
+/straight/
 
 # # Files configuration
 lsp-sessions

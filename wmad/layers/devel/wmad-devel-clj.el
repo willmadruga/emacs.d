@@ -8,9 +8,7 @@
   "Clojure configuration."
   
   ;; cider
-  (use-package cider
-    :defer t
-    :ensure t)
+  (use-package cider)
     ;; :init 
     ;;         (setq cider-stacktrace-default-filters '(tooling dup)
     ;;               cider-repl-pop-to-buffer-on-connect nil
@@ -29,24 +27,16 @@
 
 
   ;; cider eval sexp fu ;;;;;;;;;;;;;;;;;;;;
-  (use-package cider-eval-sexp-fu
-    :defer t
-    :ensure t)
+  (use-package cider-eval-sexp-fu)
 
   ;; clojure mode ;;;;;;;;;;;;;;;;;;;;
-  (use-package clojure-mode
-    :defer t
-    :ensure t)
+  (use-package clojure-mode)
 
   ;; clj-refactor ;;;;;;;;;;;;;;;;;;;;
-  (use-package clj-refactor
-    :defer t
-    :ensure t)
+  (use-package clj-refactor)
 
   ;; clojure snippets ;;;;;;;;;;;;;;;;;;;;
-  (use-package clojure-snippets
-    :defer t
-    :ensure t)
+  (use-package clojure-snippets)
 
 ;; (defun my-clojure-mode-hook ()
 ;;     (clj-refactor-mode 1)
