@@ -27,8 +27,9 @@
 
     (fset 'yes-or-no-p 'y-or-n-p)
     (delete-selection-mode 1)
-    (toggle-frame-fullscreen)
     (column-number-mode)
+
+    (toggle-frame-maximized)
 
     (unless (equal "Battery status not available" (battery))
       (display-battery-mode 1))
