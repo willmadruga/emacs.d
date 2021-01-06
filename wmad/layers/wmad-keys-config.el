@@ -14,6 +14,9 @@
     (global-unset-key (kbd "C-x C-z"))
     (global-unset-key (kbd "C-h h"))
 
+    ;; Bring back the set mark command
+    (global-set-key (kbd "C-SPC RET") 'set-mark-command)
+
     ;; Undo and Redo ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (global-set-key (kbd "C-z")   'undo-fu-only-undo)
     (global-set-key (kbd "C-S-z") 'undo-fu-only-redo)

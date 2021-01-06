@@ -33,7 +33,7 @@
      ;; restore file-name-handler-alist
      (setq file-name-handler-alist wmad--file-name-handler-alist)
 
-     ;; wmad: a workaround dashboard's workaround to prevent flooding the recent files list with org mode files
+     ;; wmad: a dashboard's workaround to prevent flooding the recent files list with org mode files
      (recentf-load-list)
 
      ;; Profile start-up

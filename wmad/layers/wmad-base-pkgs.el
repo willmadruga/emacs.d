@@ -90,18 +90,43 @@
     (setq vterm-max-scrollback 10000))
 
   ;; Dashboard ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  (defun wmad-configure-navigator ()
+    "Configure the dashboard navigator."
+    (setq dashboard-navigator-buttons
+          `((
+             (,(all-the-icons-octicon "mark-github" :height 1.1 :v-adjust 0.0)
+              "emacs.d" "" (lambda (&rest _) (browse-url "https://github.com/wmadruga/emacs.d")))
+
+             ("" "Restart" "" (lambda (&rest _) (restart-emacs)))
+
+             (,(all-the-icons-faicon "calendar" :height 1.1 :v-adjust 0.0)
+              "TODO" "" (lambda (&rest _) (wmad/open-todo)))
+
+             (,(all-the-icons-faicon "book" :height 1.1 :v-adjust 0.0)
+              "Journal" "" (lambda (&rest _) (wmad/open-journal)))
+
+             ))))
+
   (use-package dashboard
     :config
     (setq dashboard-items
           '((recents . 15)
-            (projects . 5)
-            (bookmarks . 5)
+            (projects . 7)
+            (bookmarks . 3)
             (agenda . 20)))
+
     (setq dashboard-set-init-info t)
     (setq dashboard-set-heading-icons t)
     (setq dashboard-set-file-icons t)
+
+    (setq dashboard-set-navigator t)
+    (wmad-configure-navigator)
+
+    ;; (setq dashboard-startup-banner 'logo)
+    (setq dashboard-startup-banner (concat user-emacs-directory "/wmad/resources/gameoflife.png"))
+
     (dashboard-modify-heading-icons '((recents . "file-text")
-                                      (bookmarks . "book")))
+                                      (bookmarks . "bookmark")))
     (dashboard-setup-startup-hook))
 
   ;; whitespace butler ;;;;;;;;;;;;;;;;;;;

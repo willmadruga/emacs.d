@@ -7,19 +7,10 @@
 (defun wmad/theme-config ()
   "Emacs \"theme\" configuration."
 
-  (use-package modus-vivendi-theme
-    :disabled t
-    :config
-    (load-theme 'modus-vivendi t))
-
-  (use-package modus-operandi-theme
-    :disabled t)
-
   (use-package all-the-icons)
 
   (use-package doom-themes
     :config
-
     (load-theme 'doom-one t)
 
     ;; Enable flashing mode-line on errors
@@ -36,8 +27,7 @@
     :custom
     (doom-modeline-height 15)
     (doom-modeline-bar-width 10)
-    (doom-modeline-lsp t)
-    (doom-modeline-minor-modes t))
+    (doom-modeline-lsp t))
 
   (use-package emacs
     :config
