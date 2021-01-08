@@ -4,7 +4,7 @@ It's a work in progress, as any other configuration - mind you! :D
 I'm also learning my way around elisp and creating packages.
 
 
-* Inspired on the best out there :)
+* Inspired by...
 
 [[https://www.spacemacs.org/][Spacemacs]] is a great project, it's actually how I started using emacs, evil mode FTW.
 
