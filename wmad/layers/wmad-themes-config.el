@@ -9,15 +9,19 @@
 
   (use-package all-the-icons)
 
-  (use-package doom-themes
+  (use-package gotham-theme
     :config
-    (load-theme 'doom-one t)
+    (load-theme 'gotham t))
 
-    ;; Enable flashing mode-line on errors
-    (doom-themes-visual-bell-config)
+  ;; (use-package doom-themes
+  ;;   :config
+  ;;   (load-theme 'doom-one t)
 
-    ;; Corrects (and improves) org-mode's native 'fontification'.
-    (doom-themes-org-config))
+  ;;   ;; Enable flashing mode-line on errors
+  ;;   (doom-themes-visual-bell-config)
+
+  ;;   ;; Corrects (and improves) org-mode's native 'fontification'.
+  ;;   (doom-themes-org-config))
 
   (use-package doom-modeline
     :init (doom-modeline-mode 1)

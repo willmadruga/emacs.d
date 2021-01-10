@@ -26,6 +26,8 @@
 (require 'wmad-devel-el)
 (require 'wmad-devel-lisp)
 
+(require 'wmad-fun)
+
 (defun wmad/init ()
   "Emacs configuration initialization."
   (wmad/load-private-scripts)
@@ -44,6 +46,8 @@
   (wmad/devel-clj-init)
   (wmad/devel-elisp-init)
   (wmad/devel-lisp-init)
+
+  (wmad/fun-init)
   )
 
 

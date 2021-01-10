@@ -133,7 +133,9 @@
   (use-package ws-butler
     :hook ((text-mode . ws-butler-mode)
            (prog-mode . ws-butler-mode)))
-  
+
+  ;; (use-package firestarter) ;; https://depp.brause.cc/firestarter/
+
   )
 
 (provide 'wmad-base-pkgs)
