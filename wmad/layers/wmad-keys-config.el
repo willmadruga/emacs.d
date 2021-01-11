@@ -97,6 +97,7 @@
       "Gb" '(magit-blame :which-key "Blame")
       "GL" '(magit-log :which-key "Repo Log")
       "Gl" '(magit-log-buffer-file :which-key "Buffer file Log")
+      "Gt" '(magit-todos-list :which-key "TODO List")
       "GF" '(magit-fetch :which-key "Fetch")
       "G <down>" '(magit-pull :which-key "Pull")
       "G <up>" '(magit-push :which-key "Push"))

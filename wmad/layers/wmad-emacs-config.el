@@ -66,7 +66,7 @@
              (side . top)
              (slot . 0))
 
-            ("^\\(\\*HTTP.*\\|*Async.*\\).*"
+            ("^\\(\\*HTTP.*\\|*Async.*\\|magit-todos-list\\).*"
              (display-buffer-in-side-window)
              (window-height . 0.15)
              (side . bottom)

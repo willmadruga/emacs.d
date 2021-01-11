@@ -3,8 +3,6 @@
 
 ;;; Commentary:
 
-;; wmad/2nd-brain-path is defined in elisp/private.el
-
 ;;; Code:
 
 (defun toggle-doom-alike-terminal ()
@@ -60,9 +58,10 @@
   (find-file "~/.emacs.d/init.el"))
 
 (defun wmad/open-brain (file)
-  "Open FILE from 2nd-brain.  Free file wmad/2nd-brain-path loaded from private elisp."
+  "Open FILE from 2nd-brain."
   (interactive)
-  (find-file (concat wmad/2nd-brain-path file)))
+  (let* ((2nd-brain-path "~/src/2nd_brain/"))
+    (find-file (concat 2nd-brain-path file))))
 
 (defun wmad/open-journal ()
   "Open the journal file."
