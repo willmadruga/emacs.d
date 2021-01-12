@@ -19,7 +19,7 @@ More than anything this is a good excercise for me which I slowly reap the benef
   Couple of items I want to address, mostly ideas that I may or may not implement...
 
   + Better modularization
-    + initialize layers based on a variable passed via command line
-  + Understand and fix my font configuration
+    + initialize layers based on a variable passed via command line... nah I don't know how useful this is... maybe not worth the time...?
+  + Understand and fix my font configuration, big time.
   + Have a better org-mode experience
-  + Clean up 2nd-brain references
+    + it's not bad but I've seen much much better... it's about time I fix mine.
