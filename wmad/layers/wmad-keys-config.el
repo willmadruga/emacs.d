@@ -26,6 +26,12 @@
     (global-set-key (kbd "s-<right>") 'windmove-right)
     (global-set-key (kbd "s-<up>")    'windmove-up)
     (global-set-key (kbd "s-<down>")  'windmove-down)
+
+    (global-set-key (kbd "s-C-<left>")  'shrink-window-horizontally)
+    (global-set-key (kbd "s-C-<right>") 'enlarge-window-horizontally)
+    (global-set-key (kbd "s-C-<up>")    'shrink-window)
+    (global-set-key (kbd "s-C-<down>")  'enlarge-window)
+
     (global-set-key (kbd "s-`")  'toggle-doom-alike-terminal)
 
     ;; Helpful help ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -107,7 +113,8 @@
       "t"  '(:ignore t :which-key "Toggle")
       "td" '(dired-sidebar-toggle-sidebar :which-key "dired sidebar")
       "tf" '(toggle-frame-fullscreen :which-key "fullscreen")
-      "th" '(load-theme :which-key "choose theme")
+      "th" '(hl-line-mode :which-key "Highlight Line")
+      "tT" '(load-theme :which-key "choose theme")
       "tm" '(menu-bar-mode :which-key "menu bar")
       "to" '(global-origami-mode :which-key "origami")
       "tt" '(bufler-tabs-mode :which-key "bufler tab bar"))

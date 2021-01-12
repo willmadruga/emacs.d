@@ -21,6 +21,9 @@
   ;; Game of Life...
   (use-package xbm-life)
 
+  ;; Bookmark importer
+  (load "~/src/bookmarks/bm-import.el")
+
   )
 
 (provide 'wmad-fun)

@@ -30,6 +30,7 @@
 
   ;; Prescient ;;;;;;;;;;
   (use-package prescient)
+
   ;; Selectrum, Selectrum-Prescient ;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package selectrum
     :config
@@ -69,7 +70,7 @@
     :bind (:map company-active-map
                 ("<tab>" . company-indent-or-complete-common))
     :custom
-    (company-minimum-prefix-length 1)
+    (company-minimum-prefix-length 3)
     (company-idle-delay 0.0))
 
   (add-hook 'after-init-hook 'global-company-mode)
@@ -133,6 +134,20 @@
   (use-package ws-butler
     :hook ((text-mode . ws-butler-mode)
            (prog-mode . ws-butler-mode)))
+
+  (use-package ido
+    :init (ido-mode 1)
+    :config
+    (setq ido-enable-flex-matching nil)
+    (setq ido-create-new-buffer 'always)
+    (setq ido-everywhere t))
+
+  (use-package ido-vertical-mode
+    :ensure t
+    :init
+    (ido-vertical-mode 1)
+    :config
+    (setq ido-vertical-define-keys 'C-n-C-p-up-and-down))
 
   ;; (use-package firestarter) ;; https://depp.brause.cc/firestarter/
 

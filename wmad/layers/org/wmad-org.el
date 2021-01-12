@@ -22,11 +22,13 @@
         org-src-preserve-indentation nil
         org-startup-folded 'content
         org-cycle-separator-lines 2)
-  (org-indent-mode)
-  (visual-line-mode 1)
-  (variable-pitch-mode 1)
-  (auto-fill-mode 0)
-  ;; (diminish org-indent-mode)
+
+  (add-hook 'org-mode-hook (lambda ()
+                             (org-indent-mode 1)
+                             (visual-line-mode 1)
+                             (variable-pitch-mode 1)
+                             (auto-fill-mode 0)
+                             (wmad/org-mode-visual-fill)))
 
   (add-to-list 'org-structure-template-alist '("elisp" . "src emacs-lisp"))
 
@@ -46,8 +48,7 @@
 
 
   ;; Org Customizations
-
-  ;; ;; font setup ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+  ;; font setup ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
   (font-lock-add-keywords
    'org-mode
@@ -86,32 +87,28 @@
 
   ;; org superstar ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package org-superstar
-    :after org
-    :config
-    (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1))))
+	       :after org
+	       :config
+	       (add-hook 'org-mode-hook (lambda () (org-superstar-mode 1))))
 
   ;; org super-agenda ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (use-package org-super-agenda
-    :after org-agenda
-    :config
-    (org-super-agenda-mode)
-    (let ((org-super-agenda-groups
-           '((:auto-group t)))))
+	       :after org-agenda
+	       :config
+	       (org-super-agenda-mode)
+	       (let ((org-super-agenda-groups
+		      '((:auto-group t)))))
 
-    (setq org-agenda-window-setup 'current-window)
+	       (setq org-agenda-window-setup 'current-window)
 
-    ;; Location of agenda files
-    (setq org-agenda-files (concat user-emacs-directory "elisp/agenda-files.el")))
-
-  ;; FIXME:
-  (defun wmad/org-mode-visual-fill ())
-  ;; (setq visual-fill-column-width 200
-  ;; visual-fill-column-center-text t)
-  ;; (visual-fill-column-mode 1))
-
-  ;; (use-package visual-fill-column
-  ;;   :hook (org-mode-hook . wmad/org-mode-visual-fill))
+	       ;; Location of agenda files
+	       (setq org-agenda-files (concat user-emacs-directory "elisp/agenda-files.el")))
   )
+
+(defun wmad/org-mode-visual-fill ()
+  (setq visual-fill-column-width 200
+        visual-fill-column-center-text t)
+  (visual-fill-column-mode 1))
 
 (provide 'wmad-org)
 

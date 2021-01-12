@@ -60,6 +60,11 @@
       ;; it's not loaded yet, so add our bindings to the load-hook
       (add-hook 'dired-load-hook 'my-dired-init)))
 
+  (use-package async
+	  :ensure t
+	  :init
+	  (dired-async-mode 1))
+
   )
 
 (provide 'wmad-dired-config)
