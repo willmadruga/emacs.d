@@ -19,6 +19,10 @@
   ;; dash - modern list library
   (use-package dash)
 
+  ;; It’s like jQuery, but way less useful
+  ;; required by bmi, bookmark importer
+  (use-package elquery)
+
   )
 
 (provide 'wmad-devel-el)

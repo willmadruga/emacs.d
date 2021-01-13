@@ -103,6 +103,17 @@
 
 	       ;; Location of agenda files
 	       (setq org-agenda-files (concat user-emacs-directory "elisp/agenda-files.el")))
+
+  ;; straight.el did download as dependency but I figured I need to explicitly load with
+  ;; use-package to use it as part of use-package :after down below
+  (use-package transient)
+
+  ;; A menu for editing org-mode documents and exploring it’s features in a discoverable way.
+  (use-package org-menu
+    :straight (:host github :repo "sheijk/org-menu" :branch "main")
+    :after (transient org))
+    ;; :config
+    ;; (define-key org-mode-map (kbd "C-c m") 'org-menu))
   )
 
 (defun wmad/org-mode-visual-fill ()

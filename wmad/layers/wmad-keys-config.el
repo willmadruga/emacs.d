@@ -27,10 +27,10 @@
     (global-set-key (kbd "s-<up>")    'windmove-up)
     (global-set-key (kbd "s-<down>")  'windmove-down)
 
-    (global-set-key (kbd "s-C-<left>")  'shrink-window-horizontally)
-    (global-set-key (kbd "s-C-<right>") 'enlarge-window-horizontally)
-    (global-set-key (kbd "s-C-<up>")    'shrink-window)
-    (global-set-key (kbd "s-C-<down>")  'enlarge-window)
+    (global-set-key (kbd "s-C-<left>") 'shrink-window-horizontally)
+    (global-set-key (kbd "s-C-<right>")  'enlarge-window-horizontally)
+    (global-set-key (kbd "s-C-<down>")  'shrink-window)
+    (global-set-key (kbd "s-C-<up>")    'enlarge-window)
 
     (global-set-key (kbd "s-`")  'toggle-doom-alike-terminal)
 
@@ -82,7 +82,8 @@
       "oa" '(org-agenda :which-key "Agenda")
       "oc" '(org-capture :which-key "Capture")
       "ol" '(org-insert-link :which-key "Insert Link")
-      "oo" '(org-open-at-point :which-key "Open Link"))
+      "oo" '(org-open-at-point :which-key "Open Link")
+      "om" '(org-menu :which-key "Org Menu"))
 
     ;; Project ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (wmad/leader-keys
