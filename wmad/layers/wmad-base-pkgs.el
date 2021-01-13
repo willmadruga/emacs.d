@@ -82,13 +82,6 @@
   (use-package company-prescient
     :after company
     :config (company-prescient-mode 1))
-    
-  ;; vterm ;;;;;;;;;;;;;;;;;;;;;;;;;;;
-  (use-package vterm
-    :commands vterm
-    :config
-    (setq vterm-shell "zsh")
-    (setq vterm-max-scrollback 10000))
 
   ;; Dashboard ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
   (defun wmad-configure-navigator ()
@@ -138,9 +131,12 @@
   (use-package ido
     :init (ido-mode 1)
     :config
-    (setq ido-enable-flex-matching nil)
+    (setq ido-enable-flex-matching t)
     (setq ido-create-new-buffer 'always)
-    (setq ido-everywhere t))
+    (setq ido-everywhere t)
+    ;; (setq ido-use-filename-at-point 'guess)
+    (setq ido-file-extensions-order '(".org" ".js" ".json" ".el" ".clj" ".xml" ".csv" ".html"))
+    )
 
   (use-package ido-vertical-mode
     :ensure t

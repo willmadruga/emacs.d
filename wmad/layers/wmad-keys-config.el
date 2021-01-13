@@ -32,7 +32,8 @@
     (global-set-key (kbd "s-C-<down>")  'shrink-window)
     (global-set-key (kbd "s-C-<up>")    'enlarge-window)
 
-    (global-set-key (kbd "s-`")  'toggle-doom-alike-terminal)
+    (global-set-key [f1] 'shell)
+    (global-set-key [f2] 'toggle-doom-alike-terminal)
 
     ;; Helpful help ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (global-set-key (kbd "C-h f")   #'helpful-callable)

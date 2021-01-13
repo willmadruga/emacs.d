@@ -13,6 +13,7 @@
 (require 'wmad-themes-config)
 (require 'wmad-keys-config)
 (require 'wmad-dired-config)
+(require 'wmad-shell-config)
 
 (require 'wmad-fns)
 (require 'wmad-org)
@@ -38,6 +39,7 @@
   (wmad/theme-config)
   (wmad/org-config)
   (wmad/dired-config)
+  (wmad/shell-config)
 
   (wmad/base-packages-init)
   (wmad/devel-packages-init)
