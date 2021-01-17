@@ -118,8 +118,7 @@
 
 (defun wmad/org-mode-visual-fill ()
   (setq visual-fill-column-width 200
-        visual-fill-column-center-text t)
-  (visual-fill-column-mode 1))
+        visual-fill-column-center-text t))
 
 (provide 'wmad-org)
 

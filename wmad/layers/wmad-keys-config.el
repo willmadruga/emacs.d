@@ -59,6 +59,7 @@
 
     ;; General Set of keys ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (wmad/leader-keys
+      "B"   '(wmad/open-bookmarks :which-key "Open Bookmarks")
       "e"   '(wmad/open-init-file :which-key "Open init file")
       "j"   '(wmad/open-journal :which-key "Open journal file")
       "T"   '(wmad/open-todo :which-key "Open todo file")
@@ -66,7 +67,8 @@
       "f"   '(find-file :which-key "Find File")
       "SPC" '(projectile-find-file :which-key "Project Find File")
       "R"   '(restart-emacs :which-key "Restart Emacs")
-      "v"   '(vterm :which-key "Terminal"))
+      "s"   '(eshell :which-key "Eshell")
+      "v"   '(vterm :which-key "Vterm"))
 
     ;; Dired ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
     (wmad/leader-keys

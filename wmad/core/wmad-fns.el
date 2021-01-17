@@ -52,6 +52,11 @@
     (set-window-buffer w1 w2b)
     (set-window-buffer w2 w1b)))
 
+(defun wmad/open-bookmarks ()
+  "Open my bookmarks file."
+  (interactive)
+  (wmad/open-brain "bookmarks.org"))
+
 (defun wmad/open-init-file ()
   "Open the init file."
   (interactive)
