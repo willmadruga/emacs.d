@@ -21,6 +21,7 @@
         org-hide-block-startup nil
         org-src-preserve-indentation nil
         org-startup-folded 'content
+        org-pretty-entities t
         org-cycle-separator-lines 2)
 
   (add-hook 'org-mode-hook (lambda ()
