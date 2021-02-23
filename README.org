@@ -6,20 +6,16 @@ I'm also learning my way around elisp and creating packages.
 
 * Inspired by...
 
-[[https://www.spacemacs.org/][Spacemacs]] is a great project, it's actually how I started using emacs, evil mode FTW.
+[[https://www.spacemacs.org/][Spacemacs]] and [[https://github.com/hlissner/doom-emacs][Doom Emacs]]
 
-Likewise, [[https://github.com/hlissner/doom-emacs][Doom Emacs]] is awesome and of course I've used it for some time.
-
-Then over time I learned more about the Emacs ecosystem, started learning lispy languages,
-tried out a couple of configurations and figured I like things in certain ways rather the others.
-
-More than anything this is a good excercise for me which I slowly reap the benefits.
+More than anything this is a good excercise/learning experience for me.
 
 * Stuff TODO
-  Couple of items I want to address, mostly ideas that I may or may not implement...
+  Couple of items I want to address, mostly ideas that I may/may not implement...
 
   + Better modularization
     + initialize layers based on a variable passed via command line... nah I don't know how useful this is... maybe not worth the time...?
   + Understand and fix my font configuration, big time.
   + Have a better org-mode experience
     + it's not bad but I've seen much much better... it's about time I fix mine.
+  + Remove complexity, think I went a little overboard...
