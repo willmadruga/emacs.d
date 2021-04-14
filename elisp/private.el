@@ -1,1 +1,0 @@
-;; private functions and variables

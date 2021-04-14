@@ -1,21 +1,5 @@
 * Personal emacs config
 
 It's a work in progress, as any other configuration - mind you! :D
-I'm also learning my way around elisp and creating packages.
-
-
-* Inspired by...
-
-[[https://www.spacemacs.org/][Spacemacs]] and [[https://github.com/hlissner/doom-emacs][Doom Emacs]]
-
+I'm also learning my way around elisp and creating elisp packages.
 More than anything this is a good excercise/learning experience for me.
-
-* Stuff TODO
-  Couple of items I want to address, mostly ideas that I may/may not implement...
-
-  + Better modularization
-    + initialize layers based on a variable passed via command line... nah I don't know how useful this is... maybe not worth the time...?
-  + Understand and fix my font configuration, big time.
-  + Have a better org-mode experience
-    + it's not bad but I've seen much much better... it's about time I fix mine.
-  + Remove complexity, think I went a little overboard...
