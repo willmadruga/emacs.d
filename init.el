@@ -142,7 +142,7 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
     (setq backup-directory-alist `(("." . ,(no-littering-expand-var-file-name "backups")))))
 
   (setq inhibit-startup-screen nil
-        initial-major-mode 'emacs-lisp-mode
+        initial-major-mode 'org-mode
         load-prefer-newer t
         use-dialog-box t
         undo-limit 80000000
@@ -530,10 +530,11 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
 
 (defun extra-packages-config ()
   "Layers config."
-  (with-package 'emacs-everywhere)
   (with-package 'restart-emacs)
   (with-package 'hnreader)
-  (with-package 'elpher)
+
+  (with-package 'elpher
+    (setq gnutls-verify-error 'nil))
 
   (with-package 'crux
     (global-set-key (kbd "C-a") 'crux-move-beginning-of-line)
@@ -571,7 +572,22 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
   ;; 	(global-set-key (kbd "C-c v") 'vterm)
 
   ;; 	(add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m))
-  )
+
+  (with-package 'emacs-everywhere
+    ;; slightly bigger window
+    (setq emacs-everywhere-frame-parameters
+          '((name . "emacs-everywhere")
+            (width . 80)
+            (height . 40)))
+    ;; force org-mode loading
+    (setq emacs-everywhere-init-hooks
+          '(emacs-everywhere-set-frame-name
+            emacs-everywhere-set-frame-position
+            org-mode
+            emacs-everywhere-insert-selection
+            emacs-everywhere-remove-trailing-whitespace
+            emacs-everywhere-init-spell-check))
+    ))
 
 (defun ivy-related-config ()
   "Ivy related configuration to be called last."
@@ -651,15 +667,11 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
   "Theme configuration."
 
   (with-package 'modus-themes
-    (with-package 'modus-vivendi-theme)
-    (with-package 'modus-operandi-theme)
 
     (setq modus-themes-bold-constructs t
-	  modus-themes-mode-line '3d)
-
+	        modus-themes-mode-line '3d)
     (modus-themes-load-themes)
     (modus-themes-load-vivendi)
-
     (define-key global-map (kbd "<f12>") #'modus-themes-toggle))
 
   (with-package 'doom-modeline
