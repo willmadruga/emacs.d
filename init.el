@@ -24,10 +24,10 @@
 ;;
 ;; - Packages are installed at the very end, requires restart after first setup
 ;;
-;; - There is a fundamental flaw when freshly installed. Not in the mood to spend more time on it.
+;; - There is a fundamental flaw when freshly installed.  Not in the mood to spend more time on it.
 ;;   I can follow up later on, it's likely that I will install this once and grow the configuration
-;;   from there, so no worries. Let me document what I need to do whenever this is freshly installed:
-;;   1. Open emacs first time and let it finish downloading packages.
+;;   from there, so no worries.  Let me document what I need to do whenever this is freshly installed:
+;;   1. Open Emacs first time and let it finish downloading packages.
 ;;   2. Configuration will be applied after first restart.
 ;;   3. Manually create the 'var' folder if Emacs fails to quit.
 ;;   4. user-emacs-directory is not clean as supposed to (using no-littering)
@@ -149,7 +149,9 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
         make-backup-files nil
         create-lockfiles nil
         recentf-max-saved-items 50
-        tab-always-indent 'complete)
+        tab-always-indent 'complete
+        shell-file-name "/usr/bin/zsh"
+        explicit-shell-file-name "/usr/bin/zsh")
 
   (setq-default frame-resize-pixelwise t
                 indent-tabs-mode nil
@@ -224,6 +226,9 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
     (add-to-list 'exec-path item))
 
   (setenv "PATH" (string-trim-right (string-join exec-path ":") ":$"))
+
+  (setenv "SHELL" shell-file-name)
+  ;; 	(add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m))
 
   ;; for terminal Emacs only (emacs -nw)
   (or window-system
@@ -449,8 +454,9 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
 
     (add-hook 'after-init-hook 'global-company-mode))
 
-  (with-package 'company-box
-    (add-hook 'company-mode-hook 'company-box-mode))
+  ;; having a couple of issues, let's have it disabled for awhile, see if I will miss it...
+  ;; (with-package 'company-box
+  ;;   (add-hook 'company-mode-hook 'company-box-mode))
 
   (with-package 'browse-kill-ring
     (global-set-key (kbd "M-y") 'browse-kill-ring))
@@ -532,6 +538,7 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
   "Layers config."
   (with-package 'restart-emacs)
   (with-package 'hnreader)
+  (with-package 'olivetti)
 
   (with-package 'elpher
     (setq gnutls-verify-error 'nil))
@@ -553,25 +560,6 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
 
   (with-package 'which-key
     (which-key-mode))
-
-  ;; Disabled for the time being because it messes up with 'with-editor' rendering magit unusable.
-  ;; https://github.com/magit/with-editor/issues/86
-  ;; (with-package 'vterm
-  ;; 	(setq
-  ;; 	 shell-file-name "/usr/bin/zsh"
-  ;; 	 explicit-shell-file-name "/usr/bin/zsh"
-  ;; 	 vterm-shell "zsh"
-  ;; 	 vterm-max-scrollback 10000)
-
-  ;; 	(setenv "SHELL" shell-file-name)
-
-  ;; 	(defalias 'vt 'vterm)
-  ;; 	(global-set-key (kbd "C-c C-v") 'vterm)
-  ;; 	(global-set-key (kbd "C-c C-j") 'vterm-copy-mode)
-  ;; 	(global-set-key (kbd "C-c C-k") 'vterm-copy-mode-done)
-  ;; 	(global-set-key (kbd "C-c v") 'vterm)
-
-  ;; 	(add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m))
 
   (with-package 'emacs-everywhere
     ;; slightly bigger window
@@ -612,6 +600,7 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
     (global-set-key (kbd "C-x b") 'counsel-switch-buffer)
     (global-set-key (kbd "M-x") 'counsel-M-x)
     (global-set-key (kbd "C-x C-f") 'counsel-find-file)
+    (global-set-key (kbd "C-x C-/") 'counsel-imenu)
     (setq counsel-find-file-ignore-regexp "\\(?:^[#.]\\)\\|\\(?:[#~]$\\)\\|\\(?:^Icon?\\)")
     (global-set-key (kbd "C-c r") 'counsel-recentf))
 
@@ -646,6 +635,7 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
 	    (org-brain-goto             . ivy-posframe-display-at-window-center)
 	    (dumb-jump-go               . ivy-posframe-display-at-window-center)
 	    (ivy-switch-buffer          . ivy-posframe-display-at-window-center)
+	    (counsel-imenu              . ivy-posframe-display-at-window-center)
 	    (nil                        . ivy-posframe-display))
 	  ivy-posframe-height-alist
 	  '((swiper . 20)
