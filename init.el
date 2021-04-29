@@ -96,6 +96,11 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
     (kill-line) (yank) (newline) (yank)
     (move-to-column cursor-column)))
 
+(defun wmadruga/update-my-orgids ()
+  "Forcefully update orgids for files I care about."
+  (interactive)
+  (org-id-update-id-locations (directory-files "~/src/2nd_brain/brain")))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;  ____                           _
 ;;  / ___| ___ _ __   ___ _ __ __ _| |
