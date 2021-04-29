@@ -138,7 +138,7 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
     (add-to-list 'recentf-exclude "~/.emacs.d/elpa")
     (recentf-mode 1)
     (setq auto-save-file-name-transforms
-	  `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
+	        `((".*" ,(no-littering-expand-var-file-name "auto-save/") t)))
     (setq backup-directory-alist `(("." . ,(no-littering-expand-var-file-name "backups")))))
 
   (setq inhibit-startup-screen nil
@@ -190,11 +190,13 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
   (global-display-line-numbers-mode t)
   (put 'narrow-to-region 'disabled nil)
 
-  (blink-cursor-mode -1)
-  (scroll-bar-mode -1)
-  (fringe-mode -1)
   (menu-bar-mode -1)
   (tool-bar-mode -1)
+
+  (and (window-system)
+       (progn
+         (scroll-bar-mode -1)
+         (fringe-mode -1)))
 
   (dolist (mode '(org-mode-hook
                   shell-mode-hook
@@ -234,7 +236,7 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
   (or window-system
       (progn
         (with-package 'clipetty
-	  (global-clipetty-mode +1))
+	        (global-clipetty-mode +1))
         (xterm-mouse-mode 1)
         (global-set-key (kbd "C-x ;") 'comment-line) ; "C-x C-;" is interpreted this way in some terminals
         )))
@@ -322,40 +324,52 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
 (defun org-config ()
   "Org-Mode related config."
 
-  (setq org-directory "~/src/2nd_brain/"
-	org-ellipsis " ▼ "
-	org-hide-emphasis-markers t
-	org-todo-keywords
-	'((sequence
-	   "TODO(t)"
-	   "NEXT(n)"
-	   "STRT(s)"
-	   "WAIT(x)"
-	   "|"
-	   "DONE(d)"
-	   "CANCELLED(c)")))
+  (if (file-exists-p "~/src/2nd_brain/")
+      (setq org-directory "~/src/2nd_brain/")
+    (setq org-directory "~/"))
+
+  (setq
+	 org-ellipsis " ▼ "
+	 org-hide-emphasis-markers t
+	 org-todo-keywords
+	 '((sequence
+	    "TODO(t)"
+	    "NEXT(n)"
+	    "STRT(s)"
+	    "WAIT(x)"
+	    "|"
+	    "DONE(d)"
+	    "CANCELLED(c)")))
 
   ;; org capture
-  (defvar +org-capture-journal-file "~/src/2nd_brain/journal.org")
+  (if (file-exists-p "~/src/2nd_brain/journal.org")
+      (defvar +org-capture-journal-file "~/src/2nd_brain/journal.org")
+    (defvar +org-capture-journal-file "~/journal.org"))
+
   (setq org-capture-templates
-	'(("j" "Journal" entry (file+olp+datetree +org-capture-journal-file) "* %U %?\n%i\n%a" :prepend t :jump-to-captured t)))
+	      '(("j" "Journal" entry (file+olp+datetree +org-capture-journal-file) "* %U %?\n%i\n%a" :prepend t :jump-to-captured t)))
 
   ;; org-agenda
+  (if (file-exists-p "~/src/2nd_brain/brain")
+      (setq org-agenda-files '("~/src/2nd_brain/brain/TODO-LIST.org" "~/src/2nd_brain/brain/Finances.org")))
+
   (setq
    org-agenda-start-day "0d"
    org-agenda-span 5
    org-agenda-include-diary t
    org-agenda-skip-scheduled-if-done t
    org-agenda-skip-deadline-if-done t
-   org-agenda-files '("~/src/2nd_brain/brain/TODO-LIST.org" "~/src/2nd_brain/brain/Finances.org")
    org-agenda-use-time-grid t
    appt-display-duration 60)
 
   (with-package 'org-brain
+
+    (if (file-exists-p "~/src/2nd_brain/brain")
+        (setq org-brain-path "~/src/2nd_brain/brain"
+              org-id-locations-file "~/src/2nd_brain/brain/.orgids"))
+
     (setq
      org-id-locations-file-relative t
-     org-brain-path "~/src/2nd_brain/brain"
-     org-id-locations-file "~/src/2nd_brain/brain/.orgids"
      org-brain-visualize-default-choices 'all
      org-brain-title-max-length 12
      org-brain-include-file-entries nil
@@ -363,8 +377,8 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
 
     (add-hook 'before-save-hook #'org-brain-ensure-ids-in-buffer)
     (push '("b" "Brain" plain (function org-brain-goto-end)
-	    "* %i%?" :empty-lines 1)
-	  org-capture-templates)
+	          "* %i%?" :empty-lines 1)
+	        org-capture-templates)
 
     (global-set-key (kbd "C-c o b") 'org-brain-goto)
     (global-set-key (kbd "C-c o a") 'org-brain-agenda))
@@ -398,9 +412,9 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
 
   (with-package 'dumb-jump
     (setq dumb-jump-default-project user-emacs-directory
-	  dumb-jump-prefer-searcher 'rg
-	  dumb-jump-aggressive nil
-	  dumb-jump-selector 'ivy)
+	        dumb-jump-prefer-searcher 'rg
+	        dumb-jump-aggressive nil
+	        dumb-jump-selector 'ivy)
 
     (global-set-key (kbd "C-c g") 'dumb-jump-go)
     (global-set-key (kbd "C-c b") 'dumb-jump-back))
@@ -423,10 +437,10 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
 
   (with-package 'ibuffer-vc
     (add-hook 'ibuffer-hook
-	      (lambda ()
-		(ibuffer-vc-set-filter-groups-by-vc-root)
-		(unless (eq ibuffer-sorting-mode 'alphabetic)
-		  (ibuffer-do-sort-by-alphabetic)))))
+	            (lambda ()
+		            (ibuffer-vc-set-filter-groups-by-vc-root)
+		            (unless (eq ibuffer-sorting-mode 'alphabetic)
+		              (ibuffer-do-sort-by-alphabetic)))))
 
   (with-package 'dired-single
     (require 'dired)
@@ -439,18 +453,18 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
 
   (with-package 'company
     (setq company-minimum-prefix-length 2
-	  company-tooltip-limit 14
-	  company-tooltip-align-annotations t
-	  company-require-match 'never
-	  company-global-modes '(not erc-mode message-mode help-mode gud-mode)
-	  company-frontends '(company-pseudo-tooltip-frontend
-		              company-echo-metadata-frontend)
-	  company-backends '(company-capf)
-	  company-auto-complete nil
-	  company-auto-complete-chars nil
-	  company-dabbrev-other-buffers nil
-	  company-dabbrev-ignore-case nil
-	  company-dabbrev-downcase nil)
+	        company-tooltip-limit 14
+	        company-tooltip-align-annotations t
+	        company-require-match 'never
+	        company-global-modes '(not erc-mode message-mode help-mode gud-mode)
+	        company-frontends '(company-pseudo-tooltip-frontend
+		                          company-echo-metadata-frontend)
+	        company-backends '(company-capf)
+	        company-auto-complete nil
+	        company-auto-complete-chars nil
+	        company-dabbrev-other-buffers nil
+	        company-dabbrev-ignore-case nil
+	        company-dabbrev-downcase nil)
 
     (add-hook 'after-init-hook 'global-company-mode))
 
@@ -468,6 +482,9 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
 (defun js-ide-config ()
   "Configure javascript supporting IDE tools."
 
+  ;; ONLY if node.js is installed.
+  ;; (and (executable-find "node")
+
   (with-package 'eglot
     (add-to-list 'eglot-server-programs '(js-mode . ("typescript-language-server" "--stdio")))
 
@@ -477,7 +494,7 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
     (define-key eglot-mode-map (kbd "M-?") 'xref-find-references)
     (define-key eglot-mode-map (kbd "M-.") 'xref-find-definitions)
     (define-key eglot-mode-map (kbd "M-/") 'completion-at-point))
-  
+
   (with-package 'js2-refactor)
   (with-package 'fill-column-indicator)
   (with-package 'js2-mode
@@ -502,12 +519,15 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
      js-indent-align-list-continuation nil)
 
     ;; Netsuite SDFCLI wrapper - temporary lib I am working on, name is likely to change.
-    (load-file "~/src/netsuite-sdf/sdfcli.el")
-    (global-set-key (kbd "C-c n c") 'netsuite/create-project)
-    (global-set-key (kbd "C-c n d") 'netsuite/deploy)
-    (global-set-key (kbd "C-c n u") 'netsuite/upload-buffer)
-    (global-set-key (kbd "C-c n 1") 'netsuite/deploy21)
-    (global-set-key (kbd "C-c n 2") 'netsuite/upload-buffer21)
+    (cond
+     ((file-exists-p "~/src/netsuite-sdf/sdfcli.el")
+      (progn
+        (load-file "~/src/netsuite-sdf/sdfcli.el")
+        (global-set-key (kbd "C-c n c") 'netsuite/create-project)
+        (global-set-key (kbd "C-c n d") 'netsuite/deploy)
+        (global-set-key (kbd "C-c n u") 'netsuite/upload-buffer)
+        (global-set-key (kbd "C-c n 1") 'netsuite/deploy21)
+        (global-set-key (kbd "C-c n 2") 'netsuite/upload-buffer21))))
 
     (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
     (add-hook 'js2-mode-hook 'flycheck-mode)
@@ -523,9 +543,9 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
 
     ;; config for Javascript
     (setq-default flycheck-disabled-checkers
-		  (append flycheck-disabled-checkers
-			  '(javascript-jshint)
-			  '(json-jsonlist)))
+		              (append flycheck-disabled-checkers
+			                    '(javascript-jshint)
+			                    '(json-jsonlist)))
 
     ;; enable eslint
     (flycheck-add-mode 'javascript-eslint 'js2-mode)
@@ -585,15 +605,15 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
     (setq ivy-sort-max-size 7500)
 
     (setq ivy-height 17
-	  ivy-wrap t
-	  ivy-fixed-height-minibuffer t
-	  ivy-read-action-function #'ivy-hydra-read-action
-	  ivy-read-action-format-function #'ivy-read-action-format-columns
-	  ivy-use-virtual-buffers nil
-	  ivy-virtual-abbreviate 'full
-	  ivy-on-del-error-function #'ignore
-	  ivy-use-selectable-prompt t
-	  ivy-initial-inputs-alist nil))
+	        ivy-wrap t
+	        ivy-fixed-height-minibuffer t
+	        ivy-read-action-function #'ivy-hydra-read-action
+	        ivy-read-action-format-function #'ivy-read-action-format-columns
+	        ivy-use-virtual-buffers nil
+	        ivy-virtual-abbreviate 'full
+	        ivy-on-del-error-function #'ignore
+	        ivy-use-selectable-prompt t
+	        ivy-initial-inputs-alist nil))
 
   (with-package 'counsel
     (require 'counsel nil t) ;; load as early as possible
@@ -613,34 +633,34 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
   ;; Configure ivy-posframe after other packages so I can map them.
   (with-package 'ivy-posframe
     (setq ivy-fixed-height-minibuffer nil
-	  ivy-posframe-border-width 10
-	  ivy-posframe-parameters
-	  `((min-width . 90)
-	    (min-height . ,ivy-height)))
+	        ivy-posframe-border-width 10
+	        ivy-posframe-parameters
+	        `((min-width . 90)
+	          (min-height . ,ivy-height)))
 
     (setq ivy-posframe-display-functions-alist
-	  '((swiper                     . ivy-posframe-display-at-window-center)
-	    (complete-symbol            . ivy-posframe-display-at-window-center)
-	    (counsel-M-x                . ivy-posframe-display-at-window-center)
-	    (helpful-callable           . ivy-posframe-display-at-window-center)
-	    (helpful-function           . ivy-posframe-display-at-window-center)
-	    (helpful-variable           . ivy-posframe-display-at-window-center)
-	    (helpful-key                . ivy-posframe-display-at-window-center)
-	    (helpful-at-point           . ivy-posframe-display-at-window-center)
-	    (helpful-command            . ivy-posframe-display-at-window-center)
-	    (counsel-find-file          . ivy-posframe-display-at-window-center)
-	    (counsel-recentf            . ivy-posframe-display-at-window-center)
-	    (project-switch-project     . ivy-posframe-display-at-window-center)
-	    (project-find-file          . ivy-posframe-display-at-window-center)
-	    (org-brain-goto             . ivy-posframe-display-at-window-center)
-	    (dumb-jump-go               . ivy-posframe-display-at-window-center)
-	    (ivy-switch-buffer          . ivy-posframe-display-at-window-center)
-	    (counsel-imenu              . ivy-posframe-display-at-window-center)
-	    (nil                        . ivy-posframe-display))
-	  ivy-posframe-height-alist
-	  '((swiper . 20)
-	    (dmenu . 20)
-	    (t . 10)))
+	        '((swiper                     . ivy-posframe-display-at-window-center)
+	          (complete-symbol            . ivy-posframe-display-at-window-center)
+	          (counsel-M-x                . ivy-posframe-display-at-window-center)
+	          (helpful-callable           . ivy-posframe-display-at-window-center)
+	          (helpful-function           . ivy-posframe-display-at-window-center)
+	          (helpful-variable           . ivy-posframe-display-at-window-center)
+	          (helpful-key                . ivy-posframe-display-at-window-center)
+	          (helpful-at-point           . ivy-posframe-display-at-window-center)
+	          (helpful-command            . ivy-posframe-display-at-window-center)
+	          (counsel-find-file          . ivy-posframe-display-at-window-center)
+	          (counsel-recentf            . ivy-posframe-display-at-window-center)
+	          (project-switch-project     . ivy-posframe-display-at-window-center)
+	          (project-find-file          . ivy-posframe-display-at-window-center)
+	          (org-brain-goto             . ivy-posframe-display-at-window-center)
+	          (dumb-jump-go               . ivy-posframe-display-at-window-center)
+	          (ivy-switch-buffer          . ivy-posframe-display-at-window-center)
+	          (counsel-imenu              . ivy-posframe-display-at-window-center)
+	          (nil                        . ivy-posframe-display))
+	        ivy-posframe-height-alist
+	        '((swiper . 20)
+	          (dmenu . 20)
+	          (t . 10)))
 
     (ivy-posframe-mode 1)))
 
@@ -692,7 +712,7 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
     (setq dashboard-set-init-info t)
     (setq dashboard-footer-messages '("\"Imagine all the people, living life in peace.\""))
     (setq dashboard-items '((recents  . 10)
-			    (agenda . 20)))))
+			                      (agenda . 20)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;   ____          _
