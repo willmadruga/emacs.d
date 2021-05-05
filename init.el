@@ -334,6 +334,7 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
     (setq org-directory "~/"))
 
   (setq
+   org-adapt-indentation nil
 	 org-ellipsis " ▼ "
 	 org-hide-emphasis-markers t
 	 org-todo-keywords
