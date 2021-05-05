@@ -198,7 +198,7 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
   (menu-bar-mode -1)
   (tool-bar-mode -1)
 
-  (and (window-system)
+  (and (display-graphic-p)
        (progn
          (scroll-bar-mode -1)
          (fringe-mode -1)))
@@ -238,7 +238,7 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
   ;; 	(add-hook 'comint-output-filter-functions 'comint-strip-ctrl-m))
 
   ;; for terminal Emacs only (emacs -nw)
-  (or window-system
+  (or (display-graphic-p)
       (progn
         (with-package 'clipetty
 	        (global-clipetty-mode +1))
@@ -410,7 +410,9 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defun ide-config ()
-  "Configure Emacs more like a IDE."
+  "IDE features."
+
+  (setq column-number-mode 1)
 
   (with-package 'magit
     (defalias 'git 'magit))
@@ -563,7 +565,12 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
   "Layers config."
   (with-package 'restart-emacs)
   (with-package 'hnreader)
-  (with-package 'olivetti)
+  (with-package 'writefreely)
+
+  (with-package 'olivetti
+    (setq olivetti-body-width 165)
+    ;; W for writer duh!
+    (global-set-key (kbd "C-c w") 'olivetti-mode))
 
   (with-package 'elpher
     (setq gnutls-verify-error 'nil))
