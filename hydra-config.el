@@ -1,22 +1,27 @@
 ;;; hydra-config --- Summary Hydra configuration  ;; -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;; Commentary:
 ;;
-;; All Hydra shortcuts initiates with C-SPC
+;; All Hydra shortcut prefix is:
+;; C-SPC on Emacs
+;; C-@   on emacs-nox
 ;;
 ;; Some of them were taken from https://github.com/abo-abo/hydra/blob/master/hydra-examples.el
 ;;
 ;; Shortcuts:
-;; C-SPC +
-;; [v] Visual related
-;; [t] Toggle modes/functions
-;; [h] Helpful
-;; [r] Rectangle editing functions
-;; [n] Netsuite sdfcli
-;; [m] Miscelanea
+
+;; <prefix> + [v] Visual related
+;; <prefix> + [t] Toggle modes/functions
+;; <prefix> + [h] Helpful
+;; <prefix> + [r] Rectangle editing functions
+;; <prefix> + [n] Netsuite sdfcli
+;; <prefix> + [m] Miscelanea
+;; <prefix> + [g] Toggles for graphical environment
 ;;
 ;;; Code:
 
 (global-unset-key (kbd "C-SPC"))
+(global-unset-key (kbd "C-@"))
+
 
 (defhydra hydra-visual (:color pink :hint nil)
   "
@@ -37,13 +42,10 @@
 
   ("q" nil "quit" :color blue))
 (global-set-key (kbd "C-SPC v") 'hydra-visual/body)
+(global-set-key (kbd "C-@ v") 'hydra-visual/body)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (defvar whitespace-mode nil)
-
-(require 'modus-themes)
-(require 'writefreely)
-(require 'olivetti)
 
 (defhydra hydra-toggle (:color pink :hint nil)
   "
@@ -58,15 +60,6 @@ _L_ display-line-numbers: %`display-line-numbers-mode
 _o_ olivetti-mode:        %`olivetti-mode
 _t_ truncate-lines:       %`truncate-lines
 _w_ whitespace-mode:      %`whitespace-mode
-
-^Graphical^
-^^^---------
-_M_ menu-bar-mode     %`menu-bar-mode
-_T_ tool-bar-mode     %`tool-bar-mode
-_S_ scroll-bar-mode   %`scroll-bar-mode
-_F_ fringe-mode       %`fringe-mode
-_W_ writefreely-mode: %`writefreely-mode
-_X_ modus-themes
 "
   ;; General
   ("a" abbrev-mode nil)
@@ -78,19 +71,40 @@ _X_ modus-themes
   ("o" olivetti-mode nil)
   ("t" toggle-truncate-lines nil)
   ("w" whitespace-mode nil)
-  ("W" writefreely-mode nil)
-
-  ;; Graphical Environment
-  ("M" menu-bar-mode nil)
-  ("T" tool-bar-mode nil)
-  ("S" scroll-bar-mode nil)
-  ("F" fringe-mode nil)
-  ("X" modus-themes-toggle nil)
 
   ("q" nil "quit"))
 (global-set-key (kbd "C-SPC t") 'hydra-toggle/body)
+(global-set-key (kbd "C-@ t") 'hydra-toggle/body)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+(and (display-graphic-p)
+     (require 'modus-themes)
+     (require 'writefreely)
+     (require 'olivetti)
+     (defhydra hydra-toggle-graphical (:color pink :hint nil)
+       "
+^Toggle^
+^^^---------
+_m_ menu-bar-mode
+_t_ tool-bar-mode
+_s_ scroll-bar-mode
+_f_ fringe-mode
+_w_ writefreely-mode
+_x_ modus-themes
+"
+       ;; Graphical Environment
+       ("m" menu-bar-mode nil)
+       ("t" tool-bar-mode nil)
+       ("s" scroll-bar-mode nil)
+       ("f" fringe-mode nil)
+       ("w" writefreely-mode nil)
+       ("x" modus-themes-toggle nil)
+
+       ("q" nil "quit"))
+     (global-set-key (kbd "C-SPC g") 'hydra-toggle-graphical/body)
+     )
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
 (require 'helpful)
 (defhydra hydra-helpful (:color pink :hint nil)
   "
@@ -108,12 +122,13 @@ _k_   Key             _a_   At point
   ("a" helpful-at-point)
   ("q" nil "quit"))
 (global-set-key (kbd "C-SPC h") 'hydra-helpful/body)
+(global-set-key (kbd "C-@ h") 'hydra-helpful/body)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'rect)
 (defhydra hydra-rectangle (:body-pre (rectangle-mark-mode 1)
-                           :color pink
-                           :post (deactivate-mark))
+                                     :color pink
+                                     :post (deactivate-mark))
   "
   ^🡱^     ^_d_ Delete      ^_s_ Replace String        ^_u_ Undo
 ^🡰  🡲^   ^_y_ Yank        ^_r_ Reset                 ^_x_ Kill
@@ -134,6 +149,7 @@ _k_   Key             _a_   At point
   ("x" kill-rectangle nil)
   ("q" nil nil))
 (global-set-key (kbd "C-SPC r") 'hydra-rectangle/body)
+(global-set-key (kbd "C-@ r") 'hydra-rectangle/body)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
@@ -156,7 +172,8 @@ _u_ Upload       _U_ Upload
       ("D" netsuite/deploy21)
       ("U" netsuite/upload-buffer21)
       ("q" nil "quit"))
-    (global-set-key (kbd "C-SPC n") 'hydra-netsuite/body))))
+    (global-set-key (kbd "C-SPC n") 'hydra-netsuite/body)
+    (global-set-key (kbd "C-@ n") 'hydra-netsuite/body))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (require 'elpher)
@@ -183,6 +200,7 @@ _R_ Restart Emacs
 
   ("q" nil "quit"))
 (global-set-key (kbd "C-SPC m") 'hydra-misc/body)
+(global-set-key (kbd "C-@ m") 'hydra-misc/body)
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
