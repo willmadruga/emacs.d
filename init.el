@@ -265,10 +265,6 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
   (global-set-key (kbd "s-<left>")    'windmove-left)
   (global-set-key (kbd "s-<up>")      'windmove-up)
   (global-set-key (kbd "s-<down>")    'windmove-down)
-  (global-set-key (kbd "C-s-<down>")  'enlarge-window)
-  (global-set-key (kbd "C-s-<up>")    'shrink-window)
-  (global-set-key (kbd "C-s-<left>")  'shrink-window-horizontally)
-  (global-set-key (kbd "C-s-<right>") 'enlarge-window-horizontally)
 
   (global-set-key (kbd "C-c o c") 'org-capture)
 
@@ -413,7 +409,8 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
 (defun ide-config ()
   "IDE features."
 
-  (setq column-number-mode 1)
+  (line-number-mode nil)
+  (column-number-mode -1)
 
   (with-package 'magit
     (defalias 'git 'magit))
@@ -530,12 +527,7 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
     (cond
      ((file-exists-p "~/src/netsuite-sdf/sdfcli.el")
       (progn
-        (load-file "~/src/netsuite-sdf/sdfcli.el")
-        (global-set-key (kbd "C-c n c") 'netsuite/create-project)
-        (global-set-key (kbd "C-c n d") 'netsuite/deploy)
-        (global-set-key (kbd "C-c n u") 'netsuite/upload-buffer)
-        (global-set-key (kbd "C-c n 1") 'netsuite/deploy21)
-        (global-set-key (kbd "C-c n 2") 'netsuite/upload-buffer21))))
+        (load-file "~/src/netsuite-sdf/sdfcli.el"))))
 
     (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
     (add-hook 'js2-mode-hook 'flycheck-mode)
@@ -583,13 +575,7 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
     (global-set-key (kbd "C-c C--") 'crux-kill-whole-line)
     (global-set-key (kbd "C-c ;") 'crux-duplicate-and-comment-current-line-or-region))
 
-  (with-package 'helpful
-    (global-set-key (kbd "C-h f")   #'helpful-callable)
-    (global-set-key (kbd "C-h v")   #'helpful-variable)
-    (global-set-key (kbd "C-h k")   #'helpful-key)
-    (global-set-key (kbd "C-c C-d") #'helpful-at-point)
-    (global-set-key (kbd "C-h F")   #'helpful-function)
-    (global-set-key (kbd "C-h C")   #'helpful-command))
+  (with-package 'helpful)
 
   (with-package 'which-key
     (which-key-mode))
@@ -694,8 +680,7 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
     (setq modus-themes-bold-constructs t
 	        modus-themes-mode-line '3d)
     (modus-themes-load-themes)
-    (modus-themes-load-vivendi)
-    (define-key global-map (kbd "<f12>") #'modus-themes-toggle))
+    (modus-themes-load-vivendi))
 
   (with-package 'doom-modeline
     (doom-modeline-mode 1)
@@ -743,6 +728,20 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
   (when (file-exists-p custom-file)
     (load-file custom-file)))
 
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;  _   _           _
+;; | | | |_   _  __| |_ __ __ _
+;; | |_| | | | |/ _` | '__/ _` |
+;; |  _  | |_| | (_| | | | (_| |
+;; |_| |_|\__, |\__,_|_|  \__,_|
+;;        |___/
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(defun hydra-config ()
+  "Load Hydra configuration."
+  (with-package 'hydra
+    (load-file "hydra-config.el")))
+
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;;  ___       _ _    ;;
 ;; |_ _|_ __ (_) |_  ;;
@@ -762,6 +761,8 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
 (extra-packages-config)
 (org-config)
 (custom-config)
+
+(hydra-config)
 
 (theme-config)
 (daemon-init)
