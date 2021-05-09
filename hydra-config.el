@@ -22,7 +22,7 @@
 (global-unset-key (kbd "C-SPC"))
 (global-unset-key (kbd "C-@"))
 
-
+;;;;;;;;;;;;;;; VISUAL ;;;;;;;;;;;;;;;;;
 (defhydra hydra-visual (:color pink :hint nil)
   "
   ^Window Adjustments^   ^Font Size^
@@ -44,7 +44,7 @@
 (global-set-key (kbd "C-SPC v") 'hydra-visual/body)
 (global-set-key (kbd "C-@ v") 'hydra-visual/body)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;; TOGGLE ;;;;;;;;;;;;;;;;;
 (defvar whitespace-mode nil)
 
 (defhydra hydra-toggle (:color pink :hint nil)
@@ -57,7 +57,8 @@ _d_ debug-on-error:       %`debug-on-error
 _f_ auto-fill-mode:       %`auto-fill-function
 _l_ line-number-mode:     %`line-number-mode
 _L_ display-line-numbers: %`display-line-numbers-mode
-_o_ olivetti-mode:        %`olivetti-mode
+_o_ origami-toggle-node
+_O_ olivetti-mode:        %`olivetti-mode
 _t_ truncate-lines:       %`truncate-lines
 _w_ whitespace-mode:      %`whitespace-mode
 "
@@ -68,7 +69,8 @@ _w_ whitespace-mode:      %`whitespace-mode
   ("f" auto-fill-mode nil)
   ("l" line-number-mode nil)
   ("L" display-line-numbers-mode nil)
-  ("o" olivetti-mode nil)
+  ("o" origami-toggle-node nil)
+  ("O" olivetti-mode nil)
   ("t" toggle-truncate-lines nil)
   ("w" whitespace-mode nil)
 
@@ -76,7 +78,7 @@ _w_ whitespace-mode:      %`whitespace-mode
 (global-set-key (kbd "C-SPC t") 'hydra-toggle/body)
 (global-set-key (kbd "C-@ t") 'hydra-toggle/body)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;; GRAPHICAL ;;;;;;;;;;;;;;;;;
 (and (display-graphic-p)
      (require 'modus-themes)
      (require 'writefreely)
@@ -103,8 +105,8 @@ _x_ modus-themes
        ("q" nil "quit"))
      (global-set-key (kbd "C-SPC g") 'hydra-toggle-graphical/body)
      )
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+;;;;;;;;;;;;;;; HELPFUL ;;;;;;;;;;;;;;;;;
 (require 'helpful)
 (defhydra hydra-helpful (:color pink :hint nil)
   "
@@ -124,7 +126,7 @@ _k_   Key             _a_   At point
 (global-set-key (kbd "C-SPC h") 'hydra-helpful/body)
 (global-set-key (kbd "C-@ h") 'hydra-helpful/body)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;; RECTANGLE ;;;;;;;;;;;;;;;;;
 (require 'rect)
 (defhydra hydra-rectangle (:body-pre (rectangle-mark-mode 1)
                                      :color pink
@@ -151,8 +153,7 @@ _k_   Key             _a_   At point
 (global-set-key (kbd "C-SPC r") 'hydra-rectangle/body)
 (global-set-key (kbd "C-@ r") 'hydra-rectangle/body)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-
+;;;;;;;;;;;;;;; NETSUITE ;;;;;;;;;;;;;;;;;
 ;; require sdfcli.el
 (cond
  ((file-exists-p "~/src/netsuite-sdf/sdfcli.el")
@@ -175,7 +176,7 @@ _u_ Upload       _U_ Upload
     (global-set-key (kbd "C-SPC n") 'hydra-netsuite/body)
     (global-set-key (kbd "C-@ n") 'hydra-netsuite/body))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;;;;;;;;;;;;;;; MISC ;;;;;;;;;;;;;;;;;
 (require 'elpher)
 (require 'hnreader)
 (require 'counsel)
@@ -202,10 +203,8 @@ _R_ Restart Emacs
 (global-set-key (kbd "C-SPC m") 'hydra-misc/body)
 (global-set-key (kbd "C-@ m") 'hydra-misc/body)
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
-;; Helpers
-
+;;;;;;;;;;;;;;; HELPER FUNCTIONS ;;;;;;;;;;;;;;;;;
 (require 'windmove)
 (defun hydra-move-splitter-left (arg)
   "Move window splitter left."

@@ -10,15 +10,10 @@
 ;; - Don't think I will modularize things again, let me handle this one single file and have
 ;;   separate code by functions.
 ;;
-;; - with-package macro learned and taken from:
-;;   Declarative Package Configuration In 5 Lines of Emacs Lisp
+;; - Configuration are inspired by:
 ;;   https://cosine.blue/emacs-with-package.html
-;;
-;; - Some configuration taken from Spartan Emacs
 ;;   https://github.com/grandfoobah/spartan-emacs
 ;;   https://github.com/wmadruga/spartan-emacs
-;;
-;; - Some performance related notes
 ;;   https://emacs-lsp.github.io/lsp-mode/page/performance/
 ;;   https://www.masteringemacs.org/article/speed-up-emacs-libjansson-native-elisp-compilation
 ;;
@@ -266,7 +261,10 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
   (global-set-key (kbd "s-<up>")      'windmove-up)
   (global-set-key (kbd "s-<down>")    'windmove-down)
 
-  (global-set-key (kbd "C-c o c") 'org-capture)
+  (global-set-key (kbd "C-s-<down>")  'enlarge-window)
+  (global-set-key (kbd "C-s-<up>")    'shrink-window)
+  (global-set-key (kbd "C-s-<left>")  'shrink-window-horizontally)
+  (global-set-key (kbd "C-s-<right>") 'enlarge-window-horizontally)
 
   ;; interactive supporting functions
   (global-set-key (kbd "C-c <down>") 'wmadruga/duplicate-line))
@@ -383,6 +381,7 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
 	        org-capture-templates)
 
     (global-set-key (kbd "C-c o b") 'org-brain-goto)
+    (global-set-key (kbd "C-c o c") 'org-capture)
     (global-set-key (kbd "C-c o a") 'org-brain-agenda))
 
   (with-package 'org-superstar)
@@ -482,7 +481,30 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
 
   (with-package 'swiper
     (setq swiper-action-recenter t)
-    (global-set-key (kbd "C-s") 'swiper)))
+    (global-set-key (kbd "C-s") 'swiper))
+
+  (with-package 'hl-todo
+    ;; TODO: change colors
+    (setq hl-todo-keyword-faces
+          '(("TODO"   . "#FF0000")
+            ("FIXME"  . "#FF0000")
+            ("DEBUG"  . "#A020F0")
+            ("GOTCHA" . "#FF4500")
+            ("STUB"   . "#1E90FF")))
+
+    ;; TODO: move to bindings-config and maybe hydra-config
+    (define-key hl-todo-mode-map (kbd "C-c p") 'hl-todo-previous)
+    (define-key hl-todo-mode-map (kbd "C-c t") 'hl-todo-next)
+    (define-key hl-todo-mode-map (kbd "C-c o") 'hl-todo-occur)
+    (define-key hl-todo-mode-map (kbd "C-c i") 'hl-todo-insert))
+
+  (with-package 'move-text
+    (move-text-default-bindings))
+
+  (with-package 'indent-guide
+    (indent-guide-global-mode))
+
+  )
 
 (defun js-ide-config ()
   "Configure javascript supporting IDE tools."
@@ -527,6 +549,11 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
     (cond
      ((file-exists-p "~/src/netsuite-sdf/sdfcli.el")
       (progn
+        (global-set-key (kbd "C-c n c") 'netsuite/create-project)
+        (global-set-key (kbd "C-c n d") 'netsuite/deploy)
+        (global-set-key (kbd "C-c n u") 'netsuite/upload-buffer)
+        (global-set-key (kbd "C-c n 1") 'netsuite/deploy21)
+        (global-set-key (kbd "C-c n 2") 'netsuite/upload-buffer21)
         (load-file "~/src/netsuite-sdf/sdfcli.el"))))
 
     (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
@@ -577,8 +604,9 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
 
   (with-package 'helpful)
 
-  (with-package 'which-key
-    (which-key-mode))
+  ;; DISABLED FOR NOW, LET'S SEE IF I WILL MISS IT.
+  ;; (with-package 'which-key
+  ;;   (which-key-mode))
 
   (with-package 'emacs-everywhere
     ;; slightly bigger window
@@ -740,7 +768,10 @@ Then attempt to ‘require’ PACKAGE and, if successful, evaluate BODY."
 (defun hydra-config ()
   "Load Hydra configuration."
   (with-package 'hydra
-    (load-file "hydra-config.el")))
+      (setq custom-file
+        (expand-file-name "hydra-config.el" user-emacs-directory))
+  (when (file-exists-p custom-file)
+    (load-file custom-file))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;
 ;;  ___       _ _    ;;
