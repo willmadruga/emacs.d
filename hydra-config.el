@@ -59,6 +59,7 @@ _l_ line-number-mode:     %`line-number-mode
 _L_ display-line-numbers: %`display-line-numbers-mode
 _o_ origami-toggle-node
 _O_ olivetti-mode:        %`olivetti-mode
+_s_ speedbar:
 _t_ truncate-lines:       %`truncate-lines
 _w_ whitespace-mode:      %`whitespace-mode
 "
@@ -71,6 +72,7 @@ _w_ whitespace-mode:      %`whitespace-mode
   ("L" display-line-numbers-mode nil)
   ("o" origami-toggle-node nil)
   ("O" olivetti-mode nil)
+  ("s" speedbar nil)
   ("t" toggle-truncate-lines nil)
   ("w" whitespace-mode nil)
 
@@ -187,6 +189,7 @@ _u_ Upload       _U_ Upload
 ^^^^^  -------
 _e_ Elpher
 _h_ Hacker News
+_n_ News (rss)
 _r_ Recentf
 
 _K_ Kill Emacs
@@ -194,6 +197,7 @@ _R_ Restart Emacs
 "
   ("e" elpher)
   ("h" hnreader-news)
+  ("n" newsticker-treeview)
   ("r" counsel-recentf)
 
   ("K" kill-emacs)
