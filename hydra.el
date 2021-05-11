@@ -56,20 +56,22 @@
 ^^^^^-------
 _a_ abbrev-mode:          %`abbrev-mode
 _c_ column-number-mode:   %`column-number-mode
-_d_ debug-on-error:       %`debug-on-error
+_d_ dired-read-only:      ^...
+_D_ debug-on-error:       %`debug-on-error
 _f_ auto-fill-mode:       %`auto-fill-function
 _l_ line-number-mode:     %`line-number-mode
 _L_ display-line-numbers: %`display-line-numbers-mode
-_o_ origami-toggle-node
+_o_ origami-toggle-node   ^...
 _O_ olivetti-mode:        %`olivetti-mode
-_s_ speedbar:
+_s_ speedbar:             ^...
 _t_ truncate-lines:       %`truncate-lines
 _w_ whitespace-mode:      %`whitespace-mode
 "
   ;; General
   ("a" abbrev-mode nil)
   ("c" column-number-mode nil)
-  ("d" toggle-debug-on-error nil)
+  ("d" dired-toggle-read-only nil)
+  ("D" toggle-debug-on-error nil)
   ("f" auto-fill-mode nil)
   ("l" line-number-mode nil)
   ("L" display-line-numbers-mode nil)

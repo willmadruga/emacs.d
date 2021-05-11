@@ -64,7 +64,7 @@
 	      "* %i%?" :empty-lines 1)
 	    org-capture-templates)
 
-;; (wmad/package-install 'org-superstar)
+(wmad/package-install 'org-superstar)
 
 ;; think this can be improved, right?
 ;; (wmad/package-install 'org-bullets)
