@@ -60,5 +60,11 @@
   (interactive)
   (org-id-update-id-locations (directory-files "~/src/2nd_brain/brain")))
 
+(defun wmad/open-dashboard ()
+  "Open dashboard buffer."
+  (interactive)
+  (switch-to-buffer "*dashboard*" nil t))
+
+
 (provide 'utils)
 ;;; utils.el ends here
