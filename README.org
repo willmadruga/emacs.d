@@ -1,6 +1,6 @@
-* Personal emacs config
+* Emacs config
 
-  It's a work in progress, as any other configuration - mind you! :D
+  It's a work in progress, like any other emacs config - mind you! :D
   
   I'm also learning my way around elisp and creating elisp packages.
 

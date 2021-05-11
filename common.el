@@ -60,7 +60,7 @@
 (line-number-mode nil)
 (column-number-mode -1)
 
-(and (display-graphic-p)
+(and (window-system)
      (progn
        (scroll-bar-mode -1)
        (fringe-mode -1)))
@@ -102,7 +102,7 @@
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 ;; Terminal Emacs only (emacs -nw)
-(or (display-graphic-p)
+(or (window-system)
     (progn
       (wmad/package-install 'clipetty)
       (require 'clipetty)

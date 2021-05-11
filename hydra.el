@@ -49,7 +49,7 @@
 
 ;;;;;;;;;;;;;;; TOGGLE ;;;;;;;;;;;;;;;;;
 (defvar whitespace-mode nil)
-
+(require 'sr-speedbar)
 (defhydra hydra-toggle (:color pink :hint nil)
   "
 ^General^
@@ -63,7 +63,7 @@ _l_ line-number-mode:     %`line-number-mode
 _L_ display-line-numbers: %`display-line-numbers-mode
 _o_ origami-toggle-node   ^...
 _O_ olivetti-mode:        %`olivetti-mode
-_s_ speedbar:             ^...
+_s_ sr-speedbar-toggle:   ^...
 _t_ truncate-lines:       %`truncate-lines
 _w_ whitespace-mode:      %`whitespace-mode
 "
@@ -76,8 +76,8 @@ _w_ whitespace-mode:      %`whitespace-mode
   ("l" line-number-mode nil)
   ("L" display-line-numbers-mode nil)
   ("o" origami-toggle-node nil)
+  ("s" sr-speedbar-toggle nil)
   ("O" olivetti-mode nil)
-  ("s" speedbar nil)
   ("t" toggle-truncate-lines nil)
   ("w" whitespace-mode nil)
 
@@ -86,7 +86,7 @@ _w_ whitespace-mode:      %`whitespace-mode
 (global-set-key (kbd "C-@ t") 'hydra-toggle/body)
 
 ;;;;;;;;;;;;;;; GRAPHICAL ;;;;;;;;;;;;;;;;;
-(and (display-graphic-p)
+(and (window-system)
      (require 'modus-themes)
      (require 'writefreely)
      (require 'olivetti)
@@ -143,30 +143,26 @@ _k_   Key             _a_   At point
 ^🡰  🡲^   ^_y_ Yank        ^_r_ Reset                 ^_x_ Kill
   ^🡳^     ^_n_ New copy    ^_q_ Quit
 "
-  ("<left>" rectangle-backward-char nil)
+  ("<left>"  rectangle-backward-char nil)
   ("<right>" rectangle-forward-char nil)
-  ("<up>" rectangle-previous-line nil)
-  ("<down>" rectangle-next-line nil)
-  ("n" copy-rectangle-as-kill nil)
-  ("d" delete-rectangle nil)
-  ("r" (if (region-active-p)
-           (deactivate-mark)
-         (rectangle-mark-mode 1)) nil)
-  ("y" yank-rectangle nil)
-  ("u" undo nil)
-  ("s" string-rectangle nil)
-  ("x" kill-rectangle nil)
-  ("q" nil nil))
+  ("<up>"    rectangle-previous-line nil)
+  ("<down>"  rectangle-next-line nil)
+  ("n"       copy-rectangle-as-kill nil)
+  ("d"       delete-rectangle nil)
+  ("r"       (if (region-active-p)
+    (deactivate-mark)
+  (rectangle-mark-mode 1)) nil)
+  ("y"       yank-rectangle nil)
+  ("u"       undo nil)
+  ("s"       string-rectangle nil)
+  ("x"       kill-rectangle nil)
+  ("q"       nil nil))
 (global-set-key (kbd "C-SPC r") 'hydra-rectangle/body)
 (global-set-key (kbd "C-@ r") 'hydra-rectangle/body)
 
 ;;;;;;;;;;;;;;; NETSUITE ;;;;;;;;;;;;;;;;;
-;; require sdfcli.el
-(cond
- ((file-exists-p "~/src/netsuite-sdf/sdfcli.el")
-  (progn
-    (defhydra hydra-netsuite (:color pink :hint nil)
-      "
+(defhydra hydra-netsuite (:color pink :hint nil)
+  "
   ^ 2020^         ^2021^
 ^^^^^  -------------------
 _c_ Create
@@ -174,14 +170,14 @@ _d_ Deploy       _D_ Deploy
 _u_ Upload       _U_ Upload
 
 "
-      ("c" netsuite/create-project)
-      ("d" netsuite/deploy)
-      ("u" netsuite/upload-buffer)
-      ("D" netsuite/deploy21)
-      ("U" netsuite/upload-buffer21)
-      ("q" nil "quit"))
-    (global-set-key (kbd "C-SPC n") 'hydra-netsuite/body)
-    (global-set-key (kbd "C-@ n") 'hydra-netsuite/body))))
+  ("c" netsuite/create-project)
+  ("d" netsuite/deploy)
+  ("u" netsuite/upload-buffer)
+  ("D" netsuite/deploy21)
+  ("U" netsuite/upload-buffer21)
+  ("q" nil "quit"))
+(global-set-key (kbd "C-SPC n") 'hydra-netsuite/body)
+(global-set-key (kbd "C-@ n") 'hydra-netsuite/body)
 
 ;;;;;;;;;;;;;;; MISC ;;;;;;;;;;;;;;;;;
 (require 'elpher)
@@ -211,7 +207,6 @@ _R_ Restart Emacs
   ("q" nil "quit"))
 (global-set-key (kbd "C-SPC m") 'hydra-misc/body)
 (global-set-key (kbd "C-@ m") 'hydra-misc/body)
-
 
 ;;;;;;;;;;;;;;; HELPER FUNCTIONS ;;;;;;;;;;;;;;;;;
 (require 'windmove)

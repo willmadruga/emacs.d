@@ -14,9 +14,9 @@
         ("MELPA" . 5)))
 (package-initialize)
 
-;; Load each configuration file if existent
+;; Load each config file, if existent
 (dolist (c '(
-             ;; set of initial configuration and utility functions
+             ;; set of initial config and utility functions
              "utils.el"
              "custom.el"
              "clean.el"
@@ -32,6 +32,11 @@
              "org.el"
              "misc.el"
              "theme.el"
+
+             ;; https://github.com/emacsmirror/emacswiki.org/blob/master/sr-speedbar.el
+             ;; commit f7f3b398decd4dc66b85289ac3926a03f8750afc
+             ;; Jan 7, 2020
+             "sr-speedbar.el"
 
              ;; Bindings
              "bindings.el"
