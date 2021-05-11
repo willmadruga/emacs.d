@@ -19,6 +19,9 @@
 ;;
 ;;; Code:
 
+(wmad/package-install 'hydra)
+(require 'hydra)
+
 (global-unset-key (kbd "C-SPC"))
 (global-unset-key (kbd "C-@"))
 

@@ -5,11 +5,13 @@
 # \#*\#
 # .\#*
 custom.el
+custom_bkp.el
 
 # # Directory configuration
 /elpa/
 /var/
 /etc/
+/*_bkp/
 
 # # Files configuration
 lsp-sessions
