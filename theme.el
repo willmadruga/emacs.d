@@ -4,16 +4,32 @@
 
 ;;; Code:
 
+(wmad/package-install 'page-break-lines)
+
+
 (wmad/package-install 'dashboard)
 (require 'dashboard)
-(setq dashboard-center-content t)
-(setq dashboard-startup-banner 'logo)
-(setq dashboard-banner-logo-title nil)
-(setq dashboard-page-separator "\n\n")
+(require 'page-break-lines)
 (setq dashboard-set-init-info t)
+(setq dashboard-center-content t)
+(setq dashboard-set-heading-icons t)
+(setq dashboard-set-file-icons t)
+
+(setq dashboard-banner-logo-title nil)
+(setq dashboard-set-navigator nil)
+
+(setq dashboard-startup-banner 'logo)
+(setq dashboard-page-separator "\n\n")
+(setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 (setq dashboard-footer-messages '("\"Imagine all the people, living life in peace.\""))
+(setq dashboard-projects-backend 'project-el)
 (setq dashboard-items '((recents  . 10)
-			                  (agenda . 20)))
+			                  (projects . 10)
+			                  (agenda . 10)
+			                  (bookmarks . 10)
+			                  (registers . 10)
+                        ))
+
 (dashboard-setup-startup-hook)
 
 
@@ -29,21 +45,6 @@
 (require 'doom-modeline)
 (doom-modeline-mode 1)
 (add-hook 'after-init-hook #'doom-modeline-mode)
-
-
-(wmad/package-install 'dashboard)
-(require 'dashboard)
-
-(setq dashboard-center-content t)
-
-(setq dashboard-startup-banner 'logo)
-(setq dashboard-banner-logo-title nil)
-(setq dashboard-page-separator "\n\n")
-(setq dashboard-set-init-info t)
-(setq dashboard-footer-messages '("\"Imagine all the people, living life in peace.\""))
-(setq dashboard-items '((recents  . 10)
-			                  (agenda . 20)))
-(dashboard-setup-startup-hook)
 
 
 (add-hook 'kill-buffer-query-functions 'immortal-scratch)
