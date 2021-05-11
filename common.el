@@ -12,6 +12,7 @@
 (setq shell-file-name "/usr/bin/zsh")
 
 ;; Emacs
+(setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (setq inhibit-startup-screen nil)
 (setq make-backup-files nil)
 (setq create-lockfiles nil)
