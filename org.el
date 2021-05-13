@@ -66,9 +66,8 @@
 
 (wmad/package-install 'org-superstar)
 
-;; think this can be improved, right?
-;; (wmad/package-install 'org-bullets)
-;; (require 'org-bullets)
-;; (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+(wmad/package-install 'org-bullets)
+(require 'org-bullets)
+(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 
 ;;; org.el ends here

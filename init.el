@@ -5,14 +5,16 @@
 ;;; Code:
 
 (require 'package)
-(setq package-enable-at-startup nil)
 (setq package-archives
       '(("GNU ELPA"     . "https://elpa.gnu.org/packages/")
         ("MELPA"        . "https://melpa.org/packages/"))
       package-archive-priorities
       '(("GNU ELPA"     . 10)
         ("MELPA" . 5)))
-(package-initialize)
+
+(unless (bound-and-true-p package--initialized)
+  (setq package-enable-at-startup nil)
+  (package-initialize))
 
 ;; Load each config file, if existent
 (dolist (c '(
