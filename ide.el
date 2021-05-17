@@ -6,6 +6,7 @@
 
 ;;; Code:
 
+(wmad/package-install 'project)
 (wmad/package-install 'undo-fu)
 (wmad/package-install 'browse-kill-ring)
 (wmad/package-install 'move-text)

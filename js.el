@@ -7,9 +7,27 @@
 (wmad/package-install 'js2-refactor)
 (wmad/package-install 'fill-column-indicator)
 
-(wmad/package-install 'eglot)
-(require 'eglot)
-(add-to-list 'eglot-server-programs '(js-mode . ("typescript-language-server" "--stdio")))
+
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+;; (wmad/package-install 'eglot)
+;; (require 'eglot)
+;; (add-to-list 'eglot-server-programs '(js-mode . ("typescript-language-server" "--stdio")))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
+
+(wmad/package-install 'lsp-mode)
+(with-eval-after-load 'lsp-mode
+  (setq lsp-idle-delay 0.500)
+  (setq lsp-file-watch-threshold 2000)
+  (setq lsp-log-io nil)
+  (setq lsp-modeline-diagnostics-enable t)
+
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\build\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\coverage\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\grunt\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\node_modules\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\.nyc_output\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\Release\\'")
+  (add-to-list 'lsp-file-watch-ignored-directories "[/\\\\]\\Objects\\'"))
 
 (wmad/package-install 'js2-mode)
 (require 'js2-mode)
@@ -37,7 +55,10 @@
 (add-hook 'js2-mode-hook 'js2-refactor-mode)
 (add-hook 'js2-mode-hook 'show-paren-mode)
 (add-hook 'js2-mode-hook 'fci-mode)
-(add-hook 'js2-mode-hook 'eglot-ensure)
+;; (add-hook 'js2-mode-hook 'eglot-ensure)
+
+;; (add-hook 'js2-mode-hook #'lsp)
+(add-hook 'js2-mode-hook #'lsp-deferred)
 
 (wmad/package-install 'flycheck)
 (require 'flycheck)

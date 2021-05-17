@@ -9,13 +9,13 @@
 ;;
 ;; Shortcuts:
 
-;; <prefix> + [v] Visual related
-;; <prefix> + [t] Toggle modes/functions
-;; <prefix> + [h] Helpful
-;; <prefix> + [r] Rectangle editing functions
-;; <prefix> + [n] Netsuite sdfcli
-;; <prefix> + [m] Miscelanea
 ;; <prefix> + [g] Toggles for graphical environment
+;; <prefix> + [h] Helpful
+;; <prefix> + [m] Miscelanea
+;; <prefix> + [n] Netsuite sdfcli
+;; <prefix> + [r] Rectangle editing functions
+;; <prefix> + [t] Toggle modes/functions
+;; <prefix> + [v] Visual related
 ;;
 ;;; Code:
 
