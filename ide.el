@@ -85,6 +85,17 @@
   'dired-single-up-directory)
 
 
+(wmad/package-install 'auto-dim-other-buffers)
+(require 'auto-dim-other-buffers)
+(setq auto-dim-other-buffers-dim-on-focus-out t)
+(setq auto-dim-other-buffers-dim-on-switch-to-minibuffer nil)
+(auto-dim-other-buffers-mode t)
+
+
+(wmad/package-install 'yasnippet)
+(require 'yasnippet)
+(yas-global-mode 1)
+
 ;; ;; (with-package 'company
 ;; ;;   (setq company-minimum-prefix-length 2
 ;; ;; 	      company-tooltip-limit 14

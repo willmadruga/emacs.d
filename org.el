@@ -13,6 +13,9 @@
     (setq org-directory "~/src/2nd_brain/")
   (setq org-directory "~/"))
 
+(setq org-return-follows-link t)
+(setq org-startup-folded nil)
+(setq org-pretty-entities t)
 (setq org-adapt-indentation nil)
 (setq org-ellipsis " ▼ ")
 (setq org-hide-emphasis-markers t)
@@ -25,6 +28,14 @@
 	       "|"
 	       "DONE(d)"
 	       "CANCELLED(c)")))
+
+(setq org-src-preserve-indentation nil)
+(setq org-edit-src-content-indentation 2)
+(setq org-src-window-setup 'current-window)
+
+(setq org-fontify-whole-heading-line t)
+(setq org-fontify-done-headline nil)
+(setq org-fontify-quote-and-verse-blocks t)
 
 ;; org capture
 (if (file-exists-p "~/src/2nd_brain/journal.org")
@@ -64,10 +75,30 @@
 	      "* %i%?" :empty-lines 1)
 	    org-capture-templates)
 
+
 (wmad/package-install 'org-superstar)
+
 
 (wmad/package-install 'org-bullets)
 (require 'org-bullets)
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+
+
+(wmad/package-install 'org-fancy-priorities)
+(require 'org-fancy-priorities)
+(setq org-fancy-priorities-list '("🅰" "🅱" "🅲" "🅳" "🅴"))
+(add-hook 'org-mode-hook 'org-fancy-priorities-mode)
+
+
+(wmad/package-install 'org-pretty-tags)
+(require 'org-pretty-tags)
+(setq org-pretty-tags-surrogate-strings
+      '(
+        ("work"  . "⚒")
+        ("childless"  . "!")
+        ))
+(add-hook 'org-mode-hook 'org-pretty-tags-mode)
+
+
 
 ;;; org.el ends here

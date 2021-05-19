@@ -27,20 +27,6 @@
              nil)
     t))
 
-(defun save-persistent-scratch ()
-  "Save the contents of *scratch*."
-  (with-current-buffer (get-buffer-create "*scratch*")
-    (write-region (point-min) (point-max)
-                  (concat user-emacs-directory "/var/scratch"))))
-
-(defun load-persistent-scratch ()
-  "Reload the scratch buffer."
-  (let ((scratch-file (concat user-emacs-directory "/var/scratch")))
-    (if (file-exists-p scratch-file)
-        (with-current-buffer (get-buffer "*scratch*")
-          (delete-region (point-min) (point-max))
-          (insert-file-contents scratch-file)))))
-
 ;; Interactive Supporting Functions
 (defun wmad/eslint-fix-buffer-file ()
   "Use eslint to fix buffer file."

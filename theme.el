@@ -47,11 +47,6 @@
 (add-hook 'after-init-hook #'doom-modeline-mode)
 
 
-(add-hook 'kill-buffer-query-functions 'immortal-scratch)
-(add-hook 'after-init-hook 'load-persistent-scratch)
-(add-hook 'kill-emacs-hook 'save-persistent-scratch)
-(run-with-idle-timer 300 t 'save-persistent-scratch)
-
 (setq display-buffer-alist
 
       ;;TODO: always display shell on a dedicated, reusable window, add a toggling function, bind to a key
