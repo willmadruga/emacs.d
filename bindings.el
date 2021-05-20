@@ -9,6 +9,7 @@
 (global-unset-key (kbd "M-m"))
 
 
+(global-set-key (kbd "s-t") 'term)
 (global-set-key (kbd "C-x <home>") 'wmad/open-dashboard)
 (global-set-key (kbd "C-x <end>")  'ibuffer)
 (global-set-key (kbd "C-x C-b")    'ibuffer)

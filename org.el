@@ -16,7 +16,7 @@
 (setq org-return-follows-link t)
 (setq org-startup-folded nil)
 (setq org-pretty-entities t)
-(setq org-adapt-indentation nil)
+(setq org-adapt-indentation t)
 (setq org-ellipsis " ▼ ")
 (setq org-hide-emphasis-markers t)
 (setq org-todo-keywords
