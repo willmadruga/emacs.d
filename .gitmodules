@@ -1,0 +1,3 @@
+[submodule "mini-popup"]
+	path = mini-popup
+	url = https://github.com/minad/mini-popup.git

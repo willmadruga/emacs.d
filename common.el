@@ -19,7 +19,7 @@
 (setq create-lockfiles nil)
 (setq undo-limit 80000000)
 (setq browse-url-browser-function 'browse-url-generic)
-(setq browse-url-generic-program "firefox")
+(setq browse-url-generic-program "qutebrowser")
 (setq-default password-cache-expiry nil)
 (setq-default gnutls-verify-error t)
 (setq-default gnutls-min-prime-bits 2048)
@@ -128,5 +128,11 @@
 (add-hook 'kill-buffer-query-functions 'immortal-scratch)
 (setq initial-scratch-message "#+title: Scratch Buffer\n\n"
       initial-major-mode 'org-mode)
+
+
+(require 'server)
+(unless (server-running-p)
+  (server-start))
+
 
 ;;; common.el ends here

@@ -182,7 +182,6 @@ _u_ Upload       _U_ Upload
 ;;;;;;;;;;;;;;; MISC ;;;;;;;;;;;;;;;;;
 (require 'elpher)
 (require 'hnreader)
-(require 'counsel)
 (require 'restart-emacs)
 (defhydra hydra-misc (:color pink :hint nil)
   "
@@ -191,7 +190,6 @@ _u_ Upload       _U_ Upload
 _e_ Elpher
 _h_ Hacker News
 _n_ News (rss)
-_r_ Recentf
 
 _K_ Kill Emacs
 _R_ Restart Emacs
@@ -199,7 +197,6 @@ _R_ Restart Emacs
   ("e" elpher)
   ("h" hnreader-news)
   ("n" newsticker-treeview)
-  ("r" counsel-recentf)
 
   ("K" kill-emacs)
   ("R" restart-emacs)
