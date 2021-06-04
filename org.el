@@ -47,7 +47,11 @@
 
 ;; org-agenda
 (if (file-exists-p "~/src/2nd_brain/brain")
-    (setq org-agenda-files '("~/src/2nd_brain/brain/TODO-LIST.org" "~/src/2nd_brain/brain/Finances.org")))
+    (setq org-agenda-files
+          '(
+            "~/src/2nd_brain/brain/TODO-LIST.org"
+            "~/src/2nd_brain/brain/Finances.org"
+            "~/src/2nd_brain/brain/Meetings.org")))
 
 (setq org-agenda-start-day "0d")
 (setq org-agenda-span 5)
@@ -98,6 +102,13 @@
         ("childless"  . "⚙")
         ))
 (add-hook 'org-mode-hook 'org-pretty-tags-mode)
+
+
+
+;; https://github.com/kiwanami/emacs-calfw
+(wmad/package-install 'calfw)
+(wmad/package-install 'calfw-org)
+(require 'calfw-org)
 
 
 

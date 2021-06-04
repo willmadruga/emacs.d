@@ -155,4 +155,8 @@
   (global-set-key (kbd "C-x \\ u") 'password-store-url))
 
 
+(wmad/if-package 'calfw-org
+  (global-set-key (kbd "C-c o o") 'cfw:open-org-calendar))
+
+
 ;;; bindings.el ends here
