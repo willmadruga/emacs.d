@@ -11,6 +11,11 @@
 (wmad/package-install 'helpful)
 
 
+(wmad/package-install 'emojify)
+(require 'emojify)
+(add-hook 'erc-mode-hook #'emojify-mode)
+
+
 (wmad/package-install 'olivetti)
 (require 'olivetti)
 (setq olivetti-body-width 165)
