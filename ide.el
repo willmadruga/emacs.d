@@ -6,19 +6,19 @@
 
 ;;; Code:
 
-(wmad/package-install 'project)
 (wmad/package-install 'undo-fu)
-(wmad/package-install 'browse-kill-ring)
 (wmad/package-install 'move-text)
+(wmad/package-install 'yasnippet-snippets)
+
+
+(wmad/package-install 'projectile)
+(require 'projectile)
+(projectile-mode +1)
+
 
 (wmad/package-install 'indent-guide)
 (require 'indent-guide nil 'noerror)
 (indent-guide-global-mode)
-
-
-(wmad/package-install 'swiper)
-(require 'swiper)
-(setq swiper-action-recenter t)
 
 
 (wmad/package-install 'origami)
@@ -55,8 +55,8 @@
 (wmad/package-install 'ws-butler)
 (require 'ws-butler)
 (ws-butler-global-mode)
+(add-hook 'prog-mode-hook 'ws-butler-mode)
 ;; (add-hook 'text-mode-hook 'ws-butler-mode)
-;; (add-hook 'prog-mode-hook 'ws-butler-mode)
 
 
 (wmad/package-install 'rainbow-delimiters)
@@ -70,8 +70,6 @@
 (setq dumb-jump-default-project user-emacs-directory
 	    dumb-jump-prefer-searcher 'rg
 	    dumb-jump-aggressive nil)
-(wmad/if-package 'ivy
-                 (setq dumb-jump-selector 'ivy))
 
 
 (wmad/package-install 'dired-single)
@@ -96,20 +94,53 @@
 (require 'yasnippet)
 (yas-global-mode 1)
 
-;; ;; (with-package 'company
-;; ;;   (setq company-minimum-prefix-length 2
-;; ;; 	      company-tooltip-limit 14
-;; ;; 	      company-tooltip-align-annotations t
-;; ;; 	      company-require-match 'never
-;; ;; 	      company-global-modes '(not erc-mode message-mode help-mode gud-mode)
-;; ;; 	      company-frontends '(company-pseudo-tooltip-frontend
-;; ;; 		                        company-echo-metadata-frontend)
-;; ;; 	      company-backends '(company-capf)
-;; ;; 	      company-auto-complete nil
-;; ;; 	      company-auto-complete-chars nil
-;; ;; 	      company-dabbrev-other-buffers nil
-;; ;; 	      company-dabbrev-ignore-case nil
-;; ;; 	      company-dabbrev-downcase nil)
-;; ;;   (add-hook 'after-init-hook 'global-company-mode))
+
+(wmad/package-install 'consult)
+(wmad/package-install 'consult-flycheck)
+(require 'consult)
+(require 'projectile)
+(autoload 'projectile-project-root "projectile")
+(setq consult-project-root-function #'projectile-project-root)
+
+(setq xref-show-xrefs-function #'consult-xref
+      xref-show-definitions-function #'consult-xref)
+
+
+
+(wmad/package-install 'vertico)
+(require 'vertico)
+(vertico-mode)
+
+
+(wmad/package-install 'marginalia)
+(require 'marginalia)
+(marginalia-mode)
+
+
+(wmad/package-install 'orderless)
+(require 'orderless)
+(setq completion-styles '(orderless))
+
+
+(wmad/if-package 'mini-popup
+  (and (window-system)
+       (mini-popup-mode)
+       (add-hook 'consult--completion-refresh-hook #'mini-popup--setup 99) ;; Ensure that the popup is updated after refresh (Consult-specific)
+       ;; Configure a height function (Example for Vertico)
+       ;; (defun mini-popup-height-resize ()
+       ;;   (* (1+ (min vertico--total vertico-count)) (default-line-height)))
+       ;; (defun mini-popup-height-fixed ()
+       ;;   (* (1+ (if vertico--input vertico-count 0)) (default-line-height)))
+       ;; (setq mini-popup--height-function #'mini-popup-height-fixed)
+       ;; ;; Disable the minibuffer resizing of Vertico (HACK)
+       ;; (advice-add #'vertico--resize-window :around
+       ;;             (lambda (&rest args)
+       ;;               (unless mini-popup-mode
+       ;;                 (apply args))))
+       ))
+
+(wmad/package-install 'corfu)
+(require 'corfu)
+(corfu-global-mode)
 
 ;;; ide.el ends here

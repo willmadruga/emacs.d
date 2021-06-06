@@ -22,7 +22,7 @@
 (setq dashboard-page-separator "\n\n")
 (setq initial-buffer-choice (lambda () (get-buffer "*dashboard*")))
 (setq dashboard-footer-messages '("\"Imagine all the people, living life in peace.\""))
-(setq dashboard-projects-backend 'project-el)
+
 (setq dashboard-items '((recents  . 10)
 			                  (projects . 10)
 			                  (agenda . 10)
