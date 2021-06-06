@@ -6,10 +6,14 @@
 
 ;;; Code:
 
-(wmad/package-install 'project)
 (wmad/package-install 'undo-fu)
 (wmad/package-install 'move-text)
 (wmad/package-install 'yasnippet-snippets)
+
+
+(wmad/package-install 'projectile)
+(require 'projectile)
+(projectile-mode +1)
 
 
 (wmad/package-install 'indent-guide)
@@ -94,11 +98,9 @@
 (wmad/package-install 'consult)
 (wmad/package-install 'consult-flycheck)
 (require 'consult)
-(require 'project)
-(setq consult-project-root-function
-      (lambda ()
-        (when-let (project (project-current))
-          (car (project-roots project)))))
+(require 'projectile)
+(autoload 'projectile-project-root "projectile")
+(setq consult-project-root-function #'projectile-project-root)
 
 (setq xref-show-xrefs-function #'consult-xref
       xref-show-definitions-function #'consult-xref)

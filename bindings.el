@@ -13,7 +13,6 @@
 (global-set-key (kbd "C-x <end>")  'ibuffer)
 (global-set-key (kbd "C-x C-b")    'ibuffer)
 (global-set-key (kbd "M-/")        'hippie-expand)
-(global-set-key (kbd "C-x p f") 'project-find-file)
 
 
 (global-set-key (kbd "C-s")   'isearch-forward-regexp)
@@ -45,6 +44,10 @@
 (global-set-key (kbd "C-c n u") 'netsuite/upload-buffer)
 (global-set-key (kbd "C-c n 1") 'netsuite/deploy21)
 (global-set-key (kbd "C-c n 2") 'netsuite/upload-buffer21)
+
+
+(wmad/if-package 'projectile
+  (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map))
 
 
 (wmad/if-package 'dumb-jump
@@ -100,7 +103,6 @@
 
 (wmad/if-package 'consult
   (global-set-key (kbd "C-r")      'consult-ripgrep)
-  (global-set-key (kbd "C-x p g")  'consult-ripgrep)
   (global-set-key (kbd "C-s")      'consult-line)
   (global-set-key (kbd "C-x b")    'consult-buffer)
   (global-set-key (kbd "C-x 4 b")  'consult-buffer-other-window)
