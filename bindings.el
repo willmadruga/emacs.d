@@ -13,6 +13,7 @@
 (global-set-key (kbd "C-x <end>")  'ibuffer)
 (global-set-key (kbd "C-x C-b")    'ibuffer)
 (global-set-key (kbd "M-/")        'hippie-expand)
+(global-set-key (kbd "C-x p f") 'project-find-file)
 
 
 (global-set-key (kbd "C-s")   'isearch-forward-regexp)
@@ -133,8 +134,22 @@
   (consult-customize consult-line :keymap my-consult-line-map))
 
 
-(global-set-key (kbd "C-x p f") 'project-find-file)
 
+(wmad/if-package 'yasnippet-snippets
+  (global-set-key (kbd "C-h y") 'yas-describe-tables))
+
+
+
+(wmad/if-package 'password-store
+  (global-set-key (kbd "C-x \\ c") 'password-store-copy)
+  (global-set-key (kbd "C-x \\ C") 'password-store-clear)
+  (global-set-key (kbd "C-x \\ e") 'password-store-edit)
+  (global-set-key (kbd "C-x \\ i") 'password-store-insert)
+  (global-set-key (kbd "C-x \\ r") 'password-store-remove)
+  (global-set-key (kbd "C-x \\ R") 'password-store-rename)
+  (global-set-key (kbd "C-x \\ g") 'password-store-generate)
+  (global-set-key (kbd "C-x \\ f") 'password-store-copy-field)
+  (global-set-key (kbd "C-x \\ u") 'password-store-url))
 
 
 ;;; bindings.el ends here

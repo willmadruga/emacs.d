@@ -9,6 +9,8 @@
 (wmad/package-install 'project)
 (wmad/package-install 'undo-fu)
 (wmad/package-install 'move-text)
+(wmad/package-install 'yasnippet-snippets)
+
 
 (wmad/package-install 'indent-guide)
 (require 'indent-guide nil 'noerror)

@@ -44,6 +44,7 @@
              "org.el"
              "misc.el"
              "theme.el"
+             "password-store.el"
 
 
              ;; Bindings
