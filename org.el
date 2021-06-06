@@ -95,7 +95,7 @@
 (setq org-pretty-tags-surrogate-strings
       '(
         ("work"  . "⚒")
-        ("childless"  . "!")
+        ("childless"  . "⚙")
         ))
 (add-hook 'org-mode-hook 'org-pretty-tags-mode)
 
