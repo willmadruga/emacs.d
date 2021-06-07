@@ -1,3 +1,6 @@
 [submodule "mini-popup"]
 	path = mini-popup
 	url = https://github.com/minad/mini-popup.git
+[submodule "svg-lib"]
+	path = svg-lib
+	url = https://github.com/rougier/svg-lib.git

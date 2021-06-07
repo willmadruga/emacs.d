@@ -106,6 +106,17 @@
       xref-show-definitions-function #'consult-xref)
 
 
+(consult-customize
+ consult-ripgrep
+ consult-git-grep
+ consult-grep
+ consult-recent-file
+ :preview-key (kbd "M-."))
+
+
+(wmad/package-install 'consult-lsp)
+(define-key lsp-mode-map [remap xref-find-apropos] #'consult-lsp-symbols)
+
 
 (wmad/package-install 'vertico)
 (require 'vertico)
