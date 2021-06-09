@@ -47,6 +47,15 @@
 (add-hook 'after-init-hook #'doom-modeline-mode)
 
 
+;; nano-theme
+;; Still loading modus-vivendi before nano - intentionally - so that components unsupported by nano could still have a theme. i.e. speedbar.
+
+(let ((f (expand-file-name "nano-theme/nano-theme.el" user-emacs-directory)))
+  (when (file-exists-p f)
+    (progn
+      (load-file f)
+      (nano-dark))))
+
 (setq display-buffer-alist
 
       ;;TODO: always display shell on a dedicated, reusable window, add a toggling function, bind to a key

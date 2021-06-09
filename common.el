@@ -15,6 +15,7 @@
 ;; Emacs
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
 (setq inhibit-startup-screen nil)
+(setq inhibit-default-init t)
 (setq make-backup-files nil)
 (setq create-lockfiles nil)
 (setq undo-limit 80000000)

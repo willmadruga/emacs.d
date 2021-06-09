@@ -6,14 +6,13 @@
 
 (require 'package)
 (setq package-archives
-      '(("GNU ELPA"     . "https://elpa.gnu.org/packages/")
-        ("MELPA"        . "https://melpa.org/packages/"))
+      '(("GNU ELPA" . "https://elpa.gnu.org/packages/")
+        ("MELPA"    . "https://melpa.org/packages/"))
       package-archive-priorities
-      '(("GNU ELPA"     . 10)
-        ("MELPA" . 5)))
+      '(("GNU ELPA" . 10)
+        ("MELPA"    . 5)))
 
 (unless (bound-and-true-p package--initialized)
-  (setq package-enable-at-startup nil)
   (package-initialize))
 
 ;; Load each config file, if existent
@@ -26,7 +25,7 @@
              "common.el"
              "mini-popup/mini-popup.el"
 
-
+             ;; testing it out...
              ;; https://github.com/emacsmirror/emacswiki.org/blob/master/sr-speedbar.el
              ;; commit f7f3b398decd4dc66b85289ac3926a03f8750afc
              ;; Jan 7, 2020

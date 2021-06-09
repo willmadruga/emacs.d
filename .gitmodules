@@ -4,3 +4,6 @@
 [submodule "svg-lib"]
 	path = svg-lib
 	url = https://github.com/rougier/svg-lib.git
+[submodule "nano-theme"]
+	path = nano-theme
+	url = https://github.com/rougier/nano-theme.git

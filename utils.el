@@ -7,7 +7,8 @@
 (require 'package)
 
 (defun wmad/package-install (pname)
-  "Install package PNAME if missing."
+  "Install package PNAME if missing.
+Note that `package-install' automatically adds to package-selected-packages."
   (require 'package)
   (if (not (require pname  nil 'noerror))
       (progn
