@@ -9,7 +9,6 @@
 (global-unset-key (kbd "M-m"))
 
 
-(global-set-key (kbd "s-t") 'term)
 (global-set-key (kbd "C-x <home>") 'wmad/open-dashboard)
 (global-set-key (kbd "C-x <end>")  'ibuffer)
 (global-set-key (kbd "C-x C-b")    'ibuffer)
@@ -21,22 +20,22 @@
 (global-set-key (kbd "C-r")   'isearch-backward-regexp)
 (global-set-key (kbd "C-M-r") 'isearch-backward)
 
+;; Conflict with i3 keybindings
+;; (global-set-key (kbd "s-<right>")   'windmove-right)
+;; (global-set-key (kbd "s-<left>")    'windmove-left)
+;; (global-set-key (kbd "s-<up>")      'windmove-up)
+;; (global-set-key (kbd "s-<down>")    'windmove-down)
 
-(global-set-key (kbd "s-<right>")   'windmove-right)
-(global-set-key (kbd "C-x <next>")  'windmove-right)
-(global-set-key (kbd "s-<left>")    'windmove-left)
-(global-set-key (kbd "C-x <prior>") 'windmove-left)
-(global-set-key (kbd "s-<up>")      'windmove-up)
-(global-set-key (kbd "s-<down>")    'windmove-down)
+(global-set-key (kbd "C-x <left>")  'windmove-left)
+(global-set-key (kbd "C-x <right>") 'windmove-right)
+(global-set-key (kbd "C-x <up>")    'windmove-up)
+(global-set-key (kbd "C-x <down>")  'windmove-down)
 
 
 (global-set-key (kbd "C-s-<down>")  'enlarge-window)
 (global-set-key (kbd "C-s-<up>")    'shrink-window)
 (global-set-key (kbd "C-s-<left>")  'shrink-window-horizontally)
 (global-set-key (kbd "C-s-<right>") 'enlarge-window-horizontally)
-
-
-(global-set-key (kbd "C-c <down>") 'wmad/duplicate-line)
 
 
 ;; Netsuite SDFCLI wrapper - temporary lib I am working on, name is likely to change.
@@ -97,7 +96,7 @@
 (wmad/if-package 'crux
   (global-set-key (kbd "C-a")     'crux-move-beginning-of-line)
   (global-set-key (kbd "C-o")     'crux-smart-open-line)
-  (global-set-key (kbd "C-c C-l") 'crux-duplicate-current-line-or-region)
+  (global-set-key (kbd "C-c <down>") 'crux-duplicate-current-line-or-region)
   (global-set-key (kbd "C-c C--") 'crux-kill-whole-line)
   (global-set-key (kbd "C-c ;")   'crux-duplicate-and-comment-current-line-or-region))
 
@@ -144,19 +143,26 @@
 
 
 (wmad/if-package 'password-store
-  (global-set-key (kbd "C-x \\ c") 'password-store-copy)
-  (global-set-key (kbd "C-x \\ C") 'password-store-clear)
-  (global-set-key (kbd "C-x \\ e") 'password-store-edit)
-  (global-set-key (kbd "C-x \\ i") 'password-store-insert)
-  (global-set-key (kbd "C-x \\ r") 'password-store-remove)
-  (global-set-key (kbd "C-x \\ R") 'password-store-rename)
-  (global-set-key (kbd "C-x \\ g") 'password-store-generate)
-  (global-set-key (kbd "C-x \\ f") 'password-store-copy-field)
-  (global-set-key (kbd "C-x \\ u") 'password-store-url))
+  (global-set-key (kbd "C-x P c") 'password-store-copy)
+  (global-set-key (kbd "C-x P C") 'password-store-clear)
+  (global-set-key (kbd "C-x P e") 'password-store-edit)
+  (global-set-key (kbd "C-x P i") 'password-store-insert)
+  (global-set-key (kbd "C-x P r") 'password-store-remove)
+  (global-set-key (kbd "C-x P R") 'password-store-rename)
+  (global-set-key (kbd "C-x P g") 'password-store-generate)
+  (global-set-key (kbd "C-x P f") 'password-store-copy-field)
+  (global-set-key (kbd "C-x P u") 'password-store-url))
 
 
 (wmad/if-package 'calfw-org
   (global-set-key (kbd "C-c o o") 'cfw:open-org-calendar))
+
+
+
+(wmad/if-package 'devdocs-browser
+                 (global-set-key (kbd "C-x D i") 'devdocs-browser-install-doc)
+                 (global-set-key (kbd "C-x D o") 'devdocs-browser-open)
+                 (global-set-key (kbd "C-x D O") 'devdocs-browser-open-in))
 
 
 ;;; bindings.el ends here

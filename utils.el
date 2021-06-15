@@ -4,11 +4,8 @@
 
 ;;; Code:
 
-(require 'package)
-
 (defun wmad/package-install (pname)
-  "Install package PNAME if missing.
-Note that `package-install' automatically adds to package-selected-packages."
+  "Install package PNAME, if missing, and add it to package-selected-packages."
   (require 'package)
   (if (not (require pname  nil 'noerror))
       (progn
@@ -17,6 +14,7 @@ Note that `package-install' automatically adds to package-selected-packages."
 
 (defmacro wmad/if-package (package &rest body)
   "Execute BODY if PACKAGE is installed."
+  (require 'package)
   (declare (indent 1))
   `(and (require ,package nil 'noerror)
         (progn ,@body)))
@@ -32,7 +30,7 @@ Note that `package-install' automatically adds to package-selected-packages."
 (defun wmad/eslint-fix-buffer-file ()
   "Use eslint to fix buffer file."
   (interactive)
-  (async-shell-command (concat "eslint --fix " (buffer-file-name))))
+  (async-shell-command (concat "/home/wmadruga/.npm-packages/bin/eslint --fix " (buffer-file-name))))
 
 (defun wmad/duplicate-line ()
   "Duplicates line at point."

@@ -9,6 +9,7 @@
 (wmad/package-install 'writefreely)
 (wmad/package-install 'crux)
 (wmad/package-install 'helpful)
+(wmad/package-install 'devdocs-browser)
 
 
 (wmad/package-install 'emojify)
@@ -41,6 +42,5 @@
         emacs-everywhere-insert-selection
         emacs-everywhere-remove-trailing-whitespace
         emacs-everywhere-init-spell-check))
-
 
 ;;; misc.el ends here

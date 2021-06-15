@@ -15,7 +15,6 @@
 
 (setq org-return-follows-link t)
 (setq org-startup-folded nil)
-(setq org-pretty-entities t)
 (setq org-adapt-indentation t)
 (setq org-ellipsis " ▼ ")
 (setq org-hide-emphasis-markers t)
@@ -85,7 +84,7 @@
 
 (wmad/package-install 'org-bullets)
 (require 'org-bullets)
-(add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+(add-hook 'org-mode-hook 'org-bullets-mode)
 
 
 (wmad/package-install 'org-fancy-priorities)

@@ -132,23 +132,24 @@
 (require 'orderless)
 (setq completion-styles '(orderless))
 
-
-(wmad/if-package 'mini-popup
-  (and (window-system)
-       (mini-popup-mode)
-       (add-hook 'consult--completion-refresh-hook #'mini-popup--setup 99) ;; Ensure that the popup is updated after refresh (Consult-specific)
-       ;; Configure a height function (Example for Vertico)
-       ;; (defun mini-popup-height-resize ()
-       ;;   (* (1+ (min vertico--total vertico-count)) (default-line-height)))
-       ;; (defun mini-popup-height-fixed ()
-       ;;   (* (1+ (if vertico--input vertico-count 0)) (default-line-height)))
-       ;; (setq mini-popup--height-function #'mini-popup-height-fixed)
-       ;; ;; Disable the minibuffer resizing of Vertico (HACK)
-       ;; (advice-add #'vertico--resize-window :around
-       ;;             (lambda (&rest args)
-       ;;               (unless mini-popup-mode
-       ;;                 (apply args))))
-       ))
+;; mini-popup is not working well with i3...
+;; let's keep it disabled for now.
+;; (wmad/if-package 'mini-popup
+;;   (and (window-system)
+;;        (mini-popup-mode)
+;;        (add-hook 'consult--completion-refresh-hook #'mini-popup--setup 99) ;; Ensure that the popup is updated after refresh (Consult-specific)
+;;        ;; Configure a height function (Example for Vertico)
+;;        ;; (defun mini-popup-height-resize ()
+;;        ;;   (* (1+ (min vertico--total vertico-count)) (default-line-height)))
+;;        ;; (defun mini-popup-height-fixed ()
+;;        ;;   (* (1+ (if vertico--input vertico-count 0)) (default-line-height)))
+;;        ;; (setq mini-popup--height-function #'mini-popup-height-fixed)
+;;        ;; ;; Disable the minibuffer resizing of Vertico (HACK)
+;;        ;; (advice-add #'vertico--resize-window :around
+;;        ;;             (lambda (&rest args)
+;;        ;;               (unless mini-popup-mode
+;;        ;;                 (apply args))))
+;;        ))
 
 (wmad/package-install 'corfu)
 (require 'corfu)
