@@ -4,165 +4,166 @@
 
 ;;; Code:
 
+(wmad/package-install 'general)
+(require 'general)
+
+;; (global-unset-key (kbd "DEL"))
 (global-unset-key (kbd "C-z"))
-(global-unset-key (kbd "C-x C-z"))
-(global-unset-key (kbd "M-m"))
+(global-unset-key (kbd "C-S-z"))
 
+(general-create-definer wmad/leader
+  :states '(normal)
+  :prefix "SPC")
 
-(global-set-key (kbd "C-x <home>") 'wmad/open-dashboard)
-(global-set-key (kbd "C-x <end>")  'ibuffer)
-(global-set-key (kbd "C-x C-b")    'ibuffer)
-(global-set-key (kbd "M-/")        'hippie-expand)
+(wmad/leader
 
+  ;; [b] BUFFER ;;;;;;;;;;;;;;;;;;;;;;;
+  "b"  '(:ignore t :which-key "Buffer")
+  "bb" 'consult-buffer
+  "b4" 'consult-buffer-other-window
+  "b5" 'consult-buffer-other-frame
 
-(global-set-key (kbd "C-s")   'isearch-forward-regexp)
-(global-set-key (kbd "C-M-s") 'isearch-forward)
-(global-set-key (kbd "C-r")   'isearch-backward-regexp)
-(global-set-key (kbd "C-M-r") 'isearch-backward)
+  ;; [c] CONSULT ;;;;;;;;;;;;;;;;;;;;;;;
+  "c"  '(:ignore t :which-key "Consult")
+  "cy" 'consult-yank-pop
+  "cm" 'consult-mark
+  "ci" 'consult-imenu
+  "cI" 'consult-project-imenu
+  "cf" 'consult-flycheck
 
-;; Conflict with i3 keybindings
-;; (global-set-key (kbd "s-<right>")   'windmove-right)
-;; (global-set-key (kbd "s-<left>")    'windmove-left)
-;; (global-set-key (kbd "s-<up>")      'windmove-up)
-;; (global-set-key (kbd "s-<down>")    'windmove-down)
+  ;; [D] DEV DOCS ;;;;;;;;;;;;;;;;;;;;;;
+  "D" '(:ignore t :which-key "Dev Docs")
+  "Di" 'devdocs-browser-install-doc
+  "Do" 'devdocs-browser-open
+  "DO" 'devdocs-browser-open-in
 
-(global-set-key (kbd "C-x <left>")  'windmove-left)
-(global-set-key (kbd "C-x <right>") 'windmove-right)
-(global-set-key (kbd "C-x <up>")    'windmove-up)
-(global-set-key (kbd "C-x <down>")  'windmove-down)
+  ;; [e] Evaluate ;;;;;;;;;;;;;;;;;;;
+  "e"  '(:ignore t :which-key "Eval")
+  "eb"  'eval-buffer
+  "ee"  'eval-last-sexp
 
+  ;; [h] HAIL HYDRA ;;;;;;;;;;;;;;;;;;
+  "h"  '(:ignore t :which-key "Hydra")
+  ;; see hydra.el
 
-(global-set-key (kbd "C-s-<down>")  'enlarge-window)
-(global-set-key (kbd "C-s-<up>")    'shrink-window)
-(global-set-key (kbd "C-s-<left>")  'shrink-window-horizontally)
-(global-set-key (kbd "C-s-<right>") 'enlarge-window-horizontally)
+  ;; [g] GO ;;;;;;;;;;;;;;;;;;;;;;;
+  "g"  '(:ignore t :which-key "Go")
+  "gg" 'dumb-jump-go
+  "gb" 'dumb-jump-back
+  "gt"  '(:ignore t :which-key "Jump TO-DO")
+  "gtn" 'hl-todo-next
+  "gtp" 'hl-todo-previous
+  "gto" 'hl-todo-occur
+  "gti" 'hl-todo-insert
 
-
-;; Netsuite SDFCLI wrapper - temporary lib I am working on, name is likely to change.
-(global-set-key (kbd "C-c n c") 'netsuite/create-project)
-(global-set-key (kbd "C-c n d") 'netsuite/deploy)
-(global-set-key (kbd "C-c n u") 'netsuite/upload-buffer)
-(global-set-key (kbd "C-c n 1") 'netsuite/deploy21)
-(global-set-key (kbd "C-c n 2") 'netsuite/upload-buffer21)
-
-
-(wmad/if-package 'projectile
-  (define-key projectile-mode-map (kbd "C-x p") 'projectile-command-map))
-
-
-(wmad/if-package 'dumb-jump
-  (global-set-key (kbd "C-c g") 'dumb-jump-go)
-  (global-set-key (kbd "C-c b") 'dumb-jump-back))
-
-
-(wmad/if-package 'undo-fu
-  (global-set-key (kbd "C-z") 'undo-fu-only-undo)
-  (global-set-key (kbd "C-S-z") 'undo-fu-only-redo))
-
-
-(wmad/if-package 'origami
-  (global-set-key (kbd "C-c z") 'origami-toggle-node))
-
-
-(wmad/if-package 'hl-todo
-  (define-key hl-todo-mode-map (kbd "C-c p") 'hl-todo-previous)
-  (define-key hl-todo-mode-map (kbd "C-c t") 'hl-todo-next)
-  (define-key hl-todo-mode-map (kbd "C-c c") 'hl-todo-occur)
-  (define-key hl-todo-mode-map (kbd "C-c i") 'hl-todo-insert))
-
-
-(wmad/if-package 'move-text
-  (move-text-default-bindings))
-
-
-(wmad/if-package 'lsp-mode
-  ;; TODO: explore what's available
+  ;; [l] LSP ;;;;;;;;;;;;;
   ;; https://emacs-lsp.github.io/lsp-mode/page/keybindings/
-  (define-key lsp-mode-map (kbd "C-c l") lsp-command-map)
-  ;; TODO: shorter keybindings for commands I use the most, such as lsp-rename
-  )
+  "l" 'lsp-command-map
+
+  ;; [n] Netsuite SDFCLI wrapper
+  ;; temporary lib I am working on, name is likely to change.
+  "n"  '(:ignore t :which-key "Netsuite")
+  "nc" 'netsuite/create-project
+  "nd" 'netsuite/deploy
+  "nu" 'netsuite/upload-buffer
+  "n1" 'netsuite/deploy21
+  "n2" 'netsuite/upload-buffer21
+
+  ;; [o] ORG-MODE ;;;;;;;;;;;;;;;;;;
+  "o"  '(:ignore t :which-key "Org")
+  "ob" 'org-brain-goto
+  "oc" 'org-capture
+  "oa" 'org-brain-agenda
+  "oo"   'cfw:open-org-calendar
+
+  ;; [p] PASSWORD-STORE ;;;;;;;;;;;;;;;;;
+  "P"  '(:ignore t :which-key "Password")
+  "Pc" 'password-store-copy
+  "PC" 'password-store-clear
+  "Pe" 'password-store-edit
+  "Pi" 'password-store-insert
+  "Pr" 'password-store-remove
+  "PR" 'password-store-rename
+  "Pg" 'password-store-generate
+  "Pf" 'password-store-copy-field
+  "Pu" 'password-store-url
+
+  ;; [p] PROJECTILE ;;;;;;;;;
+  "p" 'projectile-command-map
+
+  ;; [s] SEARCH ;;;;;;;;;;;;;;;;;;;;;;
+  "s" '(:ignore t :which-key "Search")
+  "sR" 'consult-recent-file
+  "sa" 'consult-apropos
+  "sl" 'consult-line
+  "sf" 'consult-find
+  "sg" 'consult-grep
+  "sr" 'consult-ripgrep
+  "si" 'consult-isearch
+
+  ;; XYZ ;;;;;;;;;;;;;;;;;;;;;;
+  "<home>" 'wmad/open-dashboard
+  "<end>"  'ibuffer
+  "d"      'crux-duplicate-current-line-or-region
+  "f"      'dired
+  "m"      'magit-status
+  "R"      'restart-emacs
+  "W"      'olivetti-mode
+  "x"      'hippie-expand
+  "y"      'yas-describe-tables
+  "z"      'origami-toggle-node
+  ";"      'crux-duplicate-and-comment-current-line-or-region
+  "!"      'evil-emacs-state
+
+  ;; [w] WINDOW  ;;;;;;;;;;;;;;;;;;;;;;
+  "w"  '(:ignore t :which-key "Window")
+  ;; a more comprehensive collection is bound to C-w
+
+  ;; FIXME better use hydra for this scenario.
+  "w <left>"  'shrink-window-horizontally
+  "w <right>" 'enlarge-window-horizontally
+  "w <up>"    'shrink-window
+  "w <down>"  'enlarge-window
+
+  "<left>"    'windmove-left
+  "<right>"   'windmove-right
+  "<up>"      'windmove-up
+  "<down>"    'windmove-down
+
+  "w0"        'delete-window
+  "w1"        'delete-other-windows
+  "w2"        'split-window-below
+  "w3"        'split-window-right
+  "w5"        'delete-frame
+
+  "wh"        'split-window-below
+  "wv"        'split-window-right
+
+  "w-"        'split-window-below
+  "w\\"       'split-window-right
+  "wt"        'crux-transpose-windows)
 
 
-(wmad/if-package 'org-brain
-  (global-set-key (kbd "C-c o b") 'org-brain-goto)
-  (global-set-key (kbd "C-c o c") 'org-capture)
-  (global-set-key (kbd "C-c o a") 'org-brain-agenda))
+(require 'evil)
+(define-key evil-insert-state-map (kbd "C-g") 'evil-normal-state)
+(evil-global-set-key 'motion "j" 'evil-next-visual-line)
+(evil-global-set-key 'motion "k" 'evil-previous-visual-line)
 
+(evil-global-set-key 'normal (kbd "C-z") 'undo)
+(evil-global-set-key 'normal (kbd "C-S-z") 'undo-redo)
+(evil-global-set-key 'normal (kbd "U") 'undo-redo)
 
-(wmad/if-package 'olivetti-mode
-  (global-set-key (kbd "C-c w") 'olivetti-mode))
+(evil-global-set-key 'emacs (kbd "C-e") 'evil-normal-state)
 
+(defvar my-consult-line-map
+  (let ((map (make-sparse-keymap)))
+    (define-key map "\C-s" #'previous-history-element)
+    map))
 
-(wmad/if-package 'crux
-  (global-set-key (kbd "C-a")     'crux-move-beginning-of-line)
-  (global-set-key (kbd "C-o")     'crux-smart-open-line)
-  (global-set-key (kbd "C-c <down>") 'crux-duplicate-current-line-or-region)
-  (global-set-key (kbd "C-c C--") 'crux-kill-whole-line)
-  (global-set-key (kbd "C-c ;")   'crux-duplicate-and-comment-current-line-or-region))
+(require 'consult)
+(consult-customize consult-line :keymap my-consult-line-map)
 
-
-(wmad/if-package 'consult
-  (global-set-key (kbd "C-r")      'consult-ripgrep)
-  (global-set-key (kbd "C-s")      'consult-line)
-  (global-set-key (kbd "C-x b")    'consult-buffer)
-  (global-set-key (kbd "C-x 4 b")  'consult-buffer-other-window)
-  (global-set-key (kbd "C-x 5 b")  'consult-buffer-other-frame)
-
-
-  (global-set-key (kbd "C-c o h")  'consult-org-heading)
-  (global-set-key (kbd "C-c o g")  'consult-org-agenda)
-
-  (global-set-key (kbd "M-y")    'consult-yank-pop)
-  (global-set-key (kbd "M-g m")  'consult-mark)
-  (global-set-key (kbd "M-g i")  'consult-imenu)
-  (global-set-key (kbd "M-g I")  'consult-project-imenu)
-  (global-set-key (kbd "M-g f")  'consult-flycheck)
-
-
-  (global-set-key (kbd "M-s R") 'consult-recent-file)
-  (global-set-key (kbd "M-s a") 'consult-apropos)
-  (global-set-key (kbd "M-s f") 'consult-find)
-  (global-set-key (kbd "M-s g") 'consult-grep)
-  (global-set-key (kbd "M-s r") 'consult-ripgrep)
-  (global-set-key (kbd "M-s l") 'consult-line)
-  (global-set-key (kbd "M-s e") 'consult-isearch)
-
-
-  (defvar my-consult-line-map
-    (let ((map (make-sparse-keymap)))
-      (define-key map "\C-s" #'previous-history-element)
-      map))
-
-  (consult-customize consult-line :keymap my-consult-line-map))
-
-
-
-(wmad/if-package 'yasnippet-snippets
-  (global-set-key (kbd "C-h y") 'yas-describe-tables))
-
-
-
-(wmad/if-package 'password-store
-  (global-set-key (kbd "C-x P c") 'password-store-copy)
-  (global-set-key (kbd "C-x P C") 'password-store-clear)
-  (global-set-key (kbd "C-x P e") 'password-store-edit)
-  (global-set-key (kbd "C-x P i") 'password-store-insert)
-  (global-set-key (kbd "C-x P r") 'password-store-remove)
-  (global-set-key (kbd "C-x P R") 'password-store-rename)
-  (global-set-key (kbd "C-x P g") 'password-store-generate)
-  (global-set-key (kbd "C-x P f") 'password-store-copy-field)
-  (global-set-key (kbd "C-x P u") 'password-store-url))
-
-
-(wmad/if-package 'calfw-org
-  (global-set-key (kbd "C-c o o") 'cfw:open-org-calendar))
-
-
-
-(wmad/if-package 'devdocs-browser
-                 (global-set-key (kbd "C-x D i") 'devdocs-browser-install-doc)
-                 (global-set-key (kbd "C-x D o") 'devdocs-browser-open)
-                 (global-set-key (kbd "C-x D O") 'devdocs-browser-open-in))
-
+(require 'move-text)
+(move-text-default-bindings)
 
 ;;; bindings.el ends here

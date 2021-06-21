@@ -7,10 +7,14 @@
 (defun wmad/package-install (pname)
   "Install package PNAME, if missing, and add it to package-selected-packages."
   (require 'package)
-  (if (not (require pname  nil 'noerror))
-      (progn
-        (package-refresh-contents)
-        (package-install pname))))
+  (unless (package-installed-p pname)
+    (progn
+      (package-refresh-contents)
+      (package-install pname))))
+;; (if (not (require pname  nil 'noerror))
+;;     (progn
+;;       (package-refresh-contents)
+;;       (package-install pname))))
 
 (defmacro wmad/if-package (package &rest body)
   "Execute BODY if PACKAGE is installed."

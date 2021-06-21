@@ -1,9 +1,9 @@
 ;;; hydra-config --- Summary Hydra configuration  ;; -*- lexical-binding: t; no-byte-compile: t; -*-
 ;;; Commentary:
 ;;
-;; All Hydra shortcut prefix is:
-;; C-SPC on Emacs
-;; C-@   on emacs-nox
+;; Hydra shortcut prefix is:
+;; ` SPC on Emacs
+;; `   SPC on emacs-nox
 ;;
 ;; Some of them were taken from https://github.com/abo-abo/hydra/blob/master/hydra-examples.el
 ;;
@@ -12,7 +12,6 @@
 ;; <prefix> + [g] Toggles for graphical environment
 ;; <prefix> + [h] Helpful
 ;; <prefix> + [m] Miscelanea
-;; <prefix> + [n] Netsuite sdfcli
 ;; <prefix> + [r] Rectangle editing functions
 ;; <prefix> + [t] Toggle modes/functions
 ;; <prefix> + [v] Visual related
@@ -22,8 +21,10 @@
 (wmad/package-install 'hydra)
 (require 'hydra)
 
-(global-unset-key (kbd "C-SPC"))
-(global-unset-key (kbd "C-@"))
+(require 'general)
+(general-create-definer wmad/hydra-leader
+  :states '(normal)
+  :prefix "SPC SPC")
 
 ;;;;;;;;;;;;;;; VISUAL ;;;;;;;;;;;;;;;;;
 (defhydra hydra-visual (:color pink :hint nil)
@@ -44,8 +45,9 @@
   ("<right>" hydra-move-splitter-right)
 
   ("q" nil "quit" :color blue))
-(global-set-key (kbd "C-SPC v") 'hydra-visual/body)
-(global-set-key (kbd "C-@ v") 'hydra-visual/body)
+
+(wmad/hydra-leader "v" 'hydra-visual/body)
+
 
 ;;;;;;;;;;;;;;; TOGGLE ;;;;;;;;;;;;;;;;;
 (defvar whitespace-mode nil)
@@ -84,8 +86,7 @@ _w_ whitespace-mode:      %`whitespace-mode
   ("w" whitespace-mode nil)
 
   ("q" nil "quit"))
-(global-set-key (kbd "C-SPC t") 'hydra-toggle/body)
-(global-set-key (kbd "C-@ t") 'hydra-toggle/body)
+(wmad/hydra-leader "t" 'hydra-toggle/body)
 
 ;;;;;;;;;;;;;;; GRAPHICAL ;;;;;;;;;;;;;;;;;
 (and (window-system)
@@ -112,8 +113,7 @@ _x_ modus-themes
        ("x" modus-themes-toggle nil)
 
        ("q" nil "quit"))
-     (global-set-key (kbd "C-SPC g") 'hydra-toggle-graphical/body)
-     )
+     (wmad/hydra-leader "g" 'hydra-toggle-graphical/body))
 
 ;;;;;;;;;;;;;;; HELPFUL ;;;;;;;;;;;;;;;;;
 (require 'helpful)
@@ -132,8 +132,7 @@ _k_   Key             _a_   At point
   ("v" helpful-variable)
   ("a" helpful-at-point)
   ("q" nil "quit"))
-(global-set-key (kbd "C-SPC h") 'hydra-helpful/body)
-(global-set-key (kbd "C-@ h") 'hydra-helpful/body)
+(wmad/hydra-leader "h" 'hydra-helpful/body)
 
 ;;;;;;;;;;;;;;; RECTANGLE ;;;;;;;;;;;;;;;;;
 (require 'rect)
@@ -152,34 +151,14 @@ _k_   Key             _a_   At point
   ("n"       copy-rectangle-as-kill nil)
   ("d"       delete-rectangle nil)
   ("r"       (if (region-active-p)
-    (deactivate-mark)
-  (rectangle-mark-mode 1)) nil)
+                 (deactivate-mark)
+               (rectangle-mark-mode 1)) nil)
   ("y"       yank-rectangle nil)
   ("u"       undo nil)
   ("s"       string-rectangle nil)
   ("x"       kill-rectangle nil)
   ("q"       nil nil))
-(global-set-key (kbd "C-SPC r") 'hydra-rectangle/body)
-(global-set-key (kbd "C-@ r") 'hydra-rectangle/body)
-
-;;;;;;;;;;;;;;; NETSUITE ;;;;;;;;;;;;;;;;;
-(defhydra hydra-netsuite (:color pink :hint nil)
-  "
-  ^ 2020^         ^2021^
-^^^^^  -------------------
-_c_ Create
-_d_ Deploy       _D_ Deploy
-_u_ Upload       _U_ Upload
-
-"
-  ("c" netsuite/create-project)
-  ("d" netsuite/deploy)
-  ("u" netsuite/upload-buffer)
-  ("D" netsuite/deploy21)
-  ("U" netsuite/upload-buffer21)
-  ("q" nil "quit"))
-(global-set-key (kbd "C-SPC n") 'hydra-netsuite/body)
-(global-set-key (kbd "C-@ n") 'hydra-netsuite/body)
+(wmad/hydra-leader "r" 'hydra-rectangle/body)
 
 ;;;;;;;;;;;;;;; MISC ;;;;;;;;;;;;;;;;;
 (require 'elpher)
@@ -204,8 +183,7 @@ _R_ Restart Emacs
   ("R" restart-emacs)
 
   ("q" nil "quit"))
-(global-set-key (kbd "C-SPC m") 'hydra-misc/body)
-(global-set-key (kbd "C-@ m") 'hydra-misc/body)
+(wmad/hydra-leader "m" 'hydra-misc/body)
 
 ;;;;;;;;;;;;;;; HELPER FUNCTIONS ;;;;;;;;;;;;;;;;;
 (require 'windmove)
