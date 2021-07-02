@@ -42,6 +42,14 @@
   "eb"  'eval-buffer
   "ee"  'eval-last-sexp
 
+  ;; [E] Egot
+  "E"  '(:ignore t :which-key "Eglot")
+  "Er" 'eglot-rename
+  "Ef" 'eglot-format
+  "Er" 'eglot-find-references
+  "Ed" 'eglot-find-definitions
+  "E." 'completion-at-point
+
   ;; [h] HAIL HYDRA ;;;;;;;;;;;;;;;;;;
   "h"  '(:ignore t :which-key "Hydra")
   ;; see hydra.el
@@ -55,10 +63,6 @@
   "gtp" 'hl-todo-previous
   "gto" 'hl-todo-occur
   "gti" 'hl-todo-insert
-
-  ;; [l] LSP ;;;;;;;;;;;;;
-  ;; https://emacs-lsp.github.io/lsp-mode/page/keybindings/
-  "l" 'lsp-command-map
 
   ;; [n] Netsuite SDFCLI wrapper
   ;; temporary lib I am working on, name is likely to change.
