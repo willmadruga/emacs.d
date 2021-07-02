@@ -6,7 +6,6 @@
 
 ;;; Code:
 
-(wmad/package-install 'undo-fu)
 (wmad/package-install 'move-text)
 (wmad/package-install 'yasnippet-snippets)
 
@@ -114,10 +113,6 @@
  :preview-key (kbd "M-."))
 
 
-(wmad/package-install 'consult-lsp)
-(define-key lsp-mode-map [remap xref-find-apropos] #'consult-lsp-symbols)
-
-
 (wmad/package-install 'vertico)
 (require 'vertico)
 (vertico-mode)
@@ -154,5 +149,25 @@
 (wmad/package-install 'corfu)
 (require 'corfu)
 (corfu-global-mode)
+
+(wmad/package-install 'evil)
+(require 'evil)
+(setq evil-split-window-below t)
+(setq evil-vsplit-window-right t)
+(setq evil-undo-system 'undo-redo)
+
+(dolist (mode '(custom-mode
+                eshell-mode
+                term-mode
+                git-rebase-mode
+                erc-mode))
+  (add-to-list 'evil-emacs-state-modes mode))
+
+(evil-set-initial-state 'message-buffer-mode 'normal)
+(evil-set-initial-state 'dashboard-mode 'emacs)
+(evil-set-initial-state 'org-mode 'emacs)
+
+(evil-mode 1)
+
 
 ;;; ide.el ends here

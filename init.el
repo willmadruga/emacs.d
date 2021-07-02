@@ -17,13 +17,14 @@
 
 ;; Load each config file, if existent
 (dolist (c '(
-             ;; set of initial config and utility functions
+             ;; initial config and utility functions
              "utils.el"
              "custom.el"
              "clean.el"
              "perf.el"
              "common.el"
-             "mini-popup/mini-popup.el"
+             ;; "mini-popup/mini-popup.el"
+
 
              ;; testing it out...
              ;; https://github.com/emacsmirror/emacswiki.org/blob/master/sr-speedbar.el
