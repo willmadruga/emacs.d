@@ -164,8 +164,6 @@
   (add-to-list 'evil-emacs-state-modes mode))
 
 (evil-set-initial-state 'message-buffer-mode 'normal)
-(evil-set-initial-state 'dashboard-mode 'emacs)
-(evil-set-initial-state 'org-mode 'emacs)
 
 (evil-mode 1)
 
