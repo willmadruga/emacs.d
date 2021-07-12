@@ -2,19 +2,16 @@
 
 ;;; Commentary:
 
+;; Remember to build emacs 28 with native-compilation:
+;; https://www.masteringemacs.org/article/speed-up-emacs-libjansson-native-elisp-compilation
+
 ;;; Code:
 
-;; https://gitlab.com/nathanfurnal/dotemacs/-/blob/master/init.el
-;; Speed up startup High garbage collection at startup needs to be
-;; reset at some point then we defer the work to `gcmh'.
-(add-hook 'emacs-startup-hook
+(add-hook 'after-init-hook
 	        (lambda ()
-	          (setq gc-cons-threshold 16777216 ; 16mb
-		              gc-cons-percentage 0.1)))
-
+	          (setq gc-cons-threshold 800000)))
 
 (require 'warnings)
-(setq gc-cons-threshold 100000000)
 (setq read-process-output-max (* 1024 1024))
 (setq warning-suppress-types '((comp)))
 
@@ -22,9 +19,12 @@
 
 (if (and (fboundp 'native-comp-available-p) (native-comp-available-p))
     (setq comp-deferred-compilation t
-          package-native-compile t)
+          package-native-compile t
+          native-comp-deferred-compilation t
+          native-comp-async-query-on-exit t
+          native-comp-async-jobs-number 6
+          native-comp-async-report-warnings-errors nil)
   (message "Native compilation is *not* available, consider enabling it."))
-
 
 
 (unless (functionp 'json-serialize)

@@ -51,7 +51,6 @@
 
 ;;;;;;;;;;;;;;; TOGGLE ;;;;;;;;;;;;;;;;;
 (defvar whitespace-mode nil)
-(require 'sr-speedbar)
 (defhydra hydra-toggle (:color pink :hint nil)
   "
 ^General^
@@ -66,7 +65,6 @@ _L_ display-line-numbers: %`display-line-numbers-mode
 _m_ mini-popup-mode       %`mini-popup-mode
 _o_ origami-toggle-node   ^...
 _O_ olivetti-mode:        %`olivetti-mode
-_s_ sr-speedbar-toggle:   ^...
 _t_ truncate-lines:       %`truncate-lines
 _w_ whitespace-mode:      %`whitespace-mode
 "
@@ -80,7 +78,6 @@ _w_ whitespace-mode:      %`whitespace-mode
   ("L" display-line-numbers-mode nil)
   ("m" mini-popup-mode nil)
   ("o" origami-toggle-node nil)
-  ("s" sr-speedbar-toggle nil)
   ("O" olivetti-mode nil)
   ("t" toggle-truncate-lines nil)
   ("w" whitespace-mode nil)

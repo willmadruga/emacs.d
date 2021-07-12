@@ -7,12 +7,11 @@
 custom.el
 custom_bkp.el
 
-# # Directory configuration
+/eln-cache/
 /elpa/
 /var/
 /etc/
 /*_bkp/
 
-# # Files configuration
 lsp-sessions
 .flycheck*
