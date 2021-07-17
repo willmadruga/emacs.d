@@ -79,12 +79,12 @@
 	    org-capture-templates)
 
 
-(wmad/package-install 'org-superstar)
+;;(wmad/package-install 'org-superstar)
 
 
-(wmad/package-install 'org-bullets)
-(require 'org-bullets)
-(add-hook 'org-mode-hook 'org-bullets-mode)
+;;(wmad/package-install 'org-bullets)
+;;(require 'org-bullets)
+;;(add-hook 'org-mode-hook 'org-bullets-mode)
 
 
 (wmad/package-install 'org-fancy-priorities)
