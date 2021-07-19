@@ -1,0 +1,74 @@
+# -*- mode: snippet -*-
+# name: Netsuite Client Script
+# key: <cs
+# --
+/**
+ * Copyright (c) 2021, Oracle and/or its affiliates. All rights reserved.
+ *@NApiVersion 2.0
+ *@NScriptType ClientScript
+ */
+define([
+], function() {
+  function pageInit(context) {
+    var currentRecord = context.currentRecord;
+  }
+  function saveRecord(context) {
+    var currentRecord = context.currentRecord;
+    return true;
+  }
+  function validateField(context) {
+    var currentRecord = context.currentRecord;
+    var sublistName = context.sublistId;
+    var sublistFieldName = context.fieldId;
+    var line = context.line;
+    return true;
+  }
+  function fieldChanged(context) {
+    var currentRecord = context.currentRecord;
+    var sublistName = context.sublistId;
+    var sublistFieldName = context.fieldId;
+    var line = context.line;
+  }
+  function postSourcing(context) {
+    var currentRecord = context.currentRecord;
+    var sublistName = context.sublistId;
+    var sublistFieldName = context.fieldId;
+    var line = context.line;
+  }
+  function lineInit(context) {
+    var currentRecord = context.currentRecord;
+    var sublistName = context.sublistId;
+  }
+  function validateDelete(context) {
+    var currentRecord = context.currentRecord;
+    var sublistName = context.sublistId;
+    return true;
+  }
+  function validateInsert(context) {
+    var currentRecord = context.currentRecord;
+    var sublistName = context.sublistId;
+    return true;
+  }
+  function validateLine(context) {
+    var currentRecord = context.currentRecord;
+    var sublistName = context.sublistId;
+    return true;
+  }
+  function sublistChanged(context) {
+    var currentRecord = context.currentRecord;
+    var sublistName = context.sublistId;
+    var op = context.operation;
+  }
+  return {
+    pageInit: pageInit,
+    fieldChanged: fieldChanged,
+    postSourcing: postSourcing,
+    sublistChanged: sublistChanged,
+    lineInit: lineInit,
+    validateField: validateField,
+    validateLine: validateLine,
+    validateInsert: validateInsert,
+    validateDelete: validateDelete,
+    saveRecord: saveRecord
+  };
+});
