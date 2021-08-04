@@ -6,12 +6,19 @@
 # .\#*
 custom.el
 custom_bkp.el
+history
+projects
+recentf
+bookmarks
 
 /eln-cache/
 /elpa/
-/var/
-/etc/
 /*_bkp/
+/transient/
+/auto-save-list/
 
 lsp-sessions
 .flycheck*
+projectile-bookmarks.eld
+projectile.cache
+equake-persistent-display

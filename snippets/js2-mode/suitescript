@@ -1,0 +1,21 @@
+# -*- mode: snippet -*-
+# name: Suitescript file
+# key: <suitescript
+# --
+/**
+ * Copyright (c) 2021, Oracle and/or its affiliates. All rights reserved.
+ *
+ * @NApiVersion 2.1
+ * @NScriptType Portlet
+ */
+define([
+], function() {
+
+  function x() {
+    // implement me
+  }
+
+  return {
+    x: x
+  };
+});

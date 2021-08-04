@@ -17,6 +17,22 @@
 ;; https://www.reddit.com/r/emacs/comments/ofhket/further_boost_start_up_time_with_a_simple_tweak/
 ;; changing GC in early-init instead of init.
 (setq gc-cons-threshold 16777216 ; 16mb
-		  gc-cons-percentage 0.1)
+      gc-cons-percentage 0.1)
+
+
+
+;; Do not resize the frame at this early stage.
+(setq frame-inhibit-implied-resize t)
+
+;; Disable GUI elements
+(menu-bar-mode -1)
+(tool-bar-mode -1)
+(scroll-bar-mode -1)
+
+(setq inhibit-startup-buffer-menu t)
+(setq inhibit-splash-screen       t)
+(setq inhibit-startup-screen      t)
+(setq use-dialog-box              t)
+(setq use-file-dialog           nil)
 
 ;;; early-init.el ends here
