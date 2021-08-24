@@ -1,0 +1,57 @@
+# -*- mode: snippet -*-
+# name: Netsuite Map-Reduce Suitescript
+# key: <mr
+# --
+/**
+ * @NApiVersion 2.1
+ * @NScriptType MapReduceScript
+ */
+
+define([
+], function() {
+
+
+  function getInputData() {
+    return [];
+  }
+
+  function map(context) {
+    context.write({
+      key: '',
+      value: ''
+    });
+  }
+
+  function reduce(context) {
+    context.write({
+      key: context.key,
+      value: context.values.length
+    });
+  }
+
+  function summarize(context) {
+
+    // Log details about the script's execution.
+    log.audit({
+      title: 'Usage units consumed',
+      details: context.usage
+    });
+    log.audit({
+      title: 'Concurrency',
+      details: context.concurrency
+    });
+    log.audit({
+      title: 'Number of yields',
+      details: context.yields
+    });
+
+  }
+
+  // Link each entry point to the appropriate function.
+  return {
+    getInputData: getInputData,
+    map: map,
+    reduce: reduce,
+    summarize: summarize
+  };
+});

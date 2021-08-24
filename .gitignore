@@ -16,6 +16,10 @@ bookmarks
 /*_bkp/
 /transient/
 /auto-save-list/
+/request/
+/url/
+/site-lisp/
+/eaf/
 
 lsp-sessions
 .flycheck*

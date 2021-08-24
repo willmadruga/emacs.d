@@ -49,8 +49,8 @@
                  ibuffer-vc dired-single which-key crux diminish
                  move-text dumb-jump corfu origami indent-guide rainbow-delimiters
                  org-brain calfw calfw-org
-                 projectile magit js2-mode eglot flycheck yasnippet yasnippet-snippets
-                 hnreader helpful devdocs-browser equake
+                 projectile magit js2-mode eglot flycheck yasnippet yasnippet-snippets restclient jira-markup-mode
+                 hnreader helpful devdocs-browser equake md4rd
                  ;; page-break-lines
                  ;; evil
                  ))
@@ -420,7 +420,6 @@
                '(:eval (propertize (format-time-string " %b %d %H:%M ")
                                    'face 'font-lock-builtin-face))
 
-
                '(:eval (propertize (substring vc-mode 5)
                                    'face 'font-lock-constant-face))
 
@@ -568,7 +567,14 @@
 (require 'equake)
 (equake-mode 1)
 (advice-add #'save-buffers-kill-terminal :before-while #'equake-kill-emacs-advice)
-(setq equake-default-shell 'shell)
+(setq equake-default-shell 'term)
+
+;; TRYING OUT EAF...
+;; (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
+;; (require 'eaf)
+
+;; (add-to-list 'load-path "~/.emacs.d/site-lisp/eaf-browser/")
+;; (require 'eaf-browser)
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)
