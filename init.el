@@ -22,7 +22,6 @@
 (require 'server)
 
 (require 'org)
-(require 'org-roam-dailies)
 (require 'org-agenda)
 (require 'org-clock)
 (require 'appt)
@@ -44,7 +43,7 @@
 
 ;; 3RD PARTY PACKAGES ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 (dolist (pname '(
-                 gcmh modus-themes
+                 gcmh modus-themes mixed-pitch
                  consult consult-flycheck vertico marginalia orderless
                  ibuffer-vc dired-single which-key crux diminish
                  move-text dumb-jump corfu origami indent-guide rainbow-delimiters
@@ -105,6 +104,7 @@
 (setq initial-major-mode                          'org-mode)
 (setq winner-dont-bind-my-keys                            t)
 
+(setq-default line-spacing 2)
 (setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
 (setq-default save-interprogram-paste-before-kill                  t)
 (setq-default gnutls-verify-error                                  t)
@@ -121,6 +121,7 @@
 (setq-default ring-bell-function                             'ignore)
 
 (add-hook 'prog-mode-hook 'goto-address-mode)
+(add-hook 'text-mode-hook 'mixed-pitch-mode)
 
 (dolist (mode '(org-mode-hook
                 shell-mode-hook
@@ -321,10 +322,13 @@
 ;; ORG-MODE CONFIG  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 (setq org-return-follows-link t)
-(setq org-startup-folded nil)
 (setq org-adapt-indentation t)
-(setq org-ellipsis " ▼ ")
+(setq org-startup-indented t)
+(setq org-startup-folded t)
+(setq org-startup-with-inline-images t)
+(setq org-image-actual-width '(300))
 (setq org-hide-emphasis-markers t)
+(setq org-ellipsis " ▼ ")
 (setq org-todo-keywords
       '((sequence
          "TODO(t)"
@@ -350,10 +354,10 @@
 (setq org-roam-directory "~/src/org-roam")
 (setq org-roam-completion-everywhere t)
 (setq org-roam-db-gc-threshold most-positive-fixnum)
-(setq org-roam-dailies-directory "journal/")
-
 (org-roam-db-autosync-mode)
 
+(require 'org-roam-dailies)
+(setq org-roam-dailies-directory "journal/")
 (setq org-roam-dailies-capture-templates
       '(("d" "default" entry "* %<%I:%M %p>: %?"
          :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
@@ -464,6 +468,11 @@
                     :box '(:line-width 8 :color "#565063")
                     :overline nil
                     :underline nil)
+
+(set-face-attribute 'default        nil :font "DejaVu Sans Mono" :height 100)
+(set-face-attribute 'fixed-pitch    nil :font "DejaVu Sans Mono")
+(set-face-attribute 'variable-pitch nil :family "DejaVu Sans")
+
 
 ;; BINDINGS CONFIG  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ;; TODO: do I want to use "hydra.el" again? I liked using the rectangle functionality...
