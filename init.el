@@ -22,7 +22,7 @@
 (require 'server)
 
 (require 'org)
-(require 'org-capture)
+(require 'org-roam-dailies)
 (require 'org-agenda)
 (require 'org-clock)
 (require 'appt)
@@ -48,7 +48,7 @@
                  consult consult-flycheck vertico marginalia orderless
                  ibuffer-vc dired-single which-key crux diminish
                  move-text dumb-jump corfu origami indent-guide rainbow-delimiters
-                 org-brain calfw calfw-org
+                 org-roam calfw calfw-org
                  projectile magit js2-mode eglot flycheck yasnippet yasnippet-snippets restclient jira-markup-mode
                  hnreader helpful devdocs-browser equake md4rd
                  ;; page-break-lines
@@ -86,7 +86,7 @@
 ;; COMMON SETUP  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 (defalias 'yes-or-no-p 'y-or-n-p)
 
-;; (setq inhibit-startup-screen                              t)
+;; (setq inhibit-startup-screen                           t)
 (setq inhibit-default-init                                t)
 (setq load-prefer-newer                                   t)
 (setq make-backup-files                                 nil)
@@ -196,7 +196,6 @@
 (setq dumb-jump-prefer-searcher 'rg)
 (setq dumb-jump-aggressive nil)
 
-;; TODO I think there's something wrong although it's the same setup as before.
 (require 'dired-single)
 (define-key dired-mode-map [remap dired-mouse-find-file-other-window] 'dired-single-buffer-mouse)
 (define-key dired-mode-map [remap dired-up-directory]                 'dired-single-up-directory)
@@ -320,9 +319,6 @@
 (load-file (expand-file-name "sdfcli.el" user-emacs-directory))
 
 ;; ORG-MODE CONFIG  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-(if (file-exists-p "~/src/2nd_brain/")
-    (setq org-directory "~/src/2nd_brain/")
-  (setq org-directory "~/"))
 
 (setq org-return-follows-link t)
 (setq org-startup-folded nil)
@@ -349,21 +345,25 @@
 (setq org-timer-display 'both)
 (setq org-clock-sound (concat user-emacs-directory "alert.wav"))
 
-;; org capture
-(if (file-exists-p "~/src/2nd_brain/journal.org")
-    (defvar +org-capture-journal-file "~/src/2nd_brain/journal.org")
-  (defvar +org-capture-journal-file "~/journal.org"))
+;; org-roam
+(setq org-roam-v2-ack t)
+(setq org-roam-directory "~/src/org-roam")
+(setq org-roam-completion-everywhere t)
+(setq org-roam-db-gc-threshold most-positive-fixnum)
+(setq org-roam-dailies-directory "journal/")
 
-(setq org-capture-templates
-      '(("j" "Journal" entry (file+olp+datetree +org-capture-journal-file) "* %U %?\n%i\n%a" :prepend t :jump-to-captured t)))
+(org-roam-db-autosync-mode)
+
+(setq org-roam-dailies-capture-templates
+      '(("d" "default" entry "* %<%I:%M %p>: %?"
+         :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
 
 ;; org-agenda
-(if (file-exists-p "~/src/2nd_brain/brain")
+(if (file-exists-p "~/src/org-roam")
     (setq org-agenda-files
           '(
-            "~/src/2nd_brain/brain/TODO-LIST.org"
-            "~/src/2nd_brain/brain/Finances.org"
-            "~/src/2nd_brain/brain/Meetings.org")))
+            "~/src/org-roam/20210824165029-finances.org"
+            "~/src/org-roam/20210824165844-todo.org")))
 
 (setq org-agenda-start-day "0d")
 (setq org-agenda-span 5)
@@ -373,21 +373,7 @@
 (setq org-agenda-use-time-grid t)
 (setq appt-display-duration 60)
 
-(require 'org-brain)
-(if (file-exists-p "~/src/2nd_brain/brain")
-    (setq org-brain-path "~/src/2nd_brain/brain"
-          org-id-locations-file "~/src/2nd_brain/brain/.orgids"))
-
 (setq org-id-locations-file-relative t)
-(setq org-brain-visualize-default-choices 'all)
-(setq org-brain-title-max-length 12)
-(setq org-brain-include-file-entries nil)
-(setq org-brain-file-entries-use-title nil)
-
-(add-hook 'before-save-hook #'org-brain-ensure-ids-in-buffer)
-(push '("b" "Brain" plain (function org-brain-goto-end)
-        "* %i%?" :empty-lines 1)
-      org-capture-templates)
 
 ;; MISCELANEA CONFIG  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 (add-hook 'kill-buffer-query-functions
@@ -412,6 +398,13 @@
          (display-buffer-at-bottom)
          (window-height . 0.1)
          )))
+
+(add-to-list 'display-buffer-alist
+             '("\\*org-roam\\*"
+               (display-buffer-in-direction)
+               (direction . right)
+               (window-width . 0.33)
+               (window-height . fit-window-to-buffer)))
 
 ;; https://www.gonsie.com/blorg/modeline.html
 (setq-default mode-line-format
@@ -479,14 +472,13 @@
 
 (move-text-default-bindings)
 
-(global-set-key (kbd "C-c o a") 'org-brain-agenda)
-(global-set-key (kbd "C-c o c") 'org-capture)
-(global-set-key (kbd "C-c o l") 'cfw:open-org-calendar) ;; FIXME
-(global-set-key (kbd "C-c o o") 'org-brain-goto)
-(global-set-key (kbd "C-c o j") (lambda ()
-                                  (interactive)
-                                  (if (boundp 'org-brain-path)
-                                      (find-file (concat org-brain-path "/../journal.org")))))
+(global-set-key (kbd "C-c o d") 'org-roam-dailies-map)
+(define-key org-roam-dailies-map (kbd "Y") 'org-roam-dailies-capture-yesterday)
+(define-key org-roam-dailies-map (kbd "T") 'org-roam-dailies-capture-tomorrow)
+(global-set-key (kbd "C-c o t") 'org-roam-buffer-toggle)
+(global-set-key (kbd "C-c o f") 'org-roam-node-find)
+(global-set-key (kbd "C-c o i") 'org-roam-node-insert)
+
 
 (global-set-key (kbd "C-c c a") 'consult-apropos)
 (global-set-key (kbd "C-c c b") 'consult-buffer)
