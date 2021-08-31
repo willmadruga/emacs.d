@@ -20,6 +20,7 @@ bookmarks
 /url/
 /site-lisp/
 /eaf/
+/devdocs-browser/
 
 lsp-sessions
 .flycheck*

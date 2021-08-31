@@ -403,13 +403,6 @@
          (window-height . 0.1)
          )))
 
-(add-to-list 'display-buffer-alist
-             '("\\*org-roam\\*"
-               (display-buffer-in-direction)
-               (direction . right)
-               (window-width . 0.33)
-               (window-height . fit-window-to-buffer)))
-
 ;; https://www.gonsie.com/blorg/modeline.html
 (setq-default mode-line-format
               (list
@@ -481,14 +474,6 @@
 
 (move-text-default-bindings)
 
-(global-set-key (kbd "C-c o d") 'org-roam-dailies-map)
-(define-key org-roam-dailies-map (kbd "Y") 'org-roam-dailies-capture-yesterday)
-(define-key org-roam-dailies-map (kbd "T") 'org-roam-dailies-capture-tomorrow)
-(global-set-key (kbd "C-c o t") 'org-roam-buffer-toggle)
-(global-set-key (kbd "C-c o f") 'org-roam-node-find)
-(global-set-key (kbd "C-c o i") 'org-roam-node-insert)
-
-
 (global-set-key (kbd "C-c c a") 'consult-apropos)
 (global-set-key (kbd "C-c c b") 'consult-buffer)
 (global-set-key (kbd "C-c c f") 'consult-find)
@@ -520,21 +505,29 @@
 (global-set-key (kbd "C-c n d") 'netsuite/deploy)
 (global-set-key (kbd "C-c n u") 'netsuite/upload-buffer)
 
+(global-set-key (kbd "C-c o d") 'org-roam-dailies-map)
+(define-key org-roam-dailies-map (kbd "Y") 'org-roam-dailies-capture-yesterday)
+(define-key org-roam-dailies-map (kbd "T") 'org-roam-dailies-capture-tomorrow)
+(global-set-key (kbd "C-c o t") 'org-roam-buffer-toggle)
+(global-set-key (kbd "C-c o f") 'org-roam-node-find)
+(global-set-key (kbd "C-c o i") 'org-roam-node-insert)
+(global-set-key (kbd "C-c o s") 'org-save-all-org-buffers)
+
 (global-set-key (kbd "C-c p c") 'password-store-copy)
 (global-set-key (kbd "C-c p f") 'password-store-copy-field)
 
 (global-set-key (kbd "C-c m b") 'magit-blame)
 
-(global-set-key (kbd "C-c t n") 'tab-new)
-(global-set-key (kbd "C-c t r") 'tab-rename)
-(global-set-key (kbd "C-c t c") 'tab-close)
-(global-set-key (kbd "C-c t t") 'tab-recent)
-(global-set-key (kbd "C-c t l") 'tab-list)
+(global-set-key (kbd "C-c t n")   'tab-new)
+(global-set-key (kbd "C-c t r")   'tab-rename)
+(global-set-key (kbd "C-c t c")   'tab-close)
+(global-set-key (kbd "C-c t t")   'tab-recent)
+(global-set-key (kbd "C-c t l")   'tab-list)
+(global-set-key (kbd "C-c t SPC") 'toggle-frame-tab-bar)
 
-(global-set-key (kbd "C-c t <next>") 'tab-next)
-(global-set-key (kbd "C-c t <prior>") 'tab-previous)
+(global-set-key (kbd "C-c t <right>") 'tab-next)
+(global-set-key (kbd "C-c t <left>") 'tab-previous)
 (global-set-key (kbd "C-c t S-<right>") 'tab-move)
-
 
 (global-set-key (kbd "C-c D")   'dired)
 (global-set-key (kbd "C-c i")   'ibuffer)
@@ -569,13 +562,6 @@
 (equake-mode 1)
 (advice-add #'save-buffers-kill-terminal :before-while #'equake-kill-emacs-advice)
 (setq equake-default-shell 'term)
-
-;; TRYING OUT EAF...
-;; (add-to-list 'load-path "~/.emacs.d/site-lisp/emacs-application-framework/")
-;; (require 'eaf)
-
-;; (add-to-list 'load-path "~/.emacs.d/site-lisp/eaf-browser/")
-;; (require 'eaf-browser)
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)
