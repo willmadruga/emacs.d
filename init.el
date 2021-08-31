@@ -50,9 +50,7 @@
                  org-roam calfw calfw-org
                  projectile magit js2-mode eglot flycheck yasnippet yasnippet-snippets restclient jira-markup-mode
                  hnreader helpful devdocs-browser equake md4rd
-                 exwm
-                 ;; exwm-randr
-                 ;; exwm-systemtray
+                 exwm desktop-environment
                  ))
   (unless (package-installed-p pname)
     (progn
@@ -551,48 +549,7 @@
 (global-set-key (kbd "C-c C-<right>") 'shrink-window-horizontally)
 
 ;; EXWM CONFIG  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-(defun exwm/run-in-background (command)
-  "Run COMMAND in background."
-  (let ((command-parts (split-string command "[ ]+")))
-    (apply #'call-process `(,(car command-parts) nil 0 nil ,@(cdr command-parts)))))
-
-(require 'exwm)
-(setq mouse-autoselect-window nil)
-(setq focus-follows-mouse t)
-(setq exwm-workspace-warp-cursor t)
-(setq exwm-workspace-number 5)
-
-;; Make class name the buffer name
-(add-hook 'exwm-update-class-hook
-          (lambda ()
-            (exwm-workspace-rename-buffer exwm-class-name)))
-
-(add-hook 'exwm-update-title-hook
-          (lambda ()
-            (pcase exwm-class-name
-              ("qutebrowser" (exwm-workspace-rename-buffer (format "Qutebrowser: %s" exwm-title))))))
-
-(exwm-enable)
-
-;; (exwm-workspace-switch-create 0)
-(exwm-workspace-switch-create 1)
-;; (exwm-workspace-switch-create 2)
-;; (exwm-workspace-switch-create 3)
-
-;; Make workspace 1 be the one where we land at startup
-(exwm-workspace-switch-create 1)
-
-;; Launch apps that will run in the background
-;; (exwm/run-in-background "flatpak run org.signal.Signal")
-;; (exwm/run-in-background "zoom")
-(exwm/run-in-background "slack")
-;; (exwm/run-in-background "qutebrowser")
-(exwm/run-in-background "nm-applet")
-(exwm/run-in-background "blueberry-tray")
-;; (exwm/run-in-background "feh --bg-center ~/Pictures/JesusMeditating.png")
-
-
+(load-file (expand-file-name "exwm-config.el" user-emacs-directory))
 
 ;; END-OF-INIT RELATED CONFIG  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ;; set GC back to normal. Value increased in early-init
