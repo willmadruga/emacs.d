@@ -83,22 +83,33 @@
 (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
 
 (exwm/bind-function
- "s-<up>"                  'windmove-up
- "s-<down>"                'windmove-down
- "s-<left>"                'windmove-left
- "s-<right>"               'windmove-right
- "s-q"                     'kill-buffer
- "s-S-e"                   'exwm-restart
+ "C-c w `"                 (lambda () (exwm-workspace-switch-create 0))
+ "C-c w 1"                 (lambda () (exwm-workspace-switch-create 1))
+ "C-c w 2"                 (lambda () (exwm-workspace-switch-create 2))
+ "C-c w 3"                 (lambda () (exwm-workspace-switch-create 3))
+ "C-c w 4"                 (lambda () (exwm-workspace-switch-create 4))
+ "C-c w 5"                 (lambda () (exwm-workspace-switch-create 5))
+
+ "C-c w ~"                 (lambda () (exwm-workspace-move-window 0))
+ "C-c w !"                 (lambda () (exwm-workspace-move-window 1))
+ "C-c w @"                 (lambda () (exwm-workspace-move-window 2))
+ "C-c w #"                 (lambda () (exwm-workspace-move-window 3))
+ "C-c w $"                 (lambda () (exwm-workspace-move-window 4))
+ "C-c w %"                 (lambda () (exwm-workspace-move-window 5))
+
+ ;; TODO
+ ;; floating windows
+ ;; resizing floating windows
+
+ "s-<return>"              (lambda () (exwm/run-in-background "alacritty"))
+
+ "C-c w k"                 'kill-buffer
+ "C-c w R"                 'exwm-restart
+
  "<print>"                 'desktop-environment-screenshot
  "<XF86AudioLowerVolume>"  'desktop-environment-volume-decrement
  "<XF86AudioRaiseVolume>"  'desktop-environment-volume-increment
- "<XF86AudioMute>"         'desktop-environment-toggle-mute
- )
-
-;; TODO:
-;; multiple workspaces
-;; switch workspaces with super+number
-;; move window to another workspace with shift+super+number
+ "<XF86AudioMute>"         'desktop-environment-toggle-mute)
 
 ;; PANEL  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 (async-shell-command "xfce4-panel")
