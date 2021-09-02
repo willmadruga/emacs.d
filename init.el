@@ -50,7 +50,7 @@
                  org-roam calfw calfw-org
                  projectile magit js2-mode eglot flycheck yasnippet yasnippet-snippets restclient jira-markup-mode
                  hnreader helpful devdocs-browser equake md4rd
-                 exwm desktop-environment
+                 exwm exwm-edit desktop-environment
                  ))
   (unless (package-installed-p pname)
     (progn
