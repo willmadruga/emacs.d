@@ -50,8 +50,7 @@
                  org-roam calfw calfw-org
                  projectile magit js2-mode eglot flycheck yasnippet yasnippet-snippets restclient jira-markup-mode
                  hnreader helpful devdocs-browser equake md4rd
-                 ;; page-break-lines
-                 ;; evil
+                 exwm exwm-edit desktop-environment
                  ))
   (unless (package-installed-p pname)
     (progn
@@ -549,7 +548,10 @@
 (global-set-key (kbd "C-c C-<left>")  'enlarge-window-horizontally)
 (global-set-key (kbd "C-c C-<right>") 'shrink-window-horizontally)
 
-;; END-OF-INIT CONFIG  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+;; EXWM CONFIG  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+(load-file (expand-file-name "exwm-config.el" user-emacs-directory))
+
+;; END-OF-INIT RELATED CONFIG  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ;; set GC back to normal. Value increased in early-init
 (add-hook 'after-init-hook
           (lambda ()
@@ -562,6 +564,7 @@
 (equake-mode 1)
 (advice-add #'save-buffers-kill-terminal :before-while #'equake-kill-emacs-advice)
 (setq equake-default-shell 'term)
+
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)
