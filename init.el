@@ -253,24 +253,6 @@
 (diminish 'projectile-mode " Projectile")
 ;; TODO: diminish "Javascript-IDE"...
 
-;; (require 'origami)
-;; (global-origami-mode)
-
-;; (require 'evil)
-;; (setq evil-split-window-below t)
-;; (setq evil-vsplit-window-right t)
-;; (setq evil-undo-system 'undo-redo)
-;; (dolist (mode '(custom-mode
-;;                 eshell-mode
-;;                 term-mode
-;;                 dired-mode
-;;                 git-rebase-mode
-;;                 erc-mode))
-;;   (add-to-list 'evil-emacs-state-modes mode))
-;; (evil-set-initial-state 'message-buffer-mode 'normal)
-;; (evil-mode 1)
-
-
 ;; JAVASCRIPT LANGUAGE CONFIG  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 (require 'eglot)
 (add-to-list 'eglot-server-programs '(js-mode . ("typescript-language-server" "--stdio")))
