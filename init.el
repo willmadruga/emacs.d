@@ -46,8 +46,9 @@
                  gcmh modus-themes mixed-pitch
                  consult consult-flycheck vertico marginalia orderless
                  ibuffer-vc dired-single which-key crux diminish
+                 all-the-icons all-the-icons-dired all-the-icons-ibuffer all-the-icons-completion
                  move-text dumb-jump corfu origami indent-guide rainbow-delimiters
-                 org-roam calfw calfw-org
+                 org-roam org-superstar
                  projectile magit js2-mode eglot flycheck yasnippet yasnippet-snippets restclient jira-markup-mode
                  hnreader helpful devdocs-browser equake md4rd
                  exwm exwm-edit desktop-environment
@@ -359,6 +360,23 @@
 (setq appt-display-duration 60)
 
 (setq org-id-locations-file-relative t)
+
+;; org-superstar
+(require 'org-superstar)
+(add-hook 'org-mode-hook 'org-superstar-mode)
+(set-face-attribute 'org-superstar-header-bullet nil :inherit 'fixed-pitched :height 140)
+
+(setq org-superstar-headline-bullets-list '(" "))
+(setq org-superstar-todo-bullet-alist '(
+                                        ("TODO" . ?⌖)
+                                        ("NEXT" . ?)
+                                        ("STRT" . ?✍)
+                                        ("WAIT" . ?)
+                                        ("DONE" . ?✔)
+                                        ("CANCELLED" . ?)
+                                        ))
+(setq org-superstar-special-todo-items t)
+(setq org-superstar-leading-bullet "")
 
 ;; MISCELANEA CONFIG  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 (add-hook 'kill-buffer-query-functions
