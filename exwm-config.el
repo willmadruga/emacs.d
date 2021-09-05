@@ -54,6 +54,8 @@
 ;; Enable EXWM before the first frame is spawned
 (exwm-enable)
 
+(require 'exwm-edit)
+
 ;; Make workspace 1 be the one where we land at startup
 (exwm-workspace-switch-create 1)
 
