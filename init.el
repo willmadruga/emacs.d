@@ -548,6 +548,9 @@
 (global-set-key (kbd "C-c C-<left>")  'enlarge-window-horizontally)
 (global-set-key (kbd "C-c C-<right>") 'shrink-window-horizontally)
 
+(global-set-key (kbd "C-x C-a") 'eval-print-last-sexp)
+
+
 ;; EXWM CONFIG  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 (load-file (expand-file-name "exwm-config.el" user-emacs-directory))
 
