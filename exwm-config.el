@@ -61,13 +61,15 @@
 
 ;; Launch apps that will run in the background.
 ;; Ignore errors because I don't have all these binaries in all my machines.
+
+(exwm/run-in-background "qutebrowser")
+(exwm/run-in-background "nm-applet")
+(exwm/run-in-background "blueberry-tray")
+
 (ignore-errors
   (exwm/run-in-background "flatpak run org.signal.Signal")
   (exwm/run-in-background "zoom")
-  (exwm/run-in-background "slack")
-  (exwm/run-in-background "qutebrowser")
-  (exwm/run-in-background "nm-applet")
-  (exwm/run-in-background "blueberry-tray"))
+  (exwm/run-in-background "slack"))
 
 ;; TODO: use gaps and borders
 
