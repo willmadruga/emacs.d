@@ -50,7 +50,7 @@
                  move-text dumb-jump corfu origami indent-guide rainbow-delimiters
                  org-roam org-superstar
                  projectile magit js2-mode eglot flycheck yasnippet yasnippet-snippets restclient jira-markup-mode
-                 hnreader helpful devdocs-browser equake md4rd
+                 helpful devdocs-browser ;; equake md4rd hnreader
                  exwm exwm-edit desktop-environment
                  ))
   (unless (package-installed-p pname)
@@ -562,12 +562,6 @@
 
 (unless (server-running-p)
   (server-start))
-
-(require 'equake)
-(equake-mode 1)
-(advice-add #'save-buffers-kill-terminal :before-while #'equake-kill-emacs-advice)
-(setq equake-default-shell 'term)
-
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)
