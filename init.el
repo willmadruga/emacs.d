@@ -45,7 +45,7 @@
 (dolist (pname '(
                  gcmh modus-themes mixed-pitch
                  consult consult-flycheck vertico marginalia orderless
-                 ibuffer-vc dired-single which-key crux diminish
+                 ibuffer-vc dired-single which-key crux diminish popper
                  all-the-icons all-the-icons-dired all-the-icons-ibuffer all-the-icons-completion
                  move-text dumb-jump corfu origami indent-guide rainbow-delimiters
                  org-roam org-superstar
@@ -250,9 +250,18 @@
 (diminish 'gcmh-mode)
 (diminish 'eldoc-mode)
 (diminish 'flymake-mode)
-
 (diminish 'projectile-mode " Projectile")
 ;; TODO: diminish "Javascript-IDE"...
+
+(require 'popper)
+(setq popper-reference-buffers
+      '("\\*Messages\\*"
+        "\\.*Async Shell Command.*"
+        ))
+(setq popper-reference-modes
+      '(help-mode
+        compilation-mode))
+(popper-mode +1)
 
 ;; JAVASCRIPT LANGUAGE CONFIG  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 (require 'eglot)
@@ -395,30 +404,29 @@
 (modus-themes-load-themes)
 (modus-themes-load-vivendi)
 
-(setq display-buffer-alist
-      ;; display the window for the async shell command output at the bottom, small height.
-      '(("\\.*Async Shell Command.*"
-         (display-buffer-at-bottom)
-         (window-height . 0.1)
-         )))
-
 ;; https://www.gonsie.com/blorg/modeline.html
 (setq-default mode-line-format
               (list
                ;; day and time
-               '(:eval (propertize (format-time-string " %b %d %H:%M ")
-                                   'face 'font-lock-builtin-face))
+               '(:eval
+                 (propertize (format-time-string " %b %d %H:%M ")
+                             'face 'font-lock-builtin-face))
 
-               '(:eval (propertize (substring vc-mode 5)
-                                   'face 'font-lock-constant-face))
+               ;; version control
+               '(:eval
+                 (if (not vc-mode)
+                     ""
+                   (propertize (substring vc-mode 5)
+                               'face 'font-lock-constant-face)))
 
-               ;; the buffer name; the file name as a tool tip
-               '(:eval (propertize " %b "
-                                   'face
-                                   (let ((face (buffer-modified-p)))
-                                     (if face 'font-lock-warning-face
-                                       'font-lock-type-face))
-                                   'help-echo (buffer-file-name)))
+               ;; uffer name; the file name as a tool tip
+               '(:eval
+                 (propertize " %b "
+                             'face
+                             (let ((face (buffer-modified-p)))
+                               (if face 'font-lock-warning-face
+                                 'font-lock-type-face))
+                             'help-echo (buffer-file-name)))
 
                ;; line and column
                ;; '%02' to set to 2 chars at least; prevents flickering
@@ -435,11 +443,12 @@
                mode-line-misc-info
 
                ;; spaces to align right
-               '(:eval (propertize
-                        " " 'display
-                        `((space :align-to (- (+ right right-fringe right-margin)
-                                              ,(+ (string-width org-mode-line-string) (+ 3 (string-width mode-name)))
-                                              )))))
+               '(:eval
+                 (propertize
+                  " " 'display
+                  `((space :align-to (- (+ right right-fringe right-margin)
+                                        ,(+ (string-width org-mode-line-string) (+ 3 (string-width mode-name)))
+                                        )))))
 
                (propertize org-mode-line-string 'face '(:foreground "#5DD8FF"))
 
@@ -537,6 +546,10 @@
 
 (global-set-key (kbd "C-c <home>")    'org-timer-set-timer)
 (global-set-key (kbd "C-c <end>")     'org-timer-pause-or-continue)
+
+(global-set-key (kbd "C-c u u")    'popper-toggle-latest)
+(global-set-key (kbd "C-c u c")    'popper-cycle)
+(global-set-key (kbd "C-c u t")    'popper-toggle-type) ;; turn into a pop-up and back.
 
 (global-set-key (kbd "C-c <up>")      'windmove-up)
 (global-set-key (kbd "C-c <down>")    'windmove-down)
