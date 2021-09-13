@@ -497,6 +497,7 @@
 (global-set-key (kbd "C-c d i") 'devdocs-browser-install-doc)
 (global-set-key (kbd "C-c d l") 'devdocs-browser-list-docs)
 (global-set-key (kbd "C-c d b") 'devdocs-browser-open)
+(global-set-key (kbd "C-c d w") 'wdired-change-to-wdired-mode)
 
 (global-set-key (kbd "C-c e b") 'eval-buffer)
 (global-set-key (kbd "C-c e d") 'eglot-find-declaration)
