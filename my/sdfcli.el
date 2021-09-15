@@ -6,13 +6,12 @@
 
 
 ;; This is a work in progress!
-;; depends on Netsuite's sdfcli java
+;; it depends on Netsuite's sdfcli java
 ;; testing with suitecloud node cli is on hold at the moment...
 
-;; Need to standardize some things
-
-
 ;;; Code:
+
+(require 'dash)
 
 (defcustom netsuite-sdfcli-sync-to-account nil
   "Netsuite SDFCLI Auto Sync to account."
@@ -21,7 +20,6 @@
   )
 
 ;; Work in Progress... testing using suitecloud (node cli)
-;; if it works fine, I can present options to select execution via sdfcli 20, sdfcli21 or suitecloud node cli
 ;; (defun netsuite/setup-account ()
 ;;   "Account setup."
 ;;   (interactive)
@@ -80,7 +78,7 @@
                         (if (bound-and-true-p netsuite-sdfcli-sync-to-account)
                             netsuite-sdfcli-sync-to-account
                           (ido-completing-read "SDF Auth id:" (netsuite/list-authids))))))
-        (async-shell-command (concat "sdfcli uploadfiles -paths " file-path  " -authid " sdf-authid " -p " project-path))))
+    (async-shell-command (concat "sdfcli uploadfiles -paths " file-path  " -authid " sdf-authid " -p " project-path))))
 
 (defun netsuite/upload-buffer21 ()
   "An sdfcli wrapper to upload the current buffer to a netsuite account."

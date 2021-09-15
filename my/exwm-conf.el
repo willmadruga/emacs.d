@@ -1,4 +1,4 @@
-;;; exwm-config.el --- EXWM ;; -*- lexical-binding: t; -*-
+;;; exwm-conf.el --- EXWM ;; -*- lexical-binding: t; -*-
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -51,34 +51,13 @@
             (pcase exwm-class-name
               ("qutebrowser" (exwm-workspace-rename-buffer (format "Qutebrowser: %s" exwm-title))))))
 
-;; Enable EXWM before the first frame is spawned
-(exwm-enable)
-
 (require 'exwm-edit)
-
-;; Make workspace 1 be the one where we land at startup
-(exwm-workspace-switch-create 1)
-
-;; Launch apps that will run in the background.
-;; Ignore errors because I don't have all these binaries in all my machines.
-
-(exwm/run-in-background "qutebrowser")
-(exwm/run-in-background "nm-applet")
-(exwm/run-in-background "blueberry-tray")
-
-(ignore-errors
-  (exwm/run-in-background "flatpak run org.signal.Signal")
-  (exwm/run-in-background "zoom")
-  (exwm/run-in-background "slack"))
-
-;; TODO: use gaps and borders
 
 ;; EXWM BINDINGS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ;; Remove keybindings for 'delete-other-windows because I don't want to accidentally (force of habit) call it
 (global-unset-key (kbd "C-x 1"))
 
-;; FIXME: maybe I can get the super key to work correctly if I fix this! (instead of using C-c w...)
 (setq exwm-input-prefix-keys
       '(?\C-x
         ?\C-h
@@ -94,6 +73,9 @@
 
 (exwm/bind-function
  "s-<return>"              (lambda () (exwm/run-in-background "alacritty"))
+ "s-&"                     (lambda (command)
+                             (interactive (list (read-shell-command "$ ")))
+                             (start-process-shell-command command nil command))
 
  "C-c w k"                 'kill-buffer
  "C-c w R"                 'exwm-restart
@@ -103,29 +85,64 @@
  "<XF86AudioRaiseVolume>"  'desktop-environment-volume-increment
  "<XF86AudioMute>"         'desktop-environment-toggle-mute)
 
-;; FIXME: doesn't seem to be working :/ at least s-& doesn't work...
-(setq exwm-input-global-keys
-      `(
-        ;; Bind "s-r" to exit char-mode and fullscreen mode.
-        ([?\s-r] . exwm-reset)
-        ;; Bind "s-w" to switch workspace interactively.
-        ([?\s-w] . exwm-workspace-switch)
-        ;; Bind "s-&" to launch applications ('M-&' also works if the output
-        ;; buffer does not bother you).
-        ([?\s-&] . (lambda (command)
-                     (interactive (list (read-shell-command "$ ")))
-                     (start-process-shell-command command nil command)))))
-
-;; Ctrl+Q will enable the next key to be sent directly
+;; Ctrl+Q enable the next key to be sent directly
 (define-key exwm-mode-map [?\C-q] 'exwm-input-send-next-key)
 
+;; Set up global key bindings.  These always work, no matter the input state!
+;; Keep in mind that changing this list after EXWM initializes has no effect.
+(setq exwm-input-global-keys
+      `(
+        ;; Reset to line-mode (C-c C-k switches to char-mode via exwm-input-release-keyboard)
+        ([?\s-r] . exwm-reset)
+
+        ;; Move between windows
+        ([s-left]  . windmove-left)
+        ([s-right] . windmove-right)
+        ([s-up]    . windmove-up)
+        ([s-down]  . windmove-down)
+
+        ;; Launch applications via shell command
+        ([?\s-&] . (lambda (command)
+                     (interactive (list (read-shell-command "$ ")))
+                     (start-process-shell-command command nil command)))
+
+        ;; Switch workspace
+        ([?\s-w] . exwm-workspace-switch)
+        ;; ([?\s-`] . (lambda () (interactive) (exwm-workspace-switch-create 0)))
+
+        ;; 's-N': Switch to certain workspace with Super (Win) plus a number key (0 - 9)
+        ,@(mapcar (lambda (i)
+                    `(,(kbd (format "s-%d" i)) .
+                      (lambda ()
+                        (interactive)
+                        (exwm-workspace-switch-create ,i))))
+                  (number-sequence 1 9))))
+
+
+;; enable exwm before the first frame is displayed.
+(exwm-enable)
+
+;; We land on workspace 1 at startup
+(exwm-workspace-switch-create 1)
+
+;; Launch apps a couple of apps - Ignore errors when binaries are not found.
+(ignore-errors
+  (exwm/run-in-background "nm-applet"))
+(ignore-errors
+  (exwm/run-in-background "blueberry-tray"))
+(ignore-errors
+  (start-process-shell-command "qutebrowser" nil "qutebrowser"))
+
+(ignore-errors
+  (start-process-shell-command "Signal" nil "flatpak run org.signal.Signal"))
+(ignore-errors
+  (start-process-shell-command "Zoom" nil "zoom"))
+(ignore-errors
+  (start-process-shell-command "Slack" nil "slack"))
+
 ;; PANEL  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-(async-shell-command "xfce4-panel")
+(start-process-shell-command "xfce4-panel" nil "xfce4-panel")
 
 (provide 'exwm-config)
 
-;; Local Variables:
-;; byte-compile-warnings: (not free-vars)
-;; End:
-
-;;; exwm-config.el ends here
+;;; exwm-conf.el ends here
