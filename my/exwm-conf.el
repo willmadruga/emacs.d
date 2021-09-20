@@ -69,6 +69,7 @@
         ?\C-\M-k  ;; Browser list
         ?\C-\M-n  ;; Next workspace
         ?\C-\     ;; Ctrl+Space
+        ?\M-\     ;; Alt+Space
         ?\C-\;))
 
 (exwm/bind-function

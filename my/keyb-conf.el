@@ -3,6 +3,7 @@
 ;; This file is NOT part of GNU Emacs.
 
 ;;; Commentary:
+;; https://github.com/jerrypnz/major-mode-hydra.el
 
 ;;; Code:
 
@@ -11,105 +12,132 @@
 
 (move-text-default-bindings)
 
+(require 'pretty-hydra)
+;; FIXME: work on a better title. there is an example with favicon in the package home page.
+(pretty-hydra-define wmad-global-keys (:foreign-keys warn :title "[ Global Keys ]" :quit-key "q")
 
-(global-set-key (kbd "C-c c a") 'consult-apropos)
-(global-set-key (kbd "C-c c b") 'consult-buffer)
-(global-set-key (kbd "C-c c c") 'consult-flycheck)
-(global-set-key (kbd "C-c c f") 'consult-find)
-(global-set-key (kbd "C-c c g") 'consult-grep)
-(global-set-key (kbd "C-c c l") 'consult-line)
-(global-set-key (kbd "C-c c m") 'consult-imenu)
-(global-set-key (kbd "C-c c r") 'consult-ripgrep)
-(global-set-key (kbd "C-c c R") 'consult-recent-file)
-(global-set-key (kbd "C-c c s") 'consult-isearch)
+  ("Consult"
+   (("ca" consult-apropos     "apropos")
+    ("cb" consult-buffer      "buffer")
+    ("cc" consult-flycheck    "flycheck")
+    ("cf" consult-find        "find")
+    ("cg" consult-grep        "grep")
+    ("cl" consult-line        "line")
+    ("ci" consult-imenu       "imenu")
+    ("cr" consult-ripgrep     "rg")
+    ("cR" consult-recent-file "recent-file")
+    ("cs" consult-isearch     "isearch"))
 
+   "Dev"
+   (("dd" crux-duplicate-current-line-or-region "duplicate")
+    ("dc" crux-duplicate-and-comment-current-line-or-region "duplicate + comment")
+    ("du" undo "undo")
+    ("di" devdocs-browser-install-doc "devdocs install")
+    ("dl" devdocs-browser-list-docs   "devdocs list")
+    ("do" devdocs-browser-open        "devdoc open")
+    ("mb" magit-blame "Magit Blame"))
 
-(global-set-key (kbd "C-c d d") 'crux-duplicate-current-line-or-region)
-(global-set-key (kbd "C-c d ;") 'crux-duplicate-and-comment-current-line-or-region)
-(global-set-key (kbd "C-c d i") 'devdocs-browser-install-doc)
-(global-set-key (kbd "C-c d l") 'devdocs-browser-list-docs)
-(global-set-key (kbd "C-c d b") 'devdocs-browser-open)
-(global-set-key (kbd "C-c d w") 'wdired-change-to-wdired-mode)
+   "Emacs"
+   (("D" dired "Dired")
+    ("WD" wdired-change-to-wdired-mode "Change to wdired")
+    ("B" speedbar              "speedbar")
+    ("I" ibuffer               "i-buffer")
+    ("S" ansi-term             "ANSI Shell")
+    ("y" yank-from-kill-ring   "Yank from Kill-Ring")
+    ("Y" yas-describe-tables   "YASnippet Table")
+    ("uu" popper-toggle-latest "Popper Toggle")
+    ("uc" popper-cycle         "Popper Cycle")
+    ("ut" popper-toggle-type   "Popper Toggle Type")
+    ("C-SPC" nil               "Hydra Major Mode"))
 
+   "ORG"
+   (("ot" org-roam-buffer-toggle      "Org-Roam Toggle")
+    ("of" org-roam-node-find          "Org-Roam Find")
+    ("oi" org-roam-node-insert        "Org-Roam Insert")
+    ("os" org-save-all-org-buffers    "Save ALL org buffers")
+    ("oa" org-agenda                  "Org Agenda")
+    ("oT" org-timer-set-timer         "Org Set Timer")
+    ("oP" org-timer-pause-or-continue "Org Pause/Continue Timer"))
 
-(global-set-key (kbd "C-c e b") 'eval-buffer)
-(global-set-key (kbd "C-c e d") 'eglot-find-declaration)
-(global-set-key (kbd "C-c e e") 'eval-last-sexp)
-(global-set-key (kbd "C-c e f") 'eglot-format)
-(global-set-key (kbd "C-c e i") 'eglot-find-implementation)
-(global-set-key (kbd "C-c e p") 'pp-eval-last-sexp)
-(global-set-key (kbd "C-c e r") 'eglot-rename)
+   "Password"
+   (("pc" password-store-copy       "Copy Password")
+    ("pf" password-store-copy-field "Copy Field"))
 
+   "Tab-Bar"
+   (("tn" tab-new)
+    ("tr" tab-rename)
+    ("tc" tab-close)
+    ("tt" tab-recent)
+    ("tl" tab-list)
+    ("t SPC"     toggle-frame-tab-bar)
+    ("t <right>" tab-next)
+    ("t <left>"  tab-previous)
+    ("t <up>"    tab-move))
 
-(global-set-key (kbd "C-c g g") 'dumb-jump-go)
-(global-set-key (kbd "C-c g b") 'dumb-jump-back)
+   "Window"
+   (("<up>"    enlarge-window)
+    ("<down>"  shrink-window)
+    ("<left>"  enlarge-window-horizontally)
+    ("<right>" shrink-window-horizontally))
 
+   "EXWM"
+   (("s-RET" nil   "Alacritty")
+    ("s-&" nil     "Execute command")
+    ("s 1-9" nil   "Switch Workspaces 1 to 9")
+    ("s arrow" nil "Window Move direction"))
+   ))
 
-(global-set-key (kbd "C-c n c") 'netsuite/create-project)
-(global-set-key (kbd "C-c n d") 'netsuite/deploy)
-(global-set-key (kbd "C-c n u") 'netsuite/upload-buffer)
+(global-set-key (kbd "M-SPC") 'wmad-global-keys/body)
 
-
+;; How can I integrate these to hydra?
 (global-set-key (kbd "C-c o d") 'org-roam-dailies-map)
 (define-key org-roam-dailies-map (kbd "Y") 'org-roam-dailies-capture-yesterday)
 (define-key org-roam-dailies-map (kbd "T") 'org-roam-dailies-capture-tomorrow)
-(global-set-key (kbd "C-c o t") 'org-roam-buffer-toggle)
-(global-set-key (kbd "C-c o f") 'org-roam-node-find)
-(global-set-key (kbd "C-c o i") 'org-roam-node-insert)
-(global-set-key (kbd "C-c o s") 'org-save-all-org-buffers)
 
 
-(global-set-key (kbd "C-c p c") 'password-store-copy)
-(global-set-key (kbd "C-c p f") 'password-store-copy-field)
+
+(require 'major-mode-hydra)
+(global-set-key (kbd "C-SPC") #'major-mode-hydra)
 
 
-(global-set-key (kbd "C-c m b") 'magit-blame)
+
+(major-mode-hydra-define js2-mode nil
+  ("Eglot"
+   (("D" eglot-find-declaration "Find Declaration")
+    ("i" eglot-find-implementation "Find Implementation")
+    ("f" eglot-format "Format")
+    ("r" eglot-rename "Rename"))
+
+   "SuiteCloud"
+   (("c" netsuite/create-project "Create SDF Project")
+    ("d" netsuite/deploy "Deploy SDF")
+    ("u" netsuite/upload-buffer "Upload buffer"))
+
+   "Dumb jump"
+   (("g" dumb-jump-go   "Go")
+    ("b" dumb-jump-back "Back"))))
 
 
-(global-set-key (kbd "C-c t n")   'tab-new)
-(global-set-key (kbd "C-c t r")   'tab-rename)
-(global-set-key (kbd "C-c t c")   'tab-close)
-(global-set-key (kbd "C-c t t")   'tab-recent)
-(global-set-key (kbd "C-c t l")   'tab-list)
-(global-set-key (kbd "C-c t SPC") 'toggle-frame-tab-bar)
 
+(major-mode-hydra-define emacs-lisp-mode nil
+  ("Eval"
+   (("b" eval-buffer       "buffer")
+    ("d" eval-defun        "defun")
+    ("e" eval-last-sexp    "s-expr")
+    ("r" eval-region       "region")
+    ("p" eval-print-last-sexp "print s-expr")) ;; pp-eval-last-sexp
 
-(global-set-key (kbd "C-c t <right>") 'tab-next)
-(global-set-key (kbd "C-c t <left>") 'tab-previous)
-(global-set-key (kbd "C-c t S-<right>") 'tab-move)
+   "REPL"
+   (("I" ielm "ielm"))
 
+   "Test"
+   (("t" ert "prompt")
+    ("T" (ert t) "all")
+    ("F" (ert :failed) "failed"))
 
-(global-set-key (kbd "C-c D")   'dired)
-(global-set-key (kbd "C-c i")   'ibuffer)
-(global-set-key (kbd "C-c S")   'shell)
-(global-set-key (kbd "C-c s")   'speedbar)
-(global-set-key (kbd "C-c Y")   'yas-describe-tables)
-(global-set-key (kbd "C-c y")   'yank-from-kill-ring)
-
-
-(global-set-key (kbd "C-c <home>") 'org-timer-set-timer)
-(global-set-key (kbd "C-c <end>")  'org-timer-pause-or-continue)
-
-
-(global-set-key (kbd "C-c u u")    'popper-toggle-latest)
-(global-set-key (kbd "C-c u c")    'popper-cycle)
-(global-set-key (kbd "C-c u t")    'popper-toggle-type) ;; turn into a pop-up and back.
-
-
-;; super+direction to work on ewwm-config.el
-;; (global-set-key (kbd "C-c <up>")      'windmove-up)
-;; (global-set-key (kbd "C-c <down>")    'windmove-down)
-;; (global-set-key (kbd "C-c <left>")    'windmove-left)
-;; (global-set-key (kbd "C-c <right>")   'windmove-right)
-
-
-(global-set-key (kbd "C-c C-<up>")    'enlarge-window)
-(global-set-key (kbd "C-c C-<down>")  'shrink-window)
-(global-set-key (kbd "C-c C-<left>")  'enlarge-window-horizontally)
-(global-set-key (kbd "C-c C-<right>") 'shrink-window-horizontally)
-
-
-(global-set-key (kbd "C-x C-a") 'eval-print-last-sexp)
-
+   "Doc"
+   (("f" describe-function "function")
+    ("v" describe-variable "variable")
+    ("i" info-lookup-symbol "info lookup"))))
 
 ;;; keyb-conf.el ends here
