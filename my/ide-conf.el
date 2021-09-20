@@ -95,12 +95,12 @@
 (setq popper-reference-buffers
       '("\\*Messages\\*"
         "\\.*Async Shell Command.*"
+        "\\.*EGLOT.* events.*"
+        "\\.*XELB-DEBUG*"
+        help-mode
+        compilation-mode
         ))
-(setq popper-reference-modes
-      '(help-mode
-        compilation-mode))
 (popper-mode +1)
-
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)
