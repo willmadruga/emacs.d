@@ -81,7 +81,7 @@
  "C-c w k"                 'kill-buffer
  "C-c w R"                 'exwm-restart
 
- "<print>"                 'desktop-environment-screenshot
+ "<print>"                 'xfce4-screenshooter
  "<XF86AudioLowerVolume>"  'desktop-environment-volume-decrement
  "<XF86AudioRaiseVolume>"  'desktop-environment-volume-increment
  "<XF86AudioMute>"         'desktop-environment-toggle-mute)
@@ -131,8 +131,6 @@
   (exwm/run-in-background "nm-applet"))
 (ignore-errors
   (exwm/run-in-background "blueberry-tray"))
-(ignore-errors
-  (start-process-shell-command "qutebrowser" nil "qutebrowser"))
 
 (ignore-errors
   (start-process-shell-command "Signal" nil "flatpak run org.signal.Signal"))
@@ -142,7 +140,10 @@
   (start-process-shell-command "Slack" nil "slack"))
 
 ;; PANEL  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-(start-process-shell-command "xfce4-panel" nil "xfce4-panel")
+
+;; TODO: work on an alternative panel. I don't want to rely on XFCE for too long.
+(ignore-errors
+  (start-process-shell-command "xfce4-panel" nil "xfce4-panel"))
 
 (provide 'exwm-config)
 

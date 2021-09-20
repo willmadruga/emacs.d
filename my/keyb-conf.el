@@ -13,8 +13,17 @@
 (move-text-default-bindings)
 
 (require 'pretty-hydra)
-;; FIXME: work on a better title. there is an example with favicon in the package home page.
-(pretty-hydra-define wmad-global-keys (:foreign-keys warn :title "[ Global Keys ]" :quit-key "q")
+(require 'yasnippet)
+(require 'popper)
+(require 'org-roam)
+(require 'org-roam-dailies)
+(require 'eglot)
+
+(require 'password-store "../../password-store.el")
+(require 'sdfcli "../../my/sdfcli.el")
+
+;; FIXME: work on a better title. there is an example with favicon in the package home page, it's quite nice.
+(pretty-hydra-define wmad-global-keys (:foreign-keys warn :title "[ Global Keybindings ]" :exit t)
 
   ("Consult"
    (("ca" consult-apropos     "apropos")
@@ -84,7 +93,9 @@
    (("s-RET" nil   "Alacritty")
     ("s-&" nil     "Execute command")
     ("s 1-9" nil   "Switch Workspaces 1 to 9")
-    ("s arrow" nil "Window Move direction"))
+    ("s arrow" nil "Window Move direction")
+    ("q" hydra-keyboard-quit "Quit Hydra")
+    ("C-g" hydra-keyboard-quit "Quit Hydra"))
    ))
 
 (global-set-key (kbd "M-SPC") 'wmad-global-keys/body)
