@@ -6,100 +6,153 @@
 
 ;;; Code:
 
-(add-hook 'before-save-hook (lambda () (whitespace-cleanup)))
+(use-package emacs
+  :ensure t
+  :config
+  (add-hook 'before-save-hook (lambda () (whitespace-cleanup))))
 
-(require 'projectile)
-(autoload 'projectile-project-root "projectile")
-(projectile-mode +1)
+(use-package  projectile
+  :ensure t
+  :diminish "[Proj]"
+  :config
+  (autoload 'projectile-project-root "projectile")
+  (projectile-mode +1))
 
-(require 'indent-guide)
-(indent-guide-global-mode)
+(use-package indent-guide
+  :ensure t
+  :diminish
+  :config
+  (indent-guide-global-mode))
 
-(require 'magit)
-(defalias 'git 'magit)
+(use-package magit
+  :ensure t
+  :config
+  (defalias 'git 'magit))
 
-(require 'ibuffer-vc)
-(add-hook 'ibuffer-hook
-          (lambda ()
-            (require 'ibuf-ext)
-            (ibuffer-vc-set-filter-groups-by-vc-root)
-            (unless (eq ibuffer-sorting-mode 'alphabetic)
-              (ibuffer-do-sort-by-alphabetic))))
+(use-package ibuffer-vc
+  :hook (ibuffer-hook . (lambda ()
+                          (require 'ibuf-ext)
+                          (ibuffer-vc-set-filter-groups-by-vc-root)
+                          (unless (eq ibuffer-sorting-mode 'alphabetic)
+                            (ibuffer-do-sort-by-alphabetic)))))
 
-(require 'rainbow-delimiters)
-(add-hook 'prog-text-hook 'rainbow-delimiters-mode)
-(add-hook 'prog-mode-hook 'rainbow-delimiters-mode)
+(use-package rainbow-delimiters
+  :ensure t
+  :hook ((prog-text-hook . rainbow-delimiters-mode)
+         (prog-mode-hook . rainbow-delimiters-mode)))
 
-(require 'dumb-jump)
-(setq dumb-jump-default-project user-emacs-directory)
-(setq dumb-jump-prefer-searcher 'rg)
-(setq dumb-jump-aggressive nil)
+;; FIXME: Can I find a way to make my javascript projects work with
+;; x-ref so I don't need to use dumb-jump again?
+(use-package dumb-jump
+  :ensure t
 
-(require 'dired-single)
-(define-key dired-mode-map [remap dired-mouse-find-file-other-window] 'dired-single-buffer-mouse)
-(define-key dired-mode-map [remap dired-up-directory]                 'dired-single-up-directory)
-(define-key dired-mode-map [remap dired-find-file]                    'dired-single-buffer)
+  ;; FIXME: keybindings should use new approach
+  :bind (("C-c g g" . dumb-jump-go)
+         ("C-c g b" . dumb-jump-back))
 
-(require 'yasnippet)
-(yas-global-mode 1)
+  :config
+  (setq dumb-jump-default-project user-emacs-directory)
+  (setq dumb-jump-prefer-searcher 'rg)
+  (setq dumb-jump-aggressive nil))
 
-(require 'consult)
-(setq consult-project-root-function #'projectile-project-root)
-(setq xref-show-xrefs-function #'consult-xref)
-(setq xref-show-definitions-function #'consult-xref)
+(use-package dired-single
+  :ensure t
+  :bind (([remap dired-mouse-find-file-other-window] . dired-single-buffer-mouse)
+         ([remap dired-up-directory]                 . dired-single-up-directory)
+         ([remap dired-find-file]                    . dired-single-buffer)))
 
-(defvar my-consult-line-map
-  (let ((map (make-sparse-keymap)))
-    (define-key map "\C-s" #'previous-history-element)
-    map))
-(consult-customize
- consult-line :keymap my-consult-line-map)
+(use-package yasnippet
+  :ensure t
+  :defer t
+  :config
+  (yas-global-mode 1))
 
-(consult-customize
- consult-ripgrep
- consult-git-grep
- consult-grep
- consult-recent-file
- :preview-key (kbd "M-."))
+(use-package consult
+  :ensure t
+  :after (projectile)
+  :bind (("C-c c a" . consult-apropos)
+         ("C-c c b" . consult-buffer)
+         ("C-c c c" . consult-flycheck)
+         ("C-c c f" . consult-find)
+         ("C-c c g" . consult-grep)
+         ("C-c c l" . consult-line)
+         ("C-c c m" . consult-imenu)
+         ("C-c c r" . consult-ripgrep)
+         ("C-c c R" . consult-recent-file)
+         ("C-c c s" . consult-isearch))
+  :config
+  (setq consult-project-root-function #'projectile-project-root)
+  (setq xref-show-xrefs-function #'consult-xref)
+  (setq xref-show-definitions-function #'consult-xref)
 
-(require 'vertico)
-(vertico-mode)
+  (defvar my-consult-line-map
+    (let ((map (make-sparse-keymap)))
+      (define-key map "\C-s" #'previous-history-element)
+      map))
 
-(require 'marginalia)
-(marginalia-mode)
+  (consult-customize
+   consult-line :keymap my-consult-line-map)
 
-(require 'orderless)
-(setq completion-styles '(orderless))
+  (consult-customize
+   consult-ripgrep
+   consult-git-grep
+   consult-grep
+   consult-recent-file
+   :preview-key (kbd "M-.")))
 
-(require 'corfu)
-(corfu-global-mode)
+(use-package vertico
+  :ensure t
+  :config
+  (vertico-mode))
 
-(require 'which-key)
-(setq which-key-show-early-on-C-h t)
-(setq which-key-idle-delay 10000)
-(setq which-key-idle-secondary-delay 0.05)
-(setq which-key-sort-order 'which-key-key-order-alpha)
-(which-key-mode 1)
+(use-package marginalia
+  :ensure t
+  :config
+  (marginalia-mode))
 
-(require 'diminish)
-(diminish 'auto-revert-mode)
-(diminish 'which-key-mode)
-(diminish 'indent-guide-mode)
-(diminish 'gcmh-mode)
-(diminish 'eldoc-mode)
-(diminish 'flymake-mode)
-(diminish 'projectile-mode " Projectile")
-;; TODO: diminish "Javascript-IDE"...
+(use-package orderless
+  :ensure t
+  :defer t
+  :config
+  (setq completion-styles '(orderless)))
 
-(require 'popper)
-(setq popper-reference-buffers
-      '("\\*Messages\\*"
-        "\\.*Async Shell Command.*"
-        ))
-(setq popper-reference-modes
-      '(help-mode
-        compilation-mode))
-(popper-mode +1)
+(use-package corfu
+  :ensure t
+  :defer t
+  :config
+  (corfu-global-mode))
+
+(use-package which-key
+  :ensure t
+  :diminish
+  :defer t
+  :config
+  (setq which-key-show-early-on-C-h t)
+  (setq which-key-idle-delay 10000)
+  (setq which-key-idle-secondary-delay 0.05)
+  (setq which-key-sort-order 'which-key-key-order-alpha)
+  (which-key-mode 1))
+
+(use-package diminish
+  :ensure t
+  :defer t
+  :config
+  (diminish 'auto-revert-mode)
+  (diminish 'eldoc-mode)
+  (diminish 'flymake-mode))
+
+(use-package popper
+  :ensure t
+  :defer t
+  :config
+  (setq popper-reference-buffers
+        '("\\*Messages\\*"
+          "\\.*Async Shell Command.*"
+          ))
+  (setq popper-reference-modes
+        '(help-mode
+          compilation-mode))
+  (popper-mode +1))
 
 
 ;; Local Variables:

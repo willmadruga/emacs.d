@@ -130,8 +130,9 @@
   (exwm/run-in-background "nm-applet"))
 (ignore-errors
   (exwm/run-in-background "blueberry-tray"))
-(ignore-errors
-  (start-process-shell-command "qutebrowser" nil "qutebrowser"))
+
+;; (ignore-errors
+;;   (start-process-shell-command "qutebrowser" nil "qutebrowser"))
 
 (ignore-errors
   (start-process-shell-command "Signal" nil "flatpak run org.signal.Signal"))

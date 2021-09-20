@@ -11,18 +11,8 @@
 
 (move-text-default-bindings)
 
-
-(global-set-key (kbd "C-c c a") 'consult-apropos)
-(global-set-key (kbd "C-c c b") 'consult-buffer)
-(global-set-key (kbd "C-c c c") 'consult-flycheck)
-(global-set-key (kbd "C-c c f") 'consult-find)
-(global-set-key (kbd "C-c c g") 'consult-grep)
-(global-set-key (kbd "C-c c l") 'consult-line)
-(global-set-key (kbd "C-c c m") 'consult-imenu)
-(global-set-key (kbd "C-c c r") 'consult-ripgrep)
-(global-set-key (kbd "C-c c R") 'consult-recent-file)
-(global-set-key (kbd "C-c c s") 'consult-isearch)
-
+;; TODO: User major-mode-hydra + pretty-hydra
+;; https://github.com/jerrypnz/major-mode-hydra.el
 
 (global-set-key (kbd "C-c d d") 'crux-duplicate-current-line-or-region)
 (global-set-key (kbd "C-c d ;") 'crux-duplicate-and-comment-current-line-or-region)
@@ -40,9 +30,6 @@
 (global-set-key (kbd "C-c e p") 'pp-eval-last-sexp)
 (global-set-key (kbd "C-c e r") 'eglot-rename)
 
-
-(global-set-key (kbd "C-c g g") 'dumb-jump-go)
-(global-set-key (kbd "C-c g b") 'dumb-jump-back)
 
 
 (global-set-key (kbd "C-c n c") 'netsuite/create-project)

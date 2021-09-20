@@ -10,22 +10,25 @@
 
 ;;; Code:
 
-(require 'gcmh)
-(setq gcmh-mode 1)
-(setq gcmh-idle-delay 5)
-(setq gcmh-high-cons-threshold (* 16 1024 1024))
+(use-package gcmh
+  :ensure t
+  :diminish
+  :config
+  (setq gcmh-mode 1)
+  (setq gcmh-idle-delay 5)
+  (setq gcmh-high-cons-threshold (* 16 1024 1024))
 
-(if (and (fboundp 'native-comp-available-p) (native-comp-available-p))
-    (setq comp-deferred-compilation t
-          package-native-compile t
-          native-comp-deferred-compilation t
-          native-comp-async-query-on-exit t
-          native-comp-async-jobs-number 6
-          native-comp-async-report-warnings-errors nil)
-  (message "Native compilation is *not* available, consider enabling it."))
+  (if (and (fboundp 'native-comp-available-p) (native-comp-available-p))
+      (setq comp-deferred-compilation t
+            package-native-compile t
+            native-comp-deferred-compilation t
+            native-comp-async-query-on-exit t
+            native-comp-async-jobs-number 6
+            native-comp-async-report-warnings-errors nil)
+    (message "Native compilation is *not* available, consider enabling it."))
 
-(unless (functionp 'json-serialize)
-  (message "Native JSON is *not* available, consider enabling it."))
+  (unless (functionp 'json-serialize)
+    (message "Native JSON is *not* available, consider enabling it.")))
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)
