@@ -4,6 +4,15 @@
 
 ;;; Commentary:
 ;; https://github.com/jerrypnz/major-mode-hydra.el
+;;
+;; Using major-mode-hydra could be a transition step into getting start with transient.
+;; Had to change from regular Emacs keybindings ASAP because my fingers were hurting and it can take awhile
+;; before I have a working environment with a transient setup.
+;;
+;; Timely, these articles on reddit will help out expediting this task:
+;; https://www.reddit.com/r/emacs/comments/m518xh/transient_api_example_alternative_bindings_part_1/
+;; https://www.reddit.com/r/emacs/comments/pon0ee/transient_api_example_part_2_transientdostay/
+;;
 
 ;;; Code:
 
@@ -22,133 +31,163 @@
 (require 'password-store "../../password-store.el")
 (require 'sdfcli "../../my/sdfcli.el")
 
-;; FIXME: work on a better title. there is an example with favicon in the package home page, it's quite nice.
-(pretty-hydra-define wmad-global-keys (:foreign-keys warn :title "[ Global Keybindings ]" :exit t)
-
+(pretty-hydra-define wmad-consult-keys (:foreign-keys warn :title "[ Consult Keybindings ]" :exit t)
   ("Consult"
-   (("ca" consult-apropos     "apropos")
-    ("cb" consult-buffer      "buffer")
-    ("cc" consult-flycheck    "flycheck")
-    ("cf" consult-find        "find")
-    ("cg" consult-grep        "grep")
-    ("cl" consult-line        "line")
-    ("ci" consult-imenu       "imenu")
-    ("cr" consult-ripgrep     "rg")
-    ("cR" consult-recent-file "recent-file")
-    ("cs" consult-isearch     "isearch"))
+   (("a"   consult-apropos     "apropos")
+    ("b"   consult-buffer      "buffer")
+    ("f"   consult-flycheck    "flycheck")
+    ("F"   consult-find        "find")
+    ("g"   consult-grep        "grep")
+    ("l"   consult-line        "line")
+    ("i"   consult-imenu       "imenu")
+    ("r"   consult-ripgrep     "rg")
+    ("R"   consult-recent-file "recent-file")
+    ("s"   consult-isearch     "isearch"))
+   "Quit"
+   (("q"   hydra-keyboard-quit)
+    ("C-g" hydra-keyboard-quit))))
 
-   "Dev"
-   (("dd" crux-duplicate-current-line-or-region "duplicate")
-    ("dc" crux-duplicate-and-comment-current-line-or-region "duplicate + comment")
-    ("du" undo "undo")
-    ("di" devdocs-browser-install-doc "devdocs install")
-    ("dl" devdocs-browser-list-docs   "devdocs list")
-    ("do" devdocs-browser-open        "devdoc open")
-    ("mb" magit-blame "Magit Blame"))
+(pretty-hydra-define wmad-dev-keys (:foreign-keys warn :title "[ Dev Keybindings ]" :exit t)
+  ("Dev"
+   (("c"   crux-duplicate-and-comment-current-line-or-region "duplicate + comment")
+    ("d"   crux-duplicate-current-line-or-region             "duplicate")
+    ("u"   undo                                              "undo")
+    ("i"   devdocs-browser-install-doc                       "devdocs install")
+    ("l"   devdocs-browser-list-docs                         "devdocs list")
+    ("o"   devdocs-browser-open                              "devdoc open")
+    ("b"   magit-blame                                       "Magit Blame"))
+   "Quit"
+   (("q"   hydra-keyboard-quit)
+    ("C-g" hydra-keyboard-quit))))
 
-   "Emacs"
-   (("D" dired "Dired")
-    ("WD" wdired-change-to-wdired-mode "Change to wdired")
-    ("B" speedbar              "speedbar")
-    ("I" ibuffer               "i-buffer")
-    ("S" ansi-term             "ANSI Shell")
-    ("y" yank-from-kill-ring   "Yank from Kill-Ring")
-    ("Y" yas-describe-tables   "YASnippet Table")
-    ("uu" popper-toggle-latest "Popper Toggle")
-    ("uc" popper-cycle         "Popper Cycle")
-    ("ut" popper-toggle-type   "Popper Toggle Type")
-    ("C-SPC" nil               "Hydra Major Mode"))
+(pretty-hydra-define wmad-general-keys (:foreign-keys warn :title "[ General Keybindings ]" :exit t)
+  ("Emacs"
+   (("b"   speedbar                     "Speedbar")
+    ("d"   dired                        "Dired")
+    ("i"   ibuffer                      "I-Buffer")
+    ("pp"  popper-toggle-latest         "Popper Toggle")
+    ("pc"  popper-cycle                 "Popper Cycle")
+    ("pt"  popper-toggle-type           "Popper Toggle Type")
+    ("s"   ansi-term                    "ANSI Shell")
+    ("w"   wdired-change-to-wdired-mode "Dired Edit mode")
+    ("y"   yank-from-kill-ring          "Yank from Kill-Ring")
+    ("Y"   yas-describe-tables          "YASnippet Table"))
+   "Quit"
+   (("q"   hydra-keyboard-quit)
+    ("C-g" hydra-keyboard-quit))))
 
-   "ORG"
-   (("ot" org-roam-buffer-toggle      "Org-Roam Toggle")
-    ("of" org-roam-node-find          "Org-Roam Find")
-    ("oi" org-roam-node-insert        "Org-Roam Insert")
-    ("os" org-save-all-org-buffers    "Save ALL org buffers")
-    ("oa" org-agenda                  "Org Agenda")
-    ("oT" org-timer-set-timer         "Org Set Timer")
-    ("oP" org-timer-pause-or-continue "Org Pause/Continue Timer"))
+(pretty-hydra-define wmad-org-keys (:foreign-keys warn :title "[ ORG Keybindings ]" :exit t)
+  ("ORG"
+   (;;("rd"  #'org-roam-dailies-map      "Org-Roam Dailies") ;; how do I?
+    ("rt"  org-roam-buffer-toggle      "Org-Roam Toggle")
+    ("rf"  org-roam-node-find          "Org-Roam Find")
+    ("ri"  org-roam-node-insert        "Org-Roam Insert")
+    ("s"   org-save-all-org-buffers    "Save ALL org buffers")
+    ("a"   org-agenda                  "Org Agenda")
+    ("tt"  org-timer-set-timer         "Org Set Timer")
+    ("tp"  org-timer-pause-or-continue "Org Pause/Continue Timer"))
+   "Quit"
+   (("q"   hydra-keyboard-quit)
+    ("C-g" hydra-keyboard-quit))))
 
-   "Password"
+(pretty-hydra-define wmad-tab-keys (:foreign-keys warn :title "[ Tab-Bar Keybindings ]" :exit t)
+  ("Tab-Bar"
+   (("n"         tab-new)
+    ("r"         tab-rename)
+    ("c"         tab-close)
+    ("t"         tab-recent)
+    ("l"         tab-list)
+    ("SPC"     toggle-frame-tab-bar )
+    ("<right>" tab-next)
+    ("<left>"  tab-previous)
+    ("<up>"    tab-move))
+   "Quit"
+   (("q"   hydra-keyboard-quit)
+    ("C-g" hydra-keyboard-quit))))
+
+(pretty-hydra-define wmad-global-keys (:foreign-keys warn :title "[ Keybindings ]" :exit t)
+  (
+   ""
+   (("c" wmad-consult-keys/body "Consult")
+    ("d" wmad-dev-keys/body "Development")
+    ("e" wmad-general-keys/body "General")
+    ("o" wmad-org-keys/body "ORG")
+    ("t" wmad-tab-keys/body "Tab-bar"))
+
+   ""
    (("pc" password-store-copy       "Copy Password")
     ("pf" password-store-copy-field "Copy Field"))
 
-   "Tab-Bar"
-   (("tn" tab-new)
-    ("tr" tab-rename)
-    ("tc" tab-close)
-    ("tt" tab-recent)
-    ("tl" tab-list)
-    ("t SPC"     toggle-frame-tab-bar)
-    ("t <right>" tab-next)
-    ("t <left>"  tab-previous)
-    ("t <up>"    tab-move))
-
-   "Window"
+   ""
    (("<up>"    enlarge-window)
     ("<down>"  shrink-window)
     ("<left>"  enlarge-window-horizontally)
     ("<right>" shrink-window-horizontally))
 
-   "EXWM"
-   (("s-RET" nil   "Alacritty")
-    ("s-&" nil     "Execute command")
-    ("s 1-9" nil   "Switch Workspaces 1 to 9")
-    ("s arrow" nil "Window Move direction")
-    ("q" hydra-keyboard-quit "Quit Hydra")
-    ("C-g" hydra-keyboard-quit "Quit Hydra"))
-   ))
+   ""
+   (("s-RET"   nil "Alacritty")
+    ("s-&"     nil "Execute command")
+    ("s 1-9"   nil "Switch Workspaces 1 to 9")
+    ("s arrow" nil "Window Move direction"))
+
+   ""
+   (("C-SPC" #'major-mode-hydra))
+
+   "Quit"
+   (("q"   hydra-keyboard-quit)
+    ("C-g" hydra-keyboard-quit))))
+
 
 (global-set-key (kbd "M-SPC") 'wmad-global-keys/body)
+(global-set-key (kbd "M-RET") 'wmad-global-keys/body)
 
-;; How can I integrate these to hydra?
 (global-set-key (kbd "C-c o d") 'org-roam-dailies-map)
-(define-key org-roam-dailies-map (kbd "Y") 'org-roam-dailies-capture-yesterday)
-(define-key org-roam-dailies-map (kbd "T") 'org-roam-dailies-capture-tomorrow)
-
-
 
 (require 'major-mode-hydra)
 (global-set-key (kbd "C-SPC") #'major-mode-hydra)
 
-
-
 (major-mode-hydra-define js2-mode nil
   ("Eglot"
-   (("D" eglot-find-declaration "Find Declaration")
-    ("i" eglot-find-implementation "Find Implementation")
-    ("f" eglot-format "Format")
-    ("r" eglot-rename "Rename"))
+   (("D" eglot-find-declaration)
+    ("i" eglot-find-implementation)
+    ("f" eglot-format)
+    ("r" eglot-rename))
 
    "SuiteCloud"
-   (("c" netsuite/create-project "Create SDF Project")
-    ("d" netsuite/deploy "Deploy SDF")
-    ("u" netsuite/upload-buffer "Upload buffer"))
+   (("c" netsuite/create-project)
+    ("d" netsuite/deploy)
+    ("u" netsuite/upload-buffer)
+    ("p" popper-toggle-latest))
 
-   "Dumb jump"
-   (("g" dumb-jump-go   "Go")
-    ("b" dumb-jump-back "Back"))))
+   "Code Nav"
+   (("g" dumb-jump-go)
+    ("b" dumb-jump-back)
+    ("m" imenu))
 
+   "Quit"
+   (("q"   hydra-keyboard-quit)
+    ("C-g" hydra-keyboard-quit))))
 
 
 (major-mode-hydra-define emacs-lisp-mode nil
   ("Eval"
-   (("b" eval-buffer       "buffer")
-    ("d" eval-defun        "defun")
-    ("e" eval-last-sexp    "s-expr")
-    ("r" eval-region       "region")
-    ("p" eval-print-last-sexp "print s-expr")) ;; pp-eval-last-sexp
+   (("b" eval-buffer)
+    ("d" eval-defun)
+    ("e" eval-last-sexp)
+    ("r" eval-region)
+    ("p" eval-print-last-sexp)) ;; pp-eval-last-sexp
 
    "REPL"
-   (("I" ielm "ielm"))
+   (("I" ielm))
 
    "Test"
    (("t" ert "prompt")
     ("T" (ert t) "all")
     ("F" (ert :failed) "failed"))
 
-   "Doc"
-   (("f" describe-function "function")
-    ("v" describe-variable "variable")
-    ("i" info-lookup-symbol "info lookup"))))
+   "Quit"
+   (("q"   hydra-keyboard-quit)
+    ("C-g" hydra-keyboard-quit))))
+
 
 ;;; keyb-conf.el ends here

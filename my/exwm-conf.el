@@ -141,9 +141,12 @@
 
 ;; PANEL  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+(require 'exwm-systemtray)
+(exwm-systemtray-enable)
+
 ;; TODO: work on an alternative panel. I don't want to rely on XFCE for too long.
-(ignore-errors
-  (start-process-shell-command "xfce4-panel" nil "xfce4-panel"))
+;; (ignore-errors
+;;   (start-process-shell-command "xfce4-panel" nil "xfce4-panel"))
 
 (provide 'exwm-config)
 

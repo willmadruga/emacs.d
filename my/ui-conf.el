@@ -3,6 +3,7 @@
 ;; This file is NOT part of GNU Emacs.
 
 ;;; Commentary:
+;; modeline: https://www.gonsie.com/blorg/modeline.html
 
 ;;; Code:
 
@@ -12,7 +13,7 @@
 (modus-themes-load-themes)
 (modus-themes-load-vivendi)
 
-;; https://www.gonsie.com/blorg/modeline.html
+;; FIXME: need something better... how about doom-modeline instead of re-creatingn the wheel? https://seagle0128.github.io/doom-modeline/
 (setq-default mode-line-format
               (list
                ;; day and time
