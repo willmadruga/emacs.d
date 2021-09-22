@@ -27,6 +27,7 @@
 (require 'org-roam)
 (require 'org-roam-dailies)
 (require 'eglot)
+(require 'js2-mode)
 
 (require 'password-store "../../password-store.el")
 (require 'sdfcli "../../my/sdfcli.el")
@@ -162,7 +163,9 @@
    "Code Nav"
    (("g" dumb-jump-go)
     ("b" dumb-jump-back)
-    ("m" imenu))
+    ("m" imenu)
+    ("h" js2-mode-hide-element)
+    ("s" js2-mode-show-element))
 
    "Quit"
    (("q"   hydra-keyboard-quit)

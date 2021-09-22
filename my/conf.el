@@ -25,7 +25,7 @@
 (setq winner-dont-bind-my-keys                            t)
 
 ;; (setq initial-scratch-message "#+title: Scratch Buffer\n\n")
-;; (setq initial-major-mode                          'org-mode)
+(setq initial-major-mode                      'emacs-lisp-mode)
 
 (setq-default line-spacing 2)
 (setq-default ediff-window-setup-function 'ediff-setup-windows-plain)

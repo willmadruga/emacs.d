@@ -20,7 +20,7 @@
 (dolist (pname
          '(
            ;; Theme
-           modus-themes mixed-pitch
+           modus-themes mixed-pitch doom-modeline
            all-the-icons all-the-icons-dired all-the-icons-ibuffer all-the-icons-completion
 
            ;; Environment
