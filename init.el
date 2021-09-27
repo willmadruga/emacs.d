@@ -29,7 +29,6 @@
            "my/ui-conf.el"
            "my/keyb-conf.el"
            "password-store.el"
-           ;; "my/snitch-conf.el" ;; trying it out... facing src-fn issue, hangs exwm...
            "my/exwm-conf.el"
            ))
   (load-file (expand-file-name fname user-emacs-directory)))

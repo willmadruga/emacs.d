@@ -1,7 +1,12 @@
 * Emacs config
 
-  It's a work in progress, like any other emacs config - mind you! :D
-  
-  I'm also learning my way around elisp and creating elisp packages.
++ It's a work in progress, like any other emacs config - mind you! :D
 
-  More than anything this is a good excercise/learning experience for me.
++ I'm also learning my way around elisp and creating elisp packages.
+
++ More than anything this is a good excercise/learning experience for me.
+
+* [TODO]
+
++ Evaluate use of [[https://www.emacswiki.org/emacs/SetupEl][setup.el]]
++ Install EMMS
