@@ -40,6 +40,7 @@
 (setq focus-follows-mouse t)
 (setq exwm-workspace-warp-cursor t)
 (setq exwm-workspace-number 1)
+(setq exwm-manage-force-tiling t)
 
 ;; Make class name the buffer name
 (add-hook 'exwm-update-class-hook
