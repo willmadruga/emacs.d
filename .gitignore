@@ -1,9 +1,9 @@
 # -*- mode: gitignore; -*-
 
 # Emacs
-#*~
-# \#*\#
-# .\#*
+*~
+\#*\#
+.\#*
 custom.el
 custom_bkp.el
 history
@@ -21,6 +21,7 @@ bookmarks
 /site-lisp/
 /eaf/
 /devdocs-browser/
+.cache/
 
 lsp-sessions
 .flycheck*

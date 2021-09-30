@@ -152,7 +152,8 @@
    (("D" eglot-find-declaration)
     ("i" eglot-find-implementation)
     ("f" eglot-format)
-    ("r" eglot-rename))
+    ("r" eglot-rename)
+    ("S" eglot-shutdown))
 
    "SuiteCloud"
    (("c" netsuite/create-project)

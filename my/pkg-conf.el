@@ -24,7 +24,7 @@
            all-the-icons all-the-icons-dired all-the-icons-ibuffer all-the-icons-completion
 
            ;; Environment
-           gcmh snitch
+           gcmh svg-lib
            consult consult-flycheck vertico marginalia orderless
            ibuffer-vc dired-single which-key crux diminish popper
            move-text dumb-jump corfu origami indent-guide rainbow-delimiters
@@ -39,6 +39,10 @@
 
            ;; EXWM
            exwm exwm-edit desktop-environment
+
+           ;; [Temporary / Trying it out] ;;
+           ocodo-svg-modelines
+           svg-tag-mode
            ))
   (unless (package-installed-p pname)
     (progn
