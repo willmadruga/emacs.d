@@ -26,7 +26,7 @@
            ;; Environment
            gcmh svg-lib
            consult consult-flycheck vertico marginalia orderless
-           ibuffer-vc dired-single which-key crux diminish popper
+           ibuffer-vc dired-single which-key crux diminish
            move-text dumb-jump corfu origami indent-guide rainbow-delimiters
            major-mode-hydra
 
@@ -37,11 +37,9 @@
            projectile magit js2-mode eglot flycheck yasnippet yasnippet-snippets restclient jira-markup-mode
            helpful devdocs-browser
 
-           ;; EXWM
-           exwm exwm-edit desktop-environment
+           ;; EXWM: see exwm-config.el
 
            ;; [Temporary / Trying it out] ;;
-           ocodo-svg-modelines
            svg-tag-mode
            ))
   (unless (package-installed-p pname)

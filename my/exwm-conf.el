@@ -9,8 +9,19 @@
 
 ;;; Code:
 
-;; HELPER FUNCTIONS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+;; PACKAGE LOAD/INSTALL~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+(add-to-list 'load-path "~/.exwm/xelb")
+(add-to-list 'load-path "~/.exwm/exwm") ;; my fork so I can attempt to fix issues I find along the way.
+(require 'exwm)
 
+(dolist (pname
+         '(exwm-edit desktop-environment))
+  (unless (package-installed-p pname)
+    (progn
+      (package-refresh-contents)
+      (package-install pname))))
+
+;; HELPER FUNCTIONS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 (defun exwm/run-in-background (command)
   "Run COMMAND in background."
   (let ((command-parts (split-string command "[ ]+")))
@@ -35,7 +46,6 @@
     (setq key (pop bindings) command (pop bindings))))
 
 ;; EXWM CONFIG  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-(require 'exwm)
 (setq mouse-autoselect-window nil)
 (setq focus-follows-mouse t)
 (setq exwm-workspace-warp-cursor t)
@@ -47,10 +57,17 @@
           (lambda ()
             (exwm-workspace-rename-buffer exwm-class-name)))
 
+(require 'all-the-icons)
 (add-hook 'exwm-update-title-hook
           (lambda ()
-            (pcase exwm-class-name
-              ("qutebrowser" (exwm-workspace-rename-buffer (format "Qutebrowser: %s" exwm-title))))))
+            (or
+             (pcase exwm-class-name
+               ("qutebrowser" (exwm-workspace-rename-buffer (format " %s" exwm-title)))
+               ("Signal" (exwm-workspace-rename-buffer      (format " %s" exwm-title)))
+               ("Slack" (exwm-workspace-rename-buffer       (format " %s" exwm-title)))
+               ("mpv" (exwm-workspace-rename-buffer         (format " %s" exwm-title)))
+               ("zoom" (exwm-workspace-rename-buffer        (format " %s" exwm-title))))
+             (exwm-workspace-rename-buffer (format "%s %s" (all-the-icons-icon-for-buffer) (buffer-name))))))
 
 (require 'exwm-edit)
 
@@ -142,8 +159,8 @@
 
 ;; PANEL  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-(require 'exwm-systemtray)
-(exwm-systemtray-enable)
+;; (require 'exwm-systemtray)
+;; (exwm-systemtray-enable)
 
 ;; TODO: work on an alternative panel. I don't want to rely on XFCE for too long.
 ;; (ignore-errors

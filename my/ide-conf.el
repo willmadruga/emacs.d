@@ -89,18 +89,6 @@
 (diminish 'eldoc-mode)
 (diminish 'flymake-mode)
 (diminish 'projectile-mode " Projectile")
-;; TODO: diminish "Javascript-IDE"...
-
-(require 'popper)
-(setq popper-reference-buffers
-      '("\\*Messages\\*"
-        "\\.*Async Shell Command.*"
-        "\\.*EGLOT.* events.*"
-        "\\.*XELB-DEBUG*"
-        help-mode
-        compilation-mode
-        ))
-(popper-mode +1)
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)

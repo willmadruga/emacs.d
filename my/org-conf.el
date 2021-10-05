@@ -25,13 +25,14 @@
 (setq org-ellipsis " ▼ ")
 (setq org-todo-keywords
       '((sequence
+         ">"
          "TODO(t)"
          "NEXT(n)"
          "STRT(s)"
          "WAIT(x)"
          "|"
-         "DONE(d)"
-         "CANCELLED(c)")))
+         "CANCELLED(c)"
+         "DONE(d)")))
 
 (setq org-src-preserve-indentation nil)
 (setq org-edit-src-content-indentation 2)
@@ -92,8 +93,9 @@
                                         ("NEXT" . ?)
                                         ("STRT" . ?✍)
                                         ("WAIT" . ?)
-                                        ("DONE" . ?✔)
                                         ("CANCELLED" . ?)
+                                        ("DONE" . ?✔)
+                                        (">" . ?)
                                         ))
 (setq org-superstar-special-todo-items t)
 (setq org-superstar-leading-bullet "")
