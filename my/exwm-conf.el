@@ -10,6 +10,7 @@
 ;;; Code:
 
 ;; PACKAGE LOAD/INSTALL~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+(add-to-list 'load-path "~/.exwm/emacs-svg-icon")
 (add-to-list 'load-path "~/.exwm/xelb")
 (add-to-list 'load-path "~/.exwm/exwm") ;; my fork so I can attempt to fix issues I find along the way.
 (require 'exwm)
@@ -58,16 +59,53 @@
             (exwm-workspace-rename-buffer exwm-class-name)))
 
 (require 'all-the-icons)
-(add-hook 'exwm-update-title-hook
-          (lambda ()
-            (or
-             (pcase exwm-class-name
-               ("qutebrowser" (exwm-workspace-rename-buffer (format " %s" exwm-title)))
-               ("Signal" (exwm-workspace-rename-buffer      (format " %s" exwm-title)))
-               ("Slack" (exwm-workspace-rename-buffer       (format " %s" exwm-title)))
-               ("mpv" (exwm-workspace-rename-buffer         (format " %s" exwm-title)))
-               ("zoom" (exwm-workspace-rename-buffer        (format " %s" exwm-title))))
-             (exwm-workspace-rename-buffer (format "%s %s" (all-the-icons-icon-for-buffer) (buffer-name))))))
+;; Consider further testing with emacs-svg-icon (https://github.com/rougier/emacs-svg-icon)
+;; (require 'svg-icon)
+;; (svg-icon-get-data "boxicons" "zoom" t)
+;; (insert-image (svg-icon "boxicons" "zoom"))
+
+(require 's)
+(defun wmad/exwm-update-window-title ()
+  "Update window titles according to defined rules."
+  (interactive)
+
+  (let* ((term       (format "⚡ %s" exwm-title))
+         (msg        (format " %s" exwm-title))
+         (slack      (format " %s" exwm-title))
+         (video      (format " %s" exwm-title))
+         (call       (format " %s" exwm-title))
+         (email      (format " %s" exwm-title))
+         (netsuite   (format " %s" exwm-title))
+         (jira       (format " %s" exwm-title))
+         (confluence (format " %s" exwm-title))
+         (qute       (format "🌍 %s" exwm-title))
+         (ff         (format " %s" exwm-title))
+         (buffer     (format "%s %s" (all-the-icons-icon-for-buffer) (buffer-name))))
+
+    (exwm-workspace-rename-buffer
+     (or
+      (pcase exwm-class-name
+        ("Alacritty"   term)
+        ("Signal"      msg)
+        ("Slack"       slack)
+        ("mpv"         video)
+        ("zoom"        call)
+        ("Firefox"     ff)
+        ("qutebrowser" (or
+                        (when (s-contains-p "Outlook"    exwm-title) email)
+                        (when (s-contains-p "Gmail"      exwm-title) email)
+                        (when (s-contains-p "ProtonMail" exwm-title) email)
+                        (when (s-contains-p "Element"    exwm-title) msg)
+                        (when (s-contains-p "Jira"       exwm-title) jira)
+                        (when (s-contains-p "Confluence" exwm-title) confluence)
+                        (when (s-contains-p "NetSuite"   exwm-title) netsuite)
+                        (when (s-contains-p "YouTube"    exwm-title) video)
+                        qute)))
+
+      ;; Otherwise, most likely an emacs buffer, let's roll with it like this for now.
+      buffer))))
+
+(add-hook 'exwm-update-title-hook #'wmad/exwm-update-window-title)
 
 (require 'exwm-edit)
 
