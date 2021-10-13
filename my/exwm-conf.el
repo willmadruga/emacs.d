@@ -72,6 +72,7 @@
   (let* ((term       (format "⚡ %s" exwm-title))
          (msg        (format " %s" exwm-title))
          (slack      (format " %s" exwm-title))
+         (slack-new  (format "  %s" exwm-title))
          (video      (format " %s" exwm-title))
          (call       (format " %s" exwm-title))
          (email      (format " %s" exwm-title))
@@ -87,10 +88,12 @@
       (pcase exwm-class-name
         ("Alacritty"   term)
         ("Signal"      msg)
-        ("Slack"       slack)
         ("mpv"         video)
         ("zoom"        call)
         ("Firefox"     ff)
+        ("Slack"       (or
+                        (when (s-contains-p "new items" exwm-title) slack-new)
+                        slack))
         ("qutebrowser" (or
                         (when (s-contains-p "Outlook"    exwm-title) email)
                         (when (s-contains-p "Gmail"      exwm-title) email)
