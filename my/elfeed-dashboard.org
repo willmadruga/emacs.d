@@ -1,0 +1,42 @@
+* > Keybindings
+
+ [U] Update Elfeed
+ [s] Search
+ [E] Edit
+ [g] Refresh counts
+ [q] Kill dashboard
+
+* > Bookmarks
+
+|-------------+------------+---------------|
+| [u] Unread  |            | [[elfeed:+unread][    3]] / [[elfeed:][   41]] |
+| [e] Emacs   |            | [[elfeed:+unread +emacs][    3]] / [[elfeed:+emacs][   41]] |
+| [n] News    |            | [[elfeed:+unread +news][    0]] / [[elfeed:+news][    0]] |
+| [y] YouTube | [a] all    | [[elfeed:+unread +youtube][    0]] / [[elfeed:+youtube][    0]] |
+|             | [m] music  | [[elfeed:+unread +youtube +music][    0]] / [[elfeed:+youtube +music][    0]] |
+|             | [c] chess  | [[elfeed:+unread +youtube +chess][    0]] / [[elfeed:+youtube +chess][    0]] |
+|             | [e] emacs  | [[elfeed:+unread +youtube +emacs][    0]] / [[elfeed:+youtube +emacs][    0]] |
+|             | [o] others | [[elfeed:+unread +youtube -emacs -chess -music][    0]] / [[elfeed:+youtube -emacs -chess -music][    0]] |
+|-------------+------------+---------------|
+
+* > Configuration
+  :PROPERTIES:
+  :VISIBILITY: hideall
+  :END:
+
+Press "E" to edit and M-x elfeed-dashboard-mode to go back
+
+#+STARTUP: showall showstars indent
+#+KEYMAP: u | elfeed-dashboard-query "+unread"
+#+KEYMAP: e | elfeed-dashboard-query "+unread +emacs"
+#+KEYMAP: ya | elfeed-dashboard-query "+unread +youtube"
+#+KEYMAP: ym | elfeed-dashboard-query "+unread +youtube +music"
+#+KEYMAP: yc | elfeed-dashboard-query "+unread +youtube +chess"
+#+KEYMAP: ye | elfeed-dashboard-query "+unread +youtube +emacs"
+#+KEYMAP: yo | elfeed-dashboard-query "+unread +youtube +others"
+#+KEYMAP: n | elfeed-dashboard-query "+unread +news"
+#+KEYMAP: s | elfeed
+#+KEYMAP: g | elfeed-dashboard-update-links
+#+KEYMAP: U | elfeed-dashboard-update
+#+KEYMAP: E | elfeed-dashboard-edit
+#+KEYMAP: q | kill-current-buffer

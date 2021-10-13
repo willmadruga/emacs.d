@@ -39,8 +39,12 @@
 
            ;; EXWM: see exwm-config.el
 
+           ;; MISC
+           elfeed elfeed-dashboard
+
            ;; [Temporary / Trying it out] ;;
            svg-tag-mode
+
            ))
   (unless (package-installed-p pname)
     (progn

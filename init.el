@@ -27,6 +27,7 @@
            "my/sdfcli.el"
            "my/org-conf.el"
            "my/ui-conf.el"
+           "my/elfeed-config.el"
            "my/keyb-conf.el"
            "password-store.el"
            "my/exwm-conf.el"

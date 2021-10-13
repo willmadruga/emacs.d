@@ -19,6 +19,9 @@
 (global-unset-key (kbd "C-z"))
 (global-unset-key (kbd "C-S-z"))
 
+(global-set-key (kbd "C-c o d") 'org-roam-dailies-map)
+(global-set-key (kbd "C-x w") 'elfeed)
+
 (move-text-default-bindings)
 
 (require 'pretty-hydra)
@@ -28,6 +31,7 @@
 (require 'org-roam-dailies)
 (require 'eglot)
 (require 'js2-mode)
+(require 'elfeed)
 
 (require 'password-store "../../password-store.el")
 (require 'sdfcli "../../my/sdfcli.el")
@@ -65,6 +69,7 @@
   ("Emacs"
    (("b"   speedbar                     "Speedbar")
     ("d"   dired                        "Dired")
+    ("e"   elfeed-dashboard             "Elfeed")
     ("i"   ibuffer                      "I-Buffer")
     ("pp"  popper-toggle-latest         "Popper Toggle")
     ("pc"  popper-cycle                 "Popper Cycle")
@@ -111,7 +116,7 @@
    ""
    (("c" wmad-consult-keys/body "Consult")
     ("d" wmad-dev-keys/body "Development")
-    ("e" wmad-general-keys/body "General")
+    ("e" wmad-general-keys/body "Emacs")
     ("o" wmad-org-keys/body "ORG")
     ("t" wmad-tab-keys/body "Tab-bar"))
 
@@ -141,8 +146,6 @@
 
 (global-set-key (kbd "M-SPC") 'wmad-global-keys/body)
 (global-set-key (kbd "M-RET") 'wmad-global-keys/body)
-
-(global-set-key (kbd "C-c o d") 'org-roam-dailies-map)
 
 (require 'major-mode-hydra)
 (global-set-key (kbd "C-SPC") #'major-mode-hydra)
@@ -193,5 +196,15 @@
    (("q"   hydra-keyboard-quit)
     ("C-g" hydra-keyboard-quit))))
 
+(major-mode-hydra-define elfeed-show-mode nil
+  ("Video"
+   (("m" wmad/open-url-at-point-in-mpv))
+
+   "Quit"
+   (("q"   hydra-keyboard-quit)
+    ("C-g" hydra-keyboard-quit))))
+
+;;FIXME: somehow this one opens in browser :/
+(define-key elfeed-show-mode-map (kbd "v") 'wmad/open-url-at-point-in-mpv)
 
 ;;; keyb-conf.el ends here
