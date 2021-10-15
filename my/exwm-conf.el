@@ -4,7 +4,10 @@
 
 ;;; Commentary:
 
-;; Thanks David Wilson! :claps:
+;; Start an XFCE session then call on Emacs and let it replace the Window Manager.
+;; Just be sure XFCE keybindings won't collide. For now, this is a good way to get things done with little to no friction.
+
+;; Also, thanks David Wilson! :claps:
 ;; https://github.com/daviwil/dotfiles/blob/master/Desktop.org
 
 ;;; Code:
@@ -197,15 +200,8 @@
   (start-process-shell-command "Zoom" nil "zoom"))
 (ignore-errors
   (start-process-shell-command "Slack" nil "slack"))
-
-;; PANEL  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-;; (require 'exwm-systemtray)
-;; (exwm-systemtray-enable)
-
-;; TODO: work on an alternative panel. I don't want to rely on XFCE for too long.
-;; (ignore-errors
-;;   (start-process-shell-command "xfce4-panel" nil "xfce4-panel"))
+(ignore-errors
+  (start-process-shell-command "kmonad" nil "kmonad-tkl"))
 
 (provide 'exwm-config)
 

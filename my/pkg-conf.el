@@ -24,10 +24,10 @@
            all-the-icons all-the-icons-dired all-the-icons-ibuffer all-the-icons-completion
 
            ;; Environment
-           gcmh svg-lib
+           gcmh svg-lib popper
            consult consult-flycheck vertico marginalia orderless
            ibuffer-vc dired-single which-key crux diminish
-           move-text dumb-jump corfu origami indent-guide rainbow-delimiters
+           move-text dumb-jump corfu indent-guide rainbow-delimiters
            major-mode-hydra
 
            ;; Org
@@ -36,8 +36,6 @@
            ;; IDE
            projectile magit js2-mode eglot flycheck yasnippet yasnippet-snippets restclient jira-markup-mode
            helpful devdocs-browser
-
-           ;; EXWM: see exwm-config.el
 
            ;; MISC
            elfeed elfeed-dashboard

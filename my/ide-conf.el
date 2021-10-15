@@ -90,6 +90,18 @@
 (diminish 'flymake-mode)
 (diminish 'projectile-mode " Projectile")
 
+(require 'popper)
+;; see docs https://github.com/karthink/popper
+(setq popper-reference-buffers
+      '("\\*Messages\\*"
+        "Output\\*$"
+        "\\*Async Shell Command\\*"
+        help-mode
+        compilation-mode
+        ))
+(popper-mode +1)
+(popper-echo-mode +1)
+
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)
 ;; End:

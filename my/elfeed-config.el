@@ -67,7 +67,7 @@
 (defun wmad/open-url-at-point-in-mpv ()
   "Open URL at point in MPV."
   (interactive)
-  (let ((command (format "mpv --cache=yes '%s'" (thing-at-point 'url))))
+  (let ((command (format "mpv '%s'" (thing-at-point 'url))))
     ;; (async-shell-command command)))
     (start-process-shell-command command nil command)))
 
