@@ -20,6 +20,7 @@
         ("https://www.youtube.com/feeds/videos.xml?channel_id=UClQT6Vnsm6BUm0I5kR26EkQ" youtube music)
         ("https://www.youtube.com/feeds/videos.xml?channel_id=UCknVpWR6m2Ijzkqo-aPXs_g" youtube music)
         ("https://www.youtube.com/feeds/videos.xml?channel_id=UCkqjcQwTNvsxQWT44N6ESrA" youtube music)
+        ("https://www.youtube.com/feeds/videos.xml?channel_id=UCSJ4gkVC6NrvII8umztf0Ow" youtube music)
         ("https://www.youtube.com/feeds/videos.xml?channel_id=UCvXxdkt1d8Uu08NAQP2IUTw" youtube chess)
         ("https://www.youtube.com/feeds/videos.xml?channel_id=UCQHX6ViZmPsWiYSFAyS0a3Q" youtube chess)
         ("https://www.youtube.com/feeds/videos.xml?channel_id=UCmEClzCBDx-vrt0GuSKBd9g" youtube nerd)
