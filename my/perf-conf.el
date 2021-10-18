@@ -10,10 +10,11 @@
 
 ;;; Code:
 
-(require 'gcmh)
-(setq gcmh-mode 1)
-(setq gcmh-idle-delay 5)
-(setq gcmh-high-cons-threshold (* 16 1024 1024))
+(setup (:package gcmh)
+  (:hide-mode)
+  (setq gcmh-mode 1)
+  (setq gcmh-idle-delay 5)
+  (setq gcmh-high-cons-threshold (* 16 1024 1024)))
 
 (if (and (fboundp 'native-comp-available-p) (native-comp-available-p))
     (setq comp-deferred-compilation t

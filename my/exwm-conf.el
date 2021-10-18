@@ -18,12 +18,8 @@
 (add-to-list 'load-path "~/.exwm/exwm") ;; my fork so I can attempt to fix issues I find along the way.
 (require 'exwm)
 
-(dolist (pname
-         '(exwm-edit desktop-environment))
-  (unless (package-installed-p pname)
-    (progn
-      (package-refresh-contents)
-      (package-install pname))))
+(setup (:package exwm-edit))
+(setup (:package desktop-environment))
 
 ;; HELPER FUNCTIONS  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 (defun exwm/run-in-background (command)

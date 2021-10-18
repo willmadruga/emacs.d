@@ -22,9 +22,9 @@
 (global-set-key (kbd "C-c o d") 'org-roam-dailies-map)
 (global-set-key (kbd "C-x w") 'elfeed)
 
-(move-text-default-bindings)
+(setup (:package pretty-hydra))
 
-(require 'pretty-hydra)
+;; (require 'pretty-hydra)
 (require 'yasnippet)
 (require 'popper)
 (require 'org-roam)
@@ -147,62 +147,66 @@
 (global-set-key (kbd "M-SPC") 'wmad-global-keys/body)
 (global-set-key (kbd "M-RET") 'wmad-global-keys/body)
 
-(require 'major-mode-hydra)
-(global-set-key (kbd "C-SPC") #'major-mode-hydra)
 
-(major-mode-hydra-define js2-mode nil
-  ("Eglot"
-   (("D" eglot-find-declaration)
-    ("i" eglot-find-implementation)
-    ("f" eglot-format)
-    ("r" eglot-rename)
-    ("S" eglot-shutdown))
+(setup (:package major-mode-hydra)
+  (global-set-key (kbd "C-SPC") #'major-mode-hydra)
 
-   "SuiteCloud"
-   (("c" netsuite/create-project)
-    ("d" netsuite/deploy)
-    ("u" netsuite/upload-buffer)
-    ("p" popper-toggle-latest))
+  (major-mode-hydra-define
+   js2-mode nil
+   ("Eglot"
+    (("D" eglot-find-declaration)
+     ("i" eglot-find-implementation)
+     ("f" eglot-format)
+     ("r" eglot-rename)
+     ("S" eglot-shutdown))
 
-   "Code Nav"
-   (("g" dumb-jump-go)
-    ("b" dumb-jump-back)
-    ("m" imenu)
-    ("h" js2-mode-hide-element)
-    ("s" js2-mode-show-element))
+    "SuiteCloud"
+    (("c" netsuite/create-project)
+     ("d" netsuite/deploy)
+     ("u" netsuite/upload-buffer)
+     ("p" popper-toggle-latest))
 
-   "Quit"
-   (("q"   hydra-keyboard-quit)
-    ("C-g" hydra-keyboard-quit))))
+    "Code Nav"
+    (("g" dumb-jump-go)
+     ("b" dumb-jump-back)
+     ("m" imenu)
+     ("h" js2-mode-hide-element)
+     ("s" js2-mode-show-element))
+
+    "Quit"
+    (("q"   hydra-keyboard-quit)
+     ("C-g" hydra-keyboard-quit))))
 
 
-(major-mode-hydra-define emacs-lisp-mode nil
-  ("Eval"
-   (("b" eval-buffer)
-    ("d" eval-defun)
-    ("e" eval-last-sexp)
-    ("r" eval-region)
-    ("p" eval-print-last-sexp)) ;; pp-eval-last-sexp
+  (major-mode-hydra-define
+   emacs-lisp-mode nil
+   ("Eval"
+    (("b" eval-buffer)
+     ("d" eval-defun)
+     ("e" eval-last-sexp)
+     ("r" eval-region)
+     ("p" eval-print-last-sexp)) ;; pp-eval-last-sexp
 
-   "REPL"
-   (("I" ielm))
+    "REPL"
+    (("I" ielm))
 
-   "Test"
-   (("t" ert "prompt")
-    ("T" (ert t) "all")
-    ("F" (ert :failed) "failed"))
+    "Test"
+    (("t" ert "prompt")
+     ("T" (ert t) "all")
+     ("F" (ert :failed) "failed"))
 
-   "Quit"
-   (("q"   hydra-keyboard-quit)
-    ("C-g" hydra-keyboard-quit))))
+    "Quit"
+    (("q"   hydra-keyboard-quit)
+     ("C-g" hydra-keyboard-quit))))
 
-(major-mode-hydra-define elfeed-show-mode nil
-  ("Video"
-   (("m" wmad/open-url-at-point-in-mpv))
+  (major-mode-hydra-define
+   elfeed-show-mode nil
+   ("Video"
+    (("m" wmad/open-url-at-point-in-mpv))
 
-   "Quit"
-   (("q"   hydra-keyboard-quit)
-    ("C-g" hydra-keyboard-quit))))
+    "Quit"
+    (("q"   hydra-keyboard-quit)
+     ("C-g" hydra-keyboard-quit)))))
 
 ;;FIXME: somehow this one opens in browser :/
 (define-key elfeed-show-mode-map (kbd "v") 'wmad/open-url-at-point-in-mpv)

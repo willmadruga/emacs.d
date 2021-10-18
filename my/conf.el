@@ -6,6 +6,8 @@
 
 ;;; Code:
 
+(require 'recentf)
+
 (defalias 'yes-or-no-p 'y-or-n-p)
 
 (setq inhibit-default-init                                t)
@@ -24,8 +26,7 @@
 (setq shell-file-name                        "/usr/bin/zsh")
 (setq winner-dont-bind-my-keys                            t)
 
-;; (setq initial-scratch-message "#+title: Scratch Buffer\n\n")
-(setq initial-major-mode                      'emacs-lisp-mode)
+(setq initial-major-mode                   'emacs-lisp-mode)
 
 (setq-default line-spacing 2)
 (setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -73,6 +74,7 @@
 (tab-bar-mode          1)
 (line-number-mode    nil)
 
+;; TODO: perhaps use setup if-host to build a $PATH for each system.
 (dolist
     (item '("~/bin"
             "~/.local/bin"

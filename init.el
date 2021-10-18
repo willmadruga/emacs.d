@@ -10,24 +10,30 @@
 ;;; Code:
 
 (require 'package)
-(require 'warnings)
-
-(require 'recentf)
-(require 'shell)
-(require 'dired)
 (require 'server)
 
+(setq package-archives
+      '(("GNU ELPA" . "https://elpa.gnu.org/packages/")
+        ("MELPA"    . "https://melpa.org/packages/")))
+
+(setq package-archive-priorities
+      '(("GNU ELPA" . 10)
+        ("MELPA"    . 5)))
+
+;; Package init and install setup.el
+(unless (bound-and-true-p package--initialized)
+  (package-initialize))
+
+(if (package-installed-p 'setup) nil
+  (if (memq 'setup package-archive-contents) nil
+    (package-refresh-contents))
+  (package-install 'setup))
+
+;; load each configuration file.
 (dolist (fname
-         '(
-           "my/pkg-conf.el"
-           "my/perf-conf.el"
-           "my/conf.el"
-           "my/ide-conf.el"
-           "my/js-conf.el"
-           "my/sdfcli.el"
+         '("my/perf-conf.el" "my/conf.el" "my/ide-conf.el" "my/js-conf.el" "my/sdfcli.el"
+           "my/ui-conf.el" "my/elfeed-config.el"
            "my/org-conf.el"
-           "my/ui-conf.el"
-           "my/elfeed-config.el"
            "my/keyb-conf.el"
            "password-store.el"
            "my/exwm-conf.el"

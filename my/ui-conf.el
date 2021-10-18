@@ -6,14 +6,16 @@
 
 ;;; Code:
 
-(require 'modus-themes)
-(setq modus-themes-bold-constructs t
-      modus-themes-mode-line '3d)
-(modus-themes-load-themes)
-(modus-themes-load-vivendi)
+(setup (:package modus-themes)
 
-(require 'doom-modeline)
-(doom-modeline-mode 1)
+  (setq modus-themes-bold-constructs t
+        modus-themes-mode-line '3d)
+  (modus-themes-load-themes)
+  (modus-themes-load-vivendi))
+
+(setup (:package doom-modeline)
+  (doom-modeline-mode 1))
+
 (setq inhibit-compacting-font-caches t)
 (setq find-file-visit-truename t)
 
@@ -21,7 +23,9 @@
 (set-face-attribute 'fixed-pitch    nil :font "DejaVu Sans Mono")
 (set-face-attribute 'variable-pitch nil :family "DejaVu Sans")
 
-(require 'svg-tag-mode)
+;; TESTING IT OUT
+;; (setup svg-tag-mode
+;;   (:package svg-tag-mode))
 ;; see https://github.com/rougier/svg-tag-mode
 
 ;; Local Variables:
