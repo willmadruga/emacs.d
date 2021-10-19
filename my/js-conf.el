@@ -8,6 +8,7 @@
 
 ;; FIXME: apparently this didn't run as expected... eglot didn't connect I had to evaluate this line.
 (setup (:package eglot)
+  (require 'eglot)
   (add-to-list 'eglot-server-programs '(js-mode . ("typescript-language-server" "--stdio"))))
 
 (setup (:package js2-refactor))
@@ -39,6 +40,7 @@
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode)))
 
 (setup (:package flycheck)
+  (require 'flycheck)
   (setq flycheck-emacs-lisp-load-path 'inherit)
   (setq-default flycheck-temp-prefix ".flycheck")
   (setq flycheck-javascript-eslint-executable "~/.npm-packages/bin/eslint")

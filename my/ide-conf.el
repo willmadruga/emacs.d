@@ -35,6 +35,7 @@
   (setq dumb-jump-aggressive nil))
 
 (setup (:package dired-single)
+  (require 'dired)
   (define-key dired-mode-map [remap dired-mouse-find-file-other-window] 'dired-single-buffer-mouse)
   (define-key dired-mode-map [remap dired-up-directory]                 'dired-single-up-directory)
   (define-key dired-mode-map [remap dired-find-file]                    'dired-single-buffer))
@@ -44,6 +45,7 @@
 
 (setup (:package consult)
   (:require projectile)
+  (require 'consult)
   (setq consult-project-root-function #'projectile-project-root)
   (setq xref-show-xrefs-function #'consult-xref)
   (setq xref-show-definitions-function #'consult-xref)

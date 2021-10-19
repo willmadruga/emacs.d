@@ -45,7 +45,6 @@
 (setq-default ring-bell-function                             'ignore)
 
 (add-hook 'prog-mode-hook 'goto-address-mode)
-(add-hook 'text-mode-hook 'mixed-pitch-mode)
 
 (dolist (mode '(org-mode-hook
                 shell-mode-hook
