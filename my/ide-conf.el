@@ -5,6 +5,15 @@
 
 (add-hook 'before-save-hook (lambda () (whitespace-cleanup)))
 
+(setup (:package embark))
+;; explore:
+;; https://github.com/oantolin/embark/wiki/Additional-Actions
+;; https://github.com/oantolin/embark/wiki/Additional-Configuration
+;; https://karthinks.com/software/fifteen-ways-to-use-embark/
+
+(setup (:package crux))
+(setup (:package avy))
+
 (setup (:package projectile)
   (autoload 'projectile-project-root "projectile")
   (projectile-mode +1))
@@ -20,10 +29,11 @@
 
 (setup (:package ibuffer-vc)
   (:require ibuf-ext)
-  (:hook (lambda ()
-           (ibuffer-vc-set-filter-groups-by-vc-root)
-           (unless (eq ibuffer-sorting-mode 'alphabetic)
-             (ibuffer-do-sort-by-alphabetic)))))
+  (:with-hook ibuffer-hook
+    (:hook (lambda ()
+             (ibuffer-vc-set-filter-groups-by-vc-root)
+             (unless (eq ibuffer-sorting-mode 'alphabetic)
+               (ibuffer-do-sort-by-alphabetic))))))
 
 (setup (:package rainbow-delimiters)
   (:hook-into prog-text-hook)
@@ -32,7 +42,8 @@
 (setup (:package dumb-jump)
   (setq dumb-jump-default-project user-emacs-directory)
   (setq dumb-jump-prefer-searcher 'rg)
-  (setq dumb-jump-aggressive nil))
+  (setq dumb-jump-aggressive nil)
+  (dumb-jump-mode 1))
 
 (setup (:package dired-single)
   (require 'dired)
@@ -75,15 +86,6 @@
 
 (setup (:package corfu)
   (corfu-global-mode))
-
-;; TODO: learned recently this can be replaced by embark... and present results in a much better way
-(setup (:package which-key)
-  (:hide-mode)
-  (setq which-key-show-early-on-C-h t)
-  (setq which-key-idle-delay 10000)
-  (setq which-key-idle-secondary-delay 0.05)
-  (setq which-key-sort-order 'which-key-key-order-alpha)
-  (which-key-mode 1))
 
 (setup (:package popper)
   ;; see docs https://github.com/karthink/popper

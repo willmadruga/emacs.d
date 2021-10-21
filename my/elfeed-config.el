@@ -7,6 +7,7 @@
 ;;; Code:
 
 (setup (:package elfeed)
+  (require 'elfeed)
   (setq elfeed-feeds
         '(("https://planet.emacslife.com/atom.xml" emacs)
           ("https://www.youtube.com/feeds/videos.xml?channel_id=UCAiiOTio8Yu69c3XnR7nQBQ" youtube emacs)
@@ -31,11 +32,10 @@
           ("https://www.youtube.com/feeds/videos.xml?channel_id=UCBJycsmduvYEL83R_U4JriQ" youtube geek)
           ("https://www.youtube.com/feeds/videos.xml?channel_id=UCoxcjq-8xIDTYp3uz647V5A" youtube math))))
 
-(setup (:package elfeed-dashboard)
-  (:require elfeed)
-  (:with-hook elfeed-new-entry-hook
-    (:hook elfeed-declickbait-entry))
-  (setq elfeed-dashboard-file (concat user-emacs-directory "my/elfeed-dashboard.org")))
+(setup (:package elfeed-dashboard))
+(require 'elfeed)
+(add-hook 'elfeed-new-entry-hook 'elfeed-declickbait-entry)
+(setq elfeed-dashboard-file (concat user-emacs-directory "my/elfeed-dashboard.org"))
 
 ;; Nice!
 ;; https://karthinks.com/software/declickbait-elfeed/

@@ -80,7 +80,8 @@
          (confluence (format " %s" exwm-title))
          (qute       (format "🌍 %s" exwm-title))
          (ff         (format " %s" exwm-title))
-         (buffer     (format "%s %s" (all-the-icons-icon-for-buffer) (buffer-name))))
+         ;; (buffer     (format "%s %s" (all-the-icons-icon-for-buffer) (buffer-name))))
+         (buffer     (format "%s" (buffer-name))))
 
     (exwm-workspace-rename-buffer
      (or
