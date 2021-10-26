@@ -197,8 +197,8 @@
   (start-process-shell-command "Zoom" nil "zoom"))
 (ignore-errors
   (start-process-shell-command "Slack" nil "slack"))
-(ignore-errors
-  (start-process-shell-command "kmonad" nil "kmonad-tkl"))
+;; (ignore-errors
+;; (start-process-shell-command "kmonad" nil "kmonad-60"))
 
 (provide 'exwm-config)
 
