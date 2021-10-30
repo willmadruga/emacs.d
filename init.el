@@ -36,7 +36,7 @@
            "my/org-conf.el"
            "my/keyb-conf.el"
            "password-store.el"
-           "my/exwm-conf.el"
+           ;; "my/exwm-conf.el"
            ))
   (load-file (expand-file-name fname user-emacs-directory)))
 
