@@ -22,11 +22,9 @@
 (setq undo-limit                                   80000000)
 (setq tab-always-indent                           'complete)
 (setq initial-major-mode                          'org-mode)
-(setq explicit-shell-file-name               "/usr/bin/zsh")
-(setq shell-file-name                        "/usr/bin/zsh")
 (setq winner-dont-bind-my-keys                            t)
-
 (setq initial-major-mode                   'emacs-lisp-mode)
+(setq shell-file-name                       "/usr/bin/bash")
 
 (setq-default line-spacing 2)
 (setq-default ediff-window-setup-function 'ediff-setup-windows-plain)
@@ -73,7 +71,7 @@
 (tab-bar-mode          1)
 (line-number-mode    nil)
 
-;; TODO: perhaps use setup if-host to build a $PATH for each system.
+;; TODO: use setup if-host to build a $PATH for each system.
 (dolist
     (item '("~/bin"
             "~/.local/bin"

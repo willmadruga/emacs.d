@@ -4,9 +4,6 @@
 
 ;;; Commentary:
 
-;; TODO: Build EMACS 28 with native-compilation:
-;; https://www.masteringemacs.org/article/speed-up-emacs-libjansson-native-elisp-compilation
-
 ;;; Code:
 
 (require 'package)
@@ -31,19 +28,23 @@
 
 ;; load each configuration file.
 (dolist (fname
-         '("my/perf-conf.el" "my/conf.el" "my/ide-conf.el" "my/js-conf.el" "my/sdfcli.el"
-           "my/ui-conf.el" "my/elfeed-config.el"
+         '("my/perf-conf.el"
+           "my/conf.el"
+           "my/ide-conf.el"
+           "my/js-conf.el"
+           "my/sdfcli.el"
+           "my/ui-conf.el"
+           "my/elfeed-config.el"
            "my/org-conf.el"
            "my/keyb-conf.el"
            "password-store.el"
-           ;; "my/exwm-conf.el"
            ))
   (load-file (expand-file-name fname user-emacs-directory)))
 
 ;; set GC back to normal. Value increased in early-init
 (add-hook 'after-init-hook (lambda () (setq gc-cons-threshold 800000)))
 
-;; turn ON server mode
+;; turn server mode ON
 (unless (server-running-p) (server-start))
 
 ;;; init.el ends here

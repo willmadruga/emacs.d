@@ -6,7 +6,6 @@
 
 ;;; Code:
 
-;; FIXME: apparently this didn't run as expected... eglot didn't connect I had to evaluate this line.
 (setup (:package eglot)
   (require 'eglot)
   (add-to-list 'eglot-server-programs '(js-mode . ("typescript-language-server" "--stdio"))))
@@ -56,5 +55,10 @@
 
   (:with-mode prog-mode
     (:hook global-flycheck-mode)))
+
+;; Local Variables:
+;; byte-compile-warnings: (not free-vars)
+;; End:
+
 
 ;;; js-conf.el ends here

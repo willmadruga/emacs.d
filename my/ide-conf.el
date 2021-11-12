@@ -13,6 +13,8 @@
 
 (setup (:package crux))
 (setup (:package avy))
+(setup (:package restclient))
+(setup (:package devdocs))
 
 (setup (:package projectile)
   (autoload 'projectile-project-root "projectile")
@@ -99,7 +101,20 @@
   (popper-mode +1)
   (popper-echo-mode +1))
 
+
+(setup (:package evil)
+  (setq evil-want-keybinding nil)
+  (setq evil-undo-system 'undo-redo)
+ (evil-mode 1))
+
+(setup (:package goto-chg))
+
+(setup (:package evil-collection)
+  (:require 'evil
+            (evil-collection-init)))
+
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)
 ;; End:
+
 ;;; ide-conf.el ends here

@@ -6,6 +6,7 @@
 
 ;;; Code:
 
+(require 'evil)
 (require 'popper)
 (require 'org-roam)
 (require 'org-roam-dailies)
@@ -15,85 +16,83 @@
 (require 'password-store "../../password-store.el")
 (require 'sdfcli "../../my/sdfcli.el")
 
-;; unset C-z annoyance
-(global-unset-key (kbd "C-z"))
-(global-unset-key (kbd "C-S-z"))
+;; I should read the documentation more often, just saying...
+;; https://evil.readthedocs.io/en/latest/overview.html
+;; https://github.com/emacs-evil/evil-collection
 
-;; unset keybindings I don't usually use so it can be repurposed.
-(global-unset-key (kbd "M-i"))      ;; originally: (tab-to-tab-stop)
-(global-unset-key (kbd "M-'"))      ;; originally: (abbrev-prefix-mark)
-(global-unset-key (kbd "C-M-n"))    ;; originally: (forward-list)
-(global-unset-key (kbd "M-SPC"))    ;; originally: (just-one-space)
-(global-unset-key (kbd "C-x C-b"))  ;; originally: (list-buffers)
-(global-unset-key (kbd "C-x m"))    ;; originally: (compose-mail)
+;; (define-key evil-normal-state-map (kbd "a") 'function)
+;; (define-key evil-insert-state-map (kbd "a") 'function)
+;; (evil-define-key 'normal 'global (kbd "<leader>fs") 'save-buffer)
 
-(global-set-key (kbd "M-j")     'avy-goto-char-timer)
-(global-set-key (kbd "M-p")     'popper-toggle-latest)
-(global-set-key (kbd "M-i")     'ibuffer)
-(global-set-key (kbd "C-.")     'embark-act)
-(global-set-key (kbd "C-x C-b") 'consult-buffer)
-(global-set-key (kbd "C-c o d") 'org-roam-dailies-map)
-(global-set-key (kbd "C-M-n")   'crux-duplicate-current-line-or-region)
+;; TODO: define a different leader key for -nw because of my server...
 
-;; C-x m => My Menu ------------------------------------------
-(global-set-key (kbd "C-x m C-.") 'embark-prefix-help-command)
-;; -----------------------------------------------------------
+;; (evil-set-leader 'normal (kbd "SPC"))
+;; (evil-define-key 'normal 'global (kbd "<leader>w") 'evil-save)
 
-;; [C]onsult
-(global-set-key (kbd "C-x m c a")   'consult-apropos)
-(global-set-key (kbd "C-x m c b")   'consult-buffer)
-(global-set-key (kbd "C-x m c f")   'consult-flycheck)
-(global-set-key (kbd "C-x m c F")   'consult-find)
-(global-set-key (kbd "C-x m c g")   'consult-grep)
-(global-set-key (kbd "C-x m c l")   'consult-line)
-(global-set-key (kbd "C-x m c i")   'consult-imenu)
-(global-set-key (kbd "C-x m c I")   'consult-imenu-multi)
-(global-set-key (kbd "C-x m c r")   'consult-ripgrep)
-(global-set-key (kbd "C-x m c R")   'consult-recent-file)
-(global-set-key (kbd "C-x m c s")   'consult-isearch)
-(global-set-key (kbd "C-x m c C-.") 'embark-prefix-help-command)
 
-;; [J]avascript
-(global-set-key (kbd "C-x m j f")   'eglot-format)
-(global-set-key (kbd "C-x m j r")   'eglot-rename)
-(global-set-key (kbd "C-x m j s")   'eglot-shutdown)
-(global-set-key (kbd "C-x m j h")   'js2-mode-toggle-element)
-(global-set-key (kbd "C-x m j C-.") 'embark-prefix-help-command)
+;; (evil-set-leader 'insert (kbd "C-SPC"))
+;; (evil-define-key 'insert 'global (kbd "<leader><down>") 'crux-duplicate-current-line-or-region)
+;; (evil-define-key 'insert 'global (kbd "<leader><down>") 'crux-duplicate-current-line-or-region)
 
-;; [D]eveloment
-(global-set-key (kbd "C-x m d g")   'dumb-jump-go)
-(global-set-key (kbd "C-x m d b")   'dumb-jump-back)
-(global-set-key (kbd "C-x m d c")   'netsuite/create-project)
-(global-set-key (kbd "C-x m d d")   'netsuite/deploy)
-(global-set-key (kbd "C-x m d u")   'netsuite/upload-buffer)
-(global-set-key (kbd "C-x m d C-.") 'embark-prefix-help-command)
+;; Leader Keys
+;; !Insert Mode: space
+;; Insert Mode: C-space
 
-;; [E]macs Misc
-(global-set-key (kbd "C-x m e a")   'ansi-term)
-(global-set-key (kbd "C-x m e f")   'elfeed)
-(global-set-key (kbd "C-x m e d")   'elfeed-dashboard)
-(global-set-key (kbd "C-x m e w")   'wdired-change-to-wdired-mode)
-(global-set-key (kbd "C-x m e v l") 'eval-last-sexp)
-(global-set-key (kbd "C-x m e v p") 'eval-print-last-sexp)
-(global-set-key (kbd "C-x m e C-.") 'embark-prefix-help-command)
+ ;; avy-goto-char-timer)
+ ;; popper-toggle-latest)
+ ;; ibuffer)
+ ;; embark-act)
+ ;; consult-buffer)
+ ;; org-roam-dailies-map)
+ ;; crux-duplicate-current-line-or-region)
 
-;; [O]RG Mode
-(global-set-key (kbd "C-x m o a")     'org-agenda)
-(global-set-key (kbd "C-x m o f")     'org-roam-node-find)
-(global-set-key (kbd "C-x m o i")     'org-roam-node-insert)
-(global-set-key (kbd "C-x m o d")     'org-roam-dailies-map)
-(global-set-key (kbd "C-x m o d C-.") 'embark-prefix-help-command)
-(global-set-key (kbd "C-x m o C-.")   'embark-prefix-help-command)
+;;  consult-apropos)
+;;  consult-buffer)
+;;  consult-flycheck)
+;;  consult-find)
+;;  consult-grep)
+;;  consult-line)
+;;  consult-imenu)
+;;  consult-imenu-multi)
+;;  consult-ripgrep)
+;;  consult-recent-file)
+;;  consult-isearch)
+;;  embark-prefix-help-command)
 
-;; [P]assword Store
-(global-set-key (kbd "C-x m p c")   'password-store-copy)
-(global-set-key (kbd "C-x m p f")   'password-store-copy-field)
-(global-set-key (kbd "C-x m p C-.") 'embark-prefix-help-command)
+;;  eglot-format)
+;;  eglot-rename)
+;;  eglot-shutdown)
+;;  js2-mode-toggle-element)
+;;  embark-prefix-help-command)
 
-;; e[X]tras
-;; Other keybindings I usually access through embark-prefix-help-command right after C-x \ prefix
-(global-set-key (kbd "C-x m X w t") 'crux-transpose-windows)
-(global-set-key (kbd "C-x m X p l") 'popper-toggle-latest)
-(global-set-key (kbd "C-x m X p t") 'popper-toggle-type)
+;;  dumb-jump-go)
+;;  dumb-jump-back)
+;;  netsuite/create-project)
+;;  netsuite/deploy)
+;;  netsuite/upload-buffer)
+;;  embark-prefix-help-command)
+
+ ;; ansi-term)
+ ;; elfeed)
+ ;; elfeed-dashboard)
+ ;; wdired-change-to-wdired-mode)
+ ;; eval-last-sexp)
+ ;; eval-print-last-sexp)
+ ;; embark-prefix-help-command)
+
+ ;; org-agenda)
+ ;; org-roam-node-find)
+ ;; org-roam-node-insert)
+ ;; org-roam-dailies-map)
+ ;; embark-prefix-help-command)
+ ;; embark-prefix-help-command)
+
+ ;; password-store-copy)
+ ;; password-store-copy-field)
+ ;; embark-prefix-help-command)
+
+ ;; crux-transpose-windows)
+ ;; popper-toggle-latest)
+ ;; popper-toggle-type)
 
 ;;; keyb-conf.el ends here
