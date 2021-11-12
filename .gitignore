@@ -31,3 +31,4 @@ equake-persistent-display
 org-roam.db
 .org-id-locations
 session.*
+/pomm

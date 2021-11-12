@@ -101,6 +101,12 @@
   (popper-mode +1)
   (popper-echo-mode +1))
 
+(setup (:package pomm)
+  (require 'pomm)
+  (setq pomm-mode-line-mode t)
+  (setq alert-default-style 'libnotify)
+  (setq pomm-audio-enabled t)
+  (setq pomm-audio-player-executable "mpv"))
 
 (setup (:package evil)
   (setq evil-want-keybinding nil)
