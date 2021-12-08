@@ -6,12 +6,8 @@
 
 ;;; Code:
 
-(setup (:package modus-themes)
-
-  (setq modus-themes-bold-constructs t
-        modus-themes-mode-line '3d)
-  (modus-themes-load-themes)
-  (modus-themes-load-vivendi))
+(setup (:package doom-themes)
+  (load-theme 'doom-one t))
 
 (setup (:package doom-modeline)
   (doom-modeline-mode 1))

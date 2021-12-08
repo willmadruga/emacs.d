@@ -3,8 +3,6 @@
 ;;; Commentary:
 ;;; Code:
 
-(require 'org-clock)
-
 (setq org-roam-v2-ack t)
 (setq org-return-follows-link t)
 (setq org-adapt-indentation t)
@@ -13,7 +11,7 @@
 (setq org-startup-with-inline-images t)
 (setq org-image-actual-width '(300))
 (setq org-hide-emphasis-markers t)
-(setq org-ellipsis " ▼ ")
+(setq org-ellipsis "▼")
 
 (setq org-src-preserve-indentation nil)
 (setq org-edit-src-content-indentation 2)
@@ -23,7 +21,6 @@
 (setq org-fontify-done-headline nil)
 (setq org-fontify-quote-and-verse-blocks t)
 (setq org-timer-display 'both)
-(setq org-clock-sound (concat user-emacs-directory "alert.wav"))
 
 (setq org-todo-keywords
       '((sequence
@@ -74,20 +71,21 @@
   (setq org-superstar-special-todo-items t)
   (setq org-superstar-leading-bullet "")
   (setq org-superstar-todo-bullet-alist '(
-                                          ("TODO" . ?📌)
-                                          ("NEXT" . ?🔜)
-                                          ("STRT" . ?🧠)
-                                          ("WAIT" . ?⏳)
+                                          ("TODO"      . ?📌)
+                                          ("NEXT"      . ?🔜)
+                                          ("STRT"      . ?🧠)
+                                          ("WAIT"      . ?⏳)
                                           ("CANCELLED" . ?❌)
-                                          ("DONE" . ?✅)
-                                          (">" . ?🟢)
+                                          ("DONE"      . ?✅)
+                                          (">"         . ?🟢)
                                           )))
 
 (setup (:package org-roam)
   (setq org-roam-directory "~/src/org-roam")
   (setq org-roam-completion-everywhere t)
   (setq org-roam-db-gc-threshold most-positive-fixnum)
-  (org-roam-db-autosync-mode))
+  ;; (org-roam-db-autosync-mode)
+  )
 
 (require 'org-roam-dailies)
 (setq org-roam-dailies-directory "journal/")

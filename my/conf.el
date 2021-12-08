@@ -15,7 +15,7 @@
 (setq make-backup-files                                 nil)
 (setq create-lockfiles                                  nil)
 (setq browse-url-browser-function       'browse-url-generic)
-(setq browse-url-generic-program              "qutebrowser")
+(setq browse-url-generic-program                  "firefox")
 (setq read-process-output-max                 (* 1024 1024))
 (setq warning-suppress-types                      '((comp)))
 (setq recentf-max-saved-items                            50)
@@ -77,7 +77,6 @@
             "~/.local/bin"
             "~/.nix-profile/bin"
             "~/.deno/bin"
-            "~/devenv/apache-maven-3.6.1/bin"
             "~/.npm-packages/bin"
             ))
   (add-to-list 'exec-path item))

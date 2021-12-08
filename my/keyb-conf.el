@@ -20,57 +20,35 @@
 ;; https://evil.readthedocs.io/en/latest/overview.html
 ;; https://github.com/emacs-evil/evil-collection
 
-;; (define-key evil-normal-state-map (kbd "a") 'function)
-;; (define-key evil-insert-state-map (kbd "a") 'function)
-;; (evil-define-key 'normal 'global (kbd "<leader>fs") 'save-buffer)
+(global-unset-key (kbd "M-SPC"))
+(evil-set-leader 'normal (kbd "M-SPC"))
+(evil-set-leader 'insert (kbd "M-SPC"))
 
-;; TODO: define a different leader key for -nw because of my server...
+(evil-define-key '(normal) 'global (kbd "<leader>od") 'org-roam-dailies-map)
+(evil-define-key '(normal) 'global (kbd "<leader>of") 'org-roam-node-find)
+(evil-define-key '(normal) 'global (kbd "<leader>e") 'embark-act)
 
-;; (evil-set-leader 'normal (kbd "SPC"))
-;; (evil-define-key 'normal 'global (kbd "<leader>w") 'evil-save)
+(evil-define-key '(insert) 'global (kbd "<leader>ef") 'eglot-format)
+(evil-define-key '(insert) 'global (kbd "<leader>er") 'eglot-rename)
+(evil-define-key '(insert) 'global (kbd "<leader>es") 'eglot-shutdown)
+(evil-define-key '(insert) 'global (kbd "<leader>za") 'js2-mode-toggle-element)
 
+(evil-define-key '(normal insert) 'global (kbd "<leader>a") 'avy-goto-char-timer)
+(evil-define-key '(normal insert) 'global (kbd "<leader>b") 'consult-buffer)
+(evil-define-key '(normal insert) 'global (kbd "<leader>f") 'consult-line)
+(evil-define-key '(normal insert) 'global (kbd "<leader>g") 'consult-ripgrep)
+(evil-define-key '(normal insert) 'global (kbd "<leader>i") 'imenu)
+(evil-define-key '(normal insert) 'global (kbd "<leader>j") 'crux-duplicate-current-line-or-region)
+(evil-define-key '(normal insert) 'global (kbd "<leader>p") 'popper-toggle-latest)
 
-;; (evil-set-leader 'insert (kbd "C-SPC"))
-;; (evil-define-key 'insert 'global (kbd "<leader><down>") 'crux-duplicate-current-line-or-region)
-;; (evil-define-key 'insert 'global (kbd "<leader><down>") 'crux-duplicate-current-line-or-region)
+(evil-define-key '(normal insert) 'global (kbd "<leader>.") 'dumb-jump-go)
+(evil-define-key '(normal insert) 'global (kbd "<leader>,") 'dumb-jump-back)
 
-;; Leader Keys
-;; !Insert Mode: space
-;; Insert Mode: C-space
-
- ;; avy-goto-char-timer)
- ;; popper-toggle-latest)
- ;; ibuffer)
- ;; embark-act)
- ;; consult-buffer)
- ;; org-roam-dailies-map)
- ;; crux-duplicate-current-line-or-region)
-
-;;  consult-apropos)
-;;  consult-buffer)
-;;  consult-flycheck)
-;;  consult-find)
-;;  consult-grep)
-;;  consult-line)
-;;  consult-imenu)
-;;  consult-imenu-multi)
-;;  consult-ripgrep)
-;;  consult-recent-file)
-;;  consult-isearch)
-;;  embark-prefix-help-command)
-
-;;  eglot-format)
-;;  eglot-rename)
-;;  eglot-shutdown)
-;;  js2-mode-toggle-element)
-;;  embark-prefix-help-command)
-
-;;  dumb-jump-go)
-;;  dumb-jump-back)
-;;  netsuite/create-project)
-;;  netsuite/deploy)
-;;  netsuite/upload-buffer)
-;;  embark-prefix-help-command)
+(evil-define-key '(normal insert) 'global (kbd "<leader>nc") 'netsuite/create-project)
+(evil-define-key '(normal insert) 'global (kbd "<leader>nd") 'netsuite/deploy)
+(evil-define-key '(normal insert) 'global (kbd "<leader>nD") 'netsuite/deploy21)
+(evil-define-key '(normal insert) 'global (kbd "<leader>nu") 'netsuite/upload-buffer)
+(evil-define-key '(normal insert) 'global (kbd "<leader>nU") 'netsuite/upload-buffer21)
 
  ;; ansi-term)
  ;; elfeed)
