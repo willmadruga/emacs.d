@@ -97,6 +97,7 @@
         '("\\*Messages\\*"
           "Output\\*$"
           "\\*Async Shell Command\\*"
+          "\\*slime-repl sbcl\\*"
           help-mode
           compilation-mode
           ))
@@ -123,6 +124,18 @@
   ;; (add-to-list 'evil-collection-mode-list 'evil-collection-setup-minibuffer)
   ;; (evil-collection-setup-minibuffer t)
   (evil-collection-init))
+
+;; lisp
+(setup (:package slime)
+    (setq inferior-lisp-program "/usr/local/bin/sbcl"))
+(setup (:package slime-repl-ansi-color))
+(setup (:package ac-slime)
+   (require 'ac-slime)
+    (add-hook 'slime-mode-hook 'set-up-slime-ac)
+    (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+    (eval-after-load "auto-complete"
+      '(add-to-list 'ac-modes 'slime-repl-mode)))
+
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)
