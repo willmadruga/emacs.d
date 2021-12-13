@@ -111,19 +111,6 @@
   (setq pomm-audio-enabled t)
   (setq pomm-audio-player-executable "mpv"))
 
-(setup (:package evil)
-  (setq evil-want-integration t)
-  (setq evil-want-keybinding nil)
-  (setq evil-undo-system 'undo-redo)
- (evil-mode 1))
-
-(setup (:package goto-chg))
-
-(setup (:package evil-collection)
-  (require 'evil-collection)
-  ;; (add-to-list 'evil-collection-mode-list 'evil-collection-setup-minibuffer)
-  ;; (evil-collection-setup-minibuffer t)
-  (evil-collection-init))
 
 ;; lisp
 (setup (:package slime)
