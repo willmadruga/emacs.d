@@ -84,7 +84,7 @@
   (setq org-roam-directory "~/src/org-roam")
   (setq org-roam-completion-everywhere t)
   (setq org-roam-db-gc-threshold most-positive-fixnum)
-  ;; (org-roam-db-autosync-mode)
+  (org-roam-db-autosync-mode)
   )
 
 (require 'org-roam-dailies)

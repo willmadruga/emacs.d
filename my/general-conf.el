@@ -1,4 +1,4 @@
-;;; conf.el --- Common Emacs config ;; -*- lexical-binding: t; -*-
+;;; general-conf.el --- General Emacs config ;; -*- lexical-binding: t; -*-
 
 ;; This file is NOT part of GNU Emacs.
 
@@ -21,7 +21,6 @@
 (setq recentf-max-saved-items                            50)
 (setq undo-limit                                   80000000)
 (setq tab-always-indent                           'complete)
-(setq initial-major-mode                          'org-mode)
 (setq winner-dont-bind-my-keys                            t)
 (setq initial-major-mode                   'emacs-lisp-mode)
 (setq shell-file-name                       "/usr/bin/bash")
@@ -89,4 +88,4 @@
 ;; byte-compile-warnings: (not free-vars)
 ;; End:
 
-;;; conf.el ends here
+;;; general-conf.el ends here

@@ -29,7 +29,7 @@
 ;; load each configuration file.
 (dolist (fname
          '("my/perf-conf.el"
-           "my/conf.el"
+           "my/general-conf.el"
            "my/ide-conf.el"
            "my/js-conf.el"
            "my/sdfcli.el"

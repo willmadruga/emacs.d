@@ -6,7 +6,6 @@
 
 ;;; Code:
 
-(require 'popper)
 (require 'org-roam)
 (require 'org-roam-dailies)
 (require 'eglot)
@@ -14,39 +13,27 @@
 (require 'elfeed)
 (require 'sdfcli "../../my/sdfcli.el")
 
-;; Trying it out... not too bad, just don't know if I will stick with it yet...
-;; https://github.com/meow-edit/meow
-(defun meow-setup ()
-  (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
+(global-set-key (kbd "s-a") 'avy-goto-char-timer)
+(global-set-key (kbd "s-b") 'consult-buffer)
+(global-set-key (kbd "s-B") 'ibuffer)
+(global-set-key (kbd "s-<down>") 'crux-duplicate-current-line-or-region)
+(global-set-key (kbd "s-D") 'netsuite/deploy)
+(global-set-key (kbd "s-e") 'embark-act)
+(global-set-key (kbd "s-E") 'elfeed)
+(global-set-key (kbd "s-f") 'eglot-format)
+(global-set-key (kbd "s-g") 'consult-ripgrep)
+(global-set-key (kbd "s-i") 'imenu)
+(global-set-key (kbd "s-j") 'jsdoc)
+(global-set-key (kbd "s-o") 'org-roam-dailies-map)
+(global-set-key (kbd "s-O") 'org-roam-node-find)
+(global-set-key (kbd "s-r") 'eglot-rename)
+(global-set-key (kbd "s-t") 'ansi-term)
+(global-set-key (kbd "s-u") 'netsuite/upload-buffer)
+(global-set-key (kbd "s-w") 'wdired-change-to-wdired-mode)
+(global-set-key (kbd "s-z") 'js2-mode-toggle-element)
+(global-set-key (kbd "s-.") 'dumb-jump-go)
+(global-set-key (kbd "s-,") 'dumb-jump-back)
+(global-set-key (kbd "s-/") 'consult-line)
 
-  (meow-leader-define-key
-   '("a" . avy-goto-char-timer)
-   '("b" . consult-buffer)
-   '("B" . ibuffer)
-   '("d" . crux-duplicate-current-line-or-region)
-   '("D" . netsuite/deploy)
-   '("e" . embark-act)
-   '("E" . elfeed)
-   '("f" . eglot-format)
-   '("g" . consult-ripgrep)
-   '("i" . imenu)
-   '("o" . org-roam-dailies-map)
-   '("O" . org-roam-node-find)
-   '("p" . popper-toggle-latest)
-   '("r" . eglot-rename)
-   '("t" . ansi-term)
-   '("u" . netsuite/upload-buffer)
-   '("w" . wdired-change-to-wdired-mode)
-   '("z" . js2-mode-toggle-element)
-   '("." . dumb-jump-go)
-   '("," . dumb-jump-back)
-   '("/" . consult-line)
-   )
-  )
-
-(setup (:package meow)
-  (require 'meow)
-  (meow-setup)
-  (meow-global-mode 1))
 
 ;;; keyb-conf.el ends here

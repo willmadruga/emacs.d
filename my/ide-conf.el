@@ -1,12 +1,15 @@
 ;;; ide-conf.el --- IDE-like config ;; -*- lexical-binding: t; -*-
+
 ;; This file is NOT part of GNU Emacs.
+
 ;;; Commentary:
+
 ;;; Code:
 
 (add-hook 'before-save-hook (lambda () (whitespace-cleanup)))
 
 (setup (:package embark))
-;; explore:
+;; TODO: explore
 ;; https://github.com/oantolin/embark/wiki/Additional-Actions
 ;; https://github.com/oantolin/embark/wiki/Additional-Configuration
 ;; https://karthinks.com/software/fifteen-ways-to-use-embark/
@@ -15,28 +18,30 @@
 (setup (:package avy))
 (setup (:package restclient))
 (setup (:package devdocs))
-(setup (:package origami)
-  (global-origami-mode))
+
+(setup (:package origami) (global-origami-mode))
+(setup (:package move-text) (move-text-default-bindings))
+(setup (:package indent-guide) (indent-guide-global-mode))
+(setup (:package magit) (defalias 'git 'magit))
+(setup (:package yasnippet) (yas-global-mode 1))
+(setup (:package vertico) (vertico-mode))
+(setup (:package marginalia) (marginalia-mode))
+(setup (:package orderless) (setq completion-styles '(orderless)))
+(setup (:package corfu) (corfu-global-mode))
 
 (setup (:package projectile)
   (autoload 'projectile-project-root "projectile")
   (projectile-mode +1))
 
-(setup (:package move-text)
-  (move-text-default-bindings))
-
-(setup (:package indent-guide)
-  (indent-guide-global-mode))
-
-(setup (:package magit)
-  (defalias 'git 'magit))
-
+(require 'ibuf-ext)
 (setup (:package ibuffer-vc)
-  (:require ibuf-ext)
   (:with-hook ibuffer-hook
     (:hook (lambda ()
              (ibuffer-vc-set-filter-groups-by-vc-root)
              (unless (eq ibuffer-sorting-mode 'alphabetic)
+               (ibuffer-switch-format)
+               (ibuffer-filter-by-starred-name 1)
+               (ibuffer-negate-filter)
                (ibuffer-do-sort-by-alphabetic))))))
 
 (setup (:package rainbow-delimiters)
@@ -55,11 +60,9 @@
   (define-key dired-mode-map [remap dired-up-directory]                 'dired-single-up-directory)
   (define-key dired-mode-map [remap dired-find-file]                    'dired-single-buffer))
 
-(setup (:package yasnippet)
-  (yas-global-mode 1))
 
 (setup (:package consult)
-  (:require projectile)
+  (require 'projectile)
   (require 'consult)
   (setq consult-project-root-function #'projectile-project-root)
   (setq xref-show-xrefs-function #'consult-xref)
@@ -79,31 +82,6 @@
    consult-recent-file
    :preview-key (kbd "M-.")))
 
-(setup (:package vertico)
-  (vertico-mode))
-
-(setup (:package marginalia)
-  (marginalia-mode))
-
-(setup (:package orderless)
-  (setq completion-styles '(orderless)))
-
-(setup (:package corfu)
-  (corfu-global-mode))
-
-(setup (:package popper)
-  ;; see docs https://github.com/karthink/popper
-  (setq popper-reference-buffers
-        '("\\*Messages\\*"
-          "Output\\*$"
-          "\\*Async Shell Command\\*"
-          "\\*slime-repl sbcl\\*"
-          help-mode
-          compilation-mode
-          ))
-  (popper-mode +1)
-  (popper-echo-mode +1))
-
 (setup (:package pomm)
   (require 'pomm)
   (setq pomm-mode-line-mode t)
@@ -111,8 +89,7 @@
   (setq pomm-audio-enabled t)
   (setq pomm-audio-player-executable "mpv"))
 
-
-;; lisp
+;; lisp - should go into a separate config file later on...
 (setup (:package slime)
     (setq inferior-lisp-program "/usr/local/bin/sbcl"))
 (setup (:package slime-repl-ansi-color))

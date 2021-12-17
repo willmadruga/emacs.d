@@ -56,9 +56,18 @@
   (:with-mode prog-mode
     (:hook global-flycheck-mode)))
 
+(setup (:package tree-sitter)
+  (:with-mode js-mode
+    (:hook tree-sitter-mode)))
+(setup (:package tree-sitter-langs))
+
+;; TODO: Proper setup when it is moved into melpa.
+;; https://github.com/isamert/jsdoc.el
+(add-to-list 'load-path "/home/wmadruga/src/github/jsdoc.el")
+(require 'jsdoc)
+
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)
 ;; End:
-
 
 ;;; js-conf.el ends here

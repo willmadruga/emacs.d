@@ -4,10 +4,9 @@
 
 ;;; Commentary:
 
-
 ;; This is a work in progress!
-;; it depends on Netsuite's sdfcli java
-;; testing with suitecloud node cli is on hold at the moment...
+;; Depends on Netsuite's sdfcli java
+;; Testing with suitecloud node cli is on hold at the moment...
 
 ;;; Code:
 
