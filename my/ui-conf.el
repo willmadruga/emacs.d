@@ -6,43 +6,34 @@
 
 ;;; Code:
 
-;; (defun wmad/use-doom-theme ()
-;;   "Use the doom theme with doom modeline."
-;;   (setup (:package doom-themes)
-;;     (load-theme 'doom-one t))
-;;   (setup (:package doom-modeline)
-;;     (doom-modeline-mode 1))
+(setup (:package spacemacs-theme)
+  (set-face-attribute 'default        nil :font "Source Code Pro" :height 120)
+  (set-face-attribute 'fixed-pitch    nil :font "Source Code Pro")
+  (set-face-attribute 'variable-pitch nil :family "Source Code Pro")
+  (load-theme 'spacemacs-dark t))
 
-;;   (set-face-attribute 'default        nil :font "DejaVu Sans Mono" :height 100)
-;;   (set-face-attribute 'fixed-pitch    nil :font "DejaVu Sans Mono")
-;;   (set-face-attribute 'variable-pitch nil :family "DejaVu Sans"))
+;; (defun wmad/spaceline-face-function (face, active)
+;;   "My spaceline font setup"
+;;   (cond
+;;    (eq face 'mode-line) "Source Code Pro")
+;;   )
 
-;; (defun wmad/use-nano-theme ()
-;;   "Use NANO theme."
+(setup (:package spaceline)
+  ;; turn off a couple of things from the default theme.
+  (setq spaceline-buffer-position-p nil)
+  (setq spaceline-hud-p nil)
+  (setq spaceline-minor-modes-p nil)
+  (setq spaceline-evil-state-p nil)
+  (setq spaceline-auto-compile-p nil)
+  (setq spaceline-buffer-size-p nil)
 
-;;   (add-to-list 'load-path "/home/wmadruga/src/github/nano-emacs")
-;;   (require 'nano-theme-dark)
-;;   (require 'nano-layout)
-;;   (require 'nano-faces)
-;;   (nano-faces)
-;;   (require 'nano-theme)
-;;   (nano-theme)
-;;   (menu-bar-mode -1)
-;;   (tool-bar-mode -1)
-;;   (scroll-bar-mode -1)
-;;   (require 'nano-modeline))
-
-(defun wmad/use-spacemacs-theme ()
-  "Use Spacemacs theme."
-  (setup (:package spacemacs-theme)
-    (set-face-attribute 'default        nil :font "Roboto Mono" :height 120)
-    (set-face-attribute 'fixed-pitch    nil :font "Roboto Mono")
-    (set-face-attribute 'variable-pitch nil :family "Roboto")
-    (load-theme 'spacemacs-dark t nil)))
+  ;; customize fonts.
+  ;; (setq spaceline-face-func #'wmad/spaceline-face-function)
+  (setq spaceline-face-func nil)
+  (spaceline-spacemacs-theme))
 
 (setq inhibit-compacting-font-caches t)
 (setq find-file-visit-truename t)
-(wmad/use-spacemacs-theme)
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)
