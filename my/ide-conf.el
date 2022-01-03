@@ -8,7 +8,8 @@
 
 (add-hook 'before-save-hook (lambda () (whitespace-cleanup)))
 
-(setup (:package embark))
+(setup (:package embark)
+  (setq prefix-help-command #'embark-prefix-help-command))
 ;; TODO: explore
 ;; https://github.com/oantolin/embark/wiki/Additional-Actions
 ;; https://github.com/oantolin/embark/wiki/Additional-Configuration
