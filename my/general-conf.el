@@ -67,7 +67,6 @@
 (show-paren-mode       1)
 (savehist-mode         1)
 (recentf-mode          1)
-(tab-bar-mode          0)
 (line-number-mode    nil)
 
 ;; TODO: use setup if-host to build a $PATH for each system.

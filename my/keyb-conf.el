@@ -40,6 +40,7 @@
 (global-set-key (kbd "C-c o f") 'org-roam-node-find)
 
 ;; Misc
+(global-set-key (kbd "C-c `")      'tmm-menubar)
 (global-set-key (kbd "C-c .")      'dumb-jump-go)
 (global-set-key (kbd "C-c ,")      'dumb-jump-back)
 (global-set-key (kbd "C-c e a")    'embark-act)

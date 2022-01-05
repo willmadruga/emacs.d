@@ -29,6 +29,8 @@
 (setup (:package marginalia) (marginalia-mode))
 (setup (:package orderless) (setq completion-styles '(orderless)))
 (setup (:package corfu) (corfu-global-mode))
+(setup (:package aggressive-indent) (aggressive-indent-mode))
+(setup (:package beacon) (beacon-mode 1))
 
 (setup (:package projectile)
   (autoload 'projectile-project-root "projectile")
@@ -61,7 +63,6 @@
   (define-key dired-mode-map [remap dired-up-directory]                 'dired-single-up-directory)
   (define-key dired-mode-map [remap dired-find-file]                    'dired-single-buffer))
 
-
 (setup (:package consult)
   (require 'projectile)
   (require 'consult)
@@ -90,17 +91,24 @@
   (setq pomm-audio-enabled t)
   (setq pomm-audio-player-executable "mpv"))
 
-;; lisp - should go into a separate config file later on...
-(setup (:package slime)
-    (setq inferior-lisp-program "/usr/local/bin/sbcl"))
-(setup (:package slime-repl-ansi-color))
-(setup (:package ac-slime)
-   (require 'ac-slime)
-    (add-hook 'slime-mode-hook 'set-up-slime-ac)
-    (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
-    (eval-after-load "auto-complete"
-      '(add-to-list 'ac-modes 'slime-repl-mode)))
+(setup 'tab-bar
+  (tab-bar-mode 1)
+  (add-to-list 'tab-bar-format #'tab-bar-format-menu-bar))
 
+
+;; lisp - should go into a separate config file later on... ;;;;;;
+(setup (:package slime)
+  (setq inferior-lisp-program "/usr/local/bin/sbcl"))
+
+(setup (:package slime-repl-ansi-color))
+
+(setup (:package ac-slime)
+  (require 'ac-slime)
+  (add-hook 'slime-mode-hook 'set-up-slime-ac)
+  (add-hook 'slime-repl-mode-hook 'set-up-slime-ac)
+  (eval-after-load "auto-complete"
+    '(add-to-list 'ac-modes 'slime-repl-mode)))
+;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 ;; Local Variables:
 ;; byte-compile-warnings: (not free-vars)
