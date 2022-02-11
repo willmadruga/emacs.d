@@ -15,7 +15,7 @@
 (setq make-backup-files                                 nil)
 (setq create-lockfiles                                  nil)
 (setq browse-url-browser-function       'browse-url-generic)
-(setq browse-url-generic-program                  "firefox")
+(setq browse-url-generic-program              "qutebrowser")
 (setq read-process-output-max                 (* 1024 1024))
 (setq warning-suppress-types                      '((comp)))
 (setq recentf-max-saved-items                            50)

@@ -43,6 +43,7 @@
 (global-set-key (kbd "C-c `")      'tmm-menubar)
 (global-set-key (kbd "C-c .")      'dumb-jump-go)
 (global-set-key (kbd "C-c ,")      'dumb-jump-back)
+(global-set-key (kbd "C-c y")      'yank-from-kill-ring)
 (global-set-key (kbd "C-c e a")    'embark-act)
 (global-set-key (kbd "C-c e e")    'elfeed)
 (global-set-key (kbd "C-c t")      'ansi-term)

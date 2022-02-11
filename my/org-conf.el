@@ -33,34 +33,21 @@
          "CANCELLED(c)"
          "DONE(d)")))
 
+;; Haven't used org agenda in a while, just comment it out for now...
+;; (require 'appt)
+;; (require 'org-agenda)
+;; (if (file-exists-p "~/src/org-roam")
+;;     (setq org-agenda-files
+;;           '("~/src/org-roam/20210824165844-todo.org")))
+;; (setq org-agenda-start-day "0d")
+;; (setq org-agenda-span 5)
+;; (setq org-agenda-include-diary t)
+;; (setq org-agenda-skip-scheduled-if-done t)
+;; (setq org-agenda-skip-deadline-if-done t)
+;; (setq org-agenda-use-time-grid t)
+;; (setq appt-display-duration 60)
 
-(require 'appt)
-(require 'org-agenda)
 (require 'org-id)
-(if (file-exists-p "~/src/org-roam")
-    (setq org-agenda-files
-          '(
-            "~/src/org-roam/202101_finances.org"
-            "~/src/org-roam/202102_finances.org"
-            "~/src/org-roam/202103_finances.org"
-            "~/src/org-roam/202104_finances.org"
-            "~/src/org-roam/202105_finances.org"
-            "~/src/org-roam/202106_finances.org"
-            "~/src/org-roam/202107_finances.org"
-            "~/src/org-roam/202108_finances.org"
-            "~/src/org-roam/202109_finances.org"
-            "~/src/org-roam/202110_finances.org"
-            "~/src/org-roam/202111_finances.org"
-            "~/src/org-roam/202112_finances.org"
-            "~/src/org-roam/20210824165844-todo.org")))
-
-(setq org-agenda-start-day "0d")
-(setq org-agenda-span 5)
-(setq org-agenda-include-diary t)
-(setq org-agenda-skip-scheduled-if-done t)
-(setq org-agenda-skip-deadline-if-done t)
-(setq org-agenda-use-time-grid t)
-(setq appt-display-duration 60)
 (setq org-id-locations-file-relative t)
 
 (setup (:package org-superstar)
